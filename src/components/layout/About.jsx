@@ -8,8 +8,11 @@ import {
   FiGlobe,
   FiLock,
 } from "react-icons/fi";
+import { useThemeStore } from "../../stores";
 
 const About = () => {
+  const { isDark } = useThemeStore();
+
   const features = [
     {
       icon: FiShield,
@@ -59,7 +62,13 @@ const About = () => {
   ];
 
   return (
-    <section className="py-20 px-4 bg-gray-50 dark:bg-gray-800/50">
+    <section
+      className={`py-20 px-4 transition-all duration-500 ${
+        isDark
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+          : "bg-gradient-to-br from-gray-50 via-white to-gray-50"
+      }`}
+    >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -69,10 +78,18 @@ const About = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2
+            className={`text-4xl font-bold mb-4 transition-colors duration-300 ${
+              isDark ? "text-white drop-shadow-lg" : "text-gray-900"
+            }`}
+          >
             About SecureAPK Detector
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          <p
+            className={`text-lg max-w-3xl mx-auto transition-colors duration-300 ${
+              isDark ? "text-gray-300" : "text-gray-600"
+            }`}
+          >
             A cutting-edge security platform designed to protect users from
             malicious APK files and fake banking applications through advanced
             threat detection and analysis.
@@ -81,17 +98,29 @@ const About = () => {
 
         {/* Mission Statement */}
         <motion.div
-          className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-soft border border-gray-200 dark:border-gray-700 mb-16"
+          className={`backdrop-blur-xl rounded-2xl p-8 mb-16 border transition-all duration-300 ${
+            isDark
+              ? "bg-gradient-to-br from-gray-800/80 to-gray-900/60 border-gray-700/50 shadow-2xl shadow-black/20"
+              : "bg-white/90 border-gray-200/50 shadow-lg"
+          }`}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h3
+              className={`text-2xl font-bold mb-4 transition-colors duration-300 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
               Our Mission
             </h3>
-            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto">
+            <p
+              className={`text-lg leading-relaxed max-w-4xl mx-auto transition-colors duration-300 ${
+                isDark ? "text-gray-300" : "text-gray-600"
+              }`}
+            >
               In an era where cybersecurity threats are constantly evolving,
               especially targeting mobile banking applications, we believe
               everyone deserves access to enterprise-grade security analysis
@@ -110,7 +139,11 @@ const About = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-12">
+          <h3
+            className={`text-2xl font-bold text-center mb-12 transition-colors duration-300 ${
+              isDark ? "text-white drop-shadow-lg" : "text-gray-900"
+            }`}
+          >
             Why Choose Our Platform?
           </h3>
 
@@ -118,18 +151,38 @@ const About = () => {
             {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft border border-gray-200 dark:border-gray-700 hover:shadow-medium transition-shadow duration-300"
+                className={`backdrop-blur-md rounded-xl p-6 border transition-all duration-300 hover:scale-105 ${
+                  isDark
+                    ? "bg-gradient-to-br from-gray-800/60 to-gray-900/40 border-gray-700/40 hover:border-blue-500/30 shadow-xl"
+                    : "bg-white/80 border-gray-200/50 hover:border-blue-300/50 shadow-lg"
+                }`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
                 whileHover={{ scale: 1.02, translateY: -2 }}
               >
-                <feature.icon className="w-10 h-10 text-primary-600 dark:text-primary-400 mb-4" />
-                <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                <div
+                  className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-all duration-300 ${
+                    isDark
+                      ? "bg-blue-500/20 shadow-lg shadow-blue-500/20 text-blue-400"
+                      : "bg-blue-50 text-blue-600"
+                  }`}
+                >
+                  <feature.icon className="w-6 h-6" />
+                </div>
+                <h4
+                  className={`text-xl font-semibold mb-3 transition-colors duration-300 ${
+                    isDark ? "text-white" : "text-gray-900"
+                  }`}
+                >
                   {feature.title}
                 </h4>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p
+                  className={`transition-colors duration-300 ${
+                    isDark ? "text-gray-300" : "text-gray-600"
+                  }`}
+                >
                   {feature.description}
                 </p>
               </motion.div>
@@ -178,7 +231,7 @@ const About = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: index * 0.2 }}
               >
-                <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold text-xl mx-auto mb-4">
+                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl mx-auto mb-4">
                   {item.step}
                 </div>
                 <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
@@ -228,16 +281,16 @@ const About = () => {
 
         {/* Team Note */}
         <motion.div
-          className="mt-16 text-center p-8 bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl border border-primary-200 dark:border-primary-800"
+          className="mt-16 text-center p-8 bg-gradient-to-r from-blue-50 to-teal-50 dark:from-blue-900/20 dark:to-teal-900/20 rounded-2xl border border-blue-200 dark:border-blue-800"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
-          <h3 className="text-xl font-semibold text-primary-900 dark:text-primary-100 mb-4">
+          <h3 className="text-xl font-semibold text-blue-900 dark:text-blue-100 mb-4">
             Hackathon Project 2025
           </h3>
-          <p className="text-primary-700 dark:text-primary-300 max-w-2xl mx-auto">
+          <p className="text-blue-700 dark:text-blue-300 max-w-2xl mx-auto">
             This project was developed during a hackathon to address the growing
             threat of fake banking applications and malicious APK files. Our
             goal is to make advanced security analysis accessible to everyone,

@@ -9,65 +9,119 @@ const LinearProgress = ({
   showPercentage = false,
 }) => {
   const colorClasses = {
-    primary: "bg-primary-600",
-    success: "bg-success-600",
-    warning: "bg-warning-600",
-    danger: "bg-danger-600",
-    accent: "bg-accent-600",
+    primary: "bg-gradient-to-r from-blue-500 to-blue-600",
+    success: "bg-gradient-to-r from-green-500 to-green-600",
+    warning: "bg-gradient-to-r from-yellow-500 to-yellow-600",
+    danger: "bg-gradient-to-r from-red-500 to-red-600",
+    accent: "bg-gradient-to-r from-teal-500 to-teal-600",
+  };
+
+  const glowClasses = {
+    primary: "shadow-blue-500/50",
+    success: "shadow-green-500/50",
+    warning: "shadow-yellow-500/50",
+    danger: "shadow-red-500/50",
+    accent: "shadow-teal-500/50",
   };
 
   const bgColorClasses = {
-    primary: "bg-primary-100 dark:bg-primary-900/30",
-    success: "bg-success-100 dark:bg-success-900/30",
-    warning: "bg-warning-100 dark:bg-warning-900/30",
-    danger: "bg-danger-100 dark:bg-danger-900/30",
-    accent: "bg-accent-100 dark:bg-accent-900/30",
+    primary: "bg-blue-100 dark:bg-blue-900/20",
+    success: "bg-green-100 dark:bg-green-900/20",
+    warning: "bg-yellow-100 dark:bg-yellow-900/20",
+    danger: "bg-red-100 dark:bg-red-900/20",
+    accent: "bg-teal-100 dark:bg-teal-900/20",
   };
 
+  const progressValue = Math.min(Math.max(progress, 0), 100);
+
   return (
-    <div className="w-full">
+    <motion.div
+      className="w-full group"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       {showPercentage && (
-        <div className="flex justify-between items-center mb-1">
-          <span className="text-sm text-gray-600 dark:text-gray-400">
+        <motion.div
+          className="flex justify-between items-center mb-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
             Progress
           </span>
-          <span className="text-sm font-medium text-gray-900 dark:text-white">
-            {Math.round(progress)}%
-          </span>
-        </div>
+          <motion.span
+            className="text-sm font-bold text-gray-900 dark:text-white"
+            key={progressValue}
+            initial={{ scale: 1.2, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+          >
+            {Math.round(progressValue)}%
+          </motion.span>
+        </motion.div>
       )}
 
-      <div
-        className={`w-full rounded-full overflow-hidden ${bgColorClasses[color]}`}
+      <motion.div
+        className={`relative w-full rounded-full overflow-hidden backdrop-blur-sm border border-white/20 shadow-inner ${bgColorClasses[color]} group-hover:shadow-lg transition-shadow duration-300`}
         style={{ height: `${height}px` }}
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.2 }}
       >
         <motion.div
-          className={`h-full rounded-full ${colorClasses[color]} ${
-            isAnimated ? "animate-pulse" : ""
-          }`}
+          className={`h-full rounded-full relative overflow-hidden ${
+            colorClasses[color]
+          } ${progressValue >= 90 ? `shadow-lg ${glowClasses[color]}` : ""}`}
           initial={{ width: 0 }}
-          animate={{ width: `${Math.min(Math.max(progress, 0), 100)}%` }}
+          animate={{ width: `${progressValue}%` }}
           transition={{
-            duration: isAnimated ? 0.3 : 0.5,
-            ease: "easeOut",
+            duration: isAnimated ? 0.8 : 1.2,
+            ease: [0.25, 0.46, 0.45, 0.94],
           }}
         >
-          {/* Shimmer effect for active progress */}
-          {isAnimated && progress > 0 && progress < 100 && (
+          {/* Enhanced shimmer effect */}
+          {isAnimated && progressValue > 0 && progressValue < 100 && (
             <motion.div
-              className="h-full w-full bg-gradient-to-r from-transparent via-white/30 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
               initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
+              animate={{ x: "200%" }}
               transition={{
-                duration: 1.5,
+                duration: 2,
                 repeat: Infinity,
                 ease: "linear",
+                delay: 0.5,
               }}
             />
           )}
+
+          {/* Success pulse effect */}
+          {progressValue === 100 && (
+            <motion.div
+              className="absolute inset-0 bg-white/20"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.6, 0] }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                delay: 1,
+              }}
+            />
+          )}
+
+          {/* Inner highlight */}
+          <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent" />
         </motion.div>
-      </div>
-    </div>
+
+        {/* Background highlight effect on hover */}
+        <motion.div
+          className="absolute inset-0 bg-white/5 rounded-full"
+          initial={{ opacity: 0 }}
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.2 }}
+        />
+      </motion.div>
+    </motion.div>
   );
 };
 

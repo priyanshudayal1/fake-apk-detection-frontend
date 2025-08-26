@@ -13,17 +13,24 @@ const CircularProgress = ({
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   const colorClasses = {
-    primary: "stroke-primary-600",
-    success: "stroke-success-600",
-    warning: "stroke-warning-600",
-    danger: "stroke-danger-600",
+    primary: "stroke-blue-600",
+    success: "stroke-green-600",
+    warning: "stroke-yellow-600",
+    danger: "stroke-red-600",
   };
 
   const bgColorClasses = {
-    primary: "stroke-primary-200 dark:stroke-primary-800",
-    success: "stroke-success-200 dark:stroke-success-800",
-    warning: "stroke-warning-200 dark:stroke-warning-800",
-    danger: "stroke-danger-200 dark:stroke-danger-800",
+    primary: "stroke-blue-200 dark:stroke-blue-800/50",
+    success: "stroke-green-200 dark:stroke-green-800/50",
+    warning: "stroke-yellow-200 dark:stroke-yellow-800/50",
+    danger: "stroke-red-200 dark:stroke-red-800/50",
+  };
+
+  const glowClasses = {
+    primary: "drop-shadow-xl",
+    success: "drop-shadow-xl",
+    warning: "drop-shadow-xl",
+    danger: "drop-shadow-xl",
   };
 
   return (
@@ -50,7 +57,9 @@ const CircularProgress = ({
           fill="transparent"
           strokeLinecap="round"
           strokeDasharray={circumference}
-          className={colorClasses[color]}
+          className={`${colorClasses[color]} ${
+            progress > 80 ? glowClasses[color] : ""
+          }`}
           style={{
             strokeDashoffset,
             transition: isAnimated
@@ -66,31 +75,34 @@ const CircularProgress = ({
       {/* Progress Text */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
-          <motion.div
-            className="text-2xl font-bold text-gray-900 dark:text-white"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
+          <div
+            className={`text-2xl font-bold ${
+              color === "primary"
+                ? "text-blue-600 dark:text-blue-400"
+                : color === "success"
+                ? "text-green-600 dark:text-green-400"
+                : color === "warning"
+                ? "text-yellow-600 dark:text-yellow-400"
+                : "text-red-600 dark:text-red-400"
+            }`}
           >
             {Math.round(progress)}%
-          </motion.div>
-          <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-            Complete
           </div>
         </div>
       </div>
 
-      {/* Animated Ring for Active State */}
-      {isAnimated && progress < 100 && (
-        <motion.div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: `conic-gradient(from 0deg, transparent, ${
-              color === "primary" ? "#3b82f6" : "#16a34a"
-            }20, transparent)`,
-          }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+      {/* Subtle glow effect for high scores */}
+      {progress > 80 && (
+        <div
+          className={`absolute inset-2 rounded-full blur-md opacity-20 animate-pulse ${
+            color === "primary"
+              ? "bg-blue-500"
+              : color === "success"
+              ? "bg-green-500"
+              : color === "warning"
+              ? "bg-yellow-500"
+              : "bg-red-500"
+          }`}
         />
       )}
     </div>

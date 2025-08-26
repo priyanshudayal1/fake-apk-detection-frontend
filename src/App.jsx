@@ -101,13 +101,13 @@ function App() {
             <Statistics />
 
             {/* Upload Section */}
-            <section className="py-20 px-4 bg-gray-50 dark:bg-gray-800/50">
+            <section className="py-16 md:py-20 px-4 bg-gray-50 dark:bg-gray-800/50">
               <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                <div className="text-center mb-8 md:mb-12">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-heading text-gray-900 dark:text-white mb-4">
                     Upload Your APK for Analysis
                   </h2>
-                  <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                  <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
                     Get instant security insights with our advanced APK analysis
                     engine. Your file is processed securely and never stored on
                     our servers.
@@ -124,19 +124,19 @@ function App() {
         )}
 
         {currentPhase === "analyzing" && (
-          <section className="min-h-screen flex items-center justify-center py-20 px-4">
+          <section className="min-h-screen flex items-center justify-center py-16 md:py-20 px-4">
             <AnalysisInterface file={selectedFile} />
           </section>
         )}
 
         {currentPhase === "results" && (
-          <section className="py-20 px-4">
-            <div className="max-w-7xl mx-auto space-y-8">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <section className="py-16 md:py-20 px-4">
+            <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+              <div className="text-center px-4">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-heading text-gray-900 dark:text-white mb-4">
                   Security Analysis Complete
                 </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-300">
+                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                   Here are the detailed results of your APK security scan
                 </p>
               </div>
@@ -144,16 +144,20 @@ function App() {
               <ResultsDashboard />
 
               {/* Action Buttons */}
-              <div className="flex justify-center space-x-4 pt-8">
+              <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 pt-6 md:pt-8 px-4">
                 <button
                   onClick={handleStartOver}
-                  className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors duration-200"
+                  className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-500/50"
                 >
                   Analyze Another APK
                 </button>
                 <button
                   onClick={() => window.print()}
-                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-colors duration-200"
+                  className={`w-full sm:w-auto px-6 py-3 backdrop-blur-xl font-semibold rounded-2xl transition-all duration-300 focus:outline-none focus:ring-4 border ${
+                    isDark
+                      ? "border-gray-600 text-gray-200 hover:bg-white/10 bg-gray-800/40 focus:ring-gray-500/50"
+                      : "border-gray-300 text-gray-700 hover:bg-black/5 bg-white/40 focus:ring-gray-300/50"
+                  }`}
                 >
                   Export Report
                 </button>

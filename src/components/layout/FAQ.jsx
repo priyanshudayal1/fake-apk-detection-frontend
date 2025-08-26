@@ -121,19 +121,19 @@ const FAQ = () => {
 
         {/* Contact CTA */}
         <motion.div
-          className="mt-16 text-center p-8 bg-primary-50 dark:bg-primary-900/20 rounded-2xl border border-primary-200 dark:border-primary-800"
+          className="mt-16 text-center p-8 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <h3 className="text-xl font-semibold text-primary-900 dark:text-primary-100 mb-2">
+          <h3 className="text-xl font-semibold text-blue-900 dark:text-blue-100 mb-2">
             Still have questions?
           </h3>
-          <p className="text-primary-700 dark:text-primary-300 mb-4">
+          <p className="text-blue-700 dark:text-blue-300 mb-4">
             Our security experts are here to help you stay protected
           </p>
-          <button className="bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
             Contact Support
           </button>
         </motion.div>

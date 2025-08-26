@@ -80,7 +80,11 @@ const Statistics = () => {
   return (
     <section
       id="statistics"
-      className={`py-20 relative ${isDark ? "bg-gray-800" : "bg-gray-50"}`}
+      className={`py-20 relative transition-all duration-500 ${
+        isDark
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+          : "bg-gradient-to-br from-gray-50 via-white to-gray-50"
+      }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -92,14 +96,14 @@ const Statistics = () => {
           className="text-center mb-16"
         >
           <h2
-            className={`text-3xl md:text-4xl font-bold font-heading mb-4 ${
-              isDark ? "text-white" : "text-gray-900"
+            className={`text-3xl md:text-4xl font-bold font-heading mb-4 transition-colors duration-300 ${
+              isDark ? "text-white drop-shadow-lg" : "text-gray-900"
             }`}
           >
             Trusted by Security Professionals
           </h2>
           <p
-            className={`text-lg max-w-2xl mx-auto ${
+            className={`text-lg max-w-2xl mx-auto transition-colors duration-300 ${
               isDark ? "text-gray-300" : "text-gray-600"
             }`}
           >
@@ -118,37 +122,48 @@ const Statistics = () => {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ y: -5, scale: 1.02 }}
-              className={`relative p-6 rounded-2xl glass backdrop-blur-sm shadow-soft hover:shadow-medium transition-all duration-300 ${
-                isDark ? "bg-gray-900/50" : "bg-white/80"
+              className={`relative p-6 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${
+                isDark
+                  ? "bg-gradient-to-br from-gray-800/60 to-gray-900/40 border-gray-700/40 hover:border-blue-500/30 shadow-2xl shadow-black/20"
+                  : "bg-white/80 border-gray-200/50 hover:border-blue-300/50 shadow-lg"
               }`}
             >
               {/* Background Gradient */}
               <div
-                className={`absolute inset-0 rounded-2xl opacity-5 ${stat.bgColor.replace(
-                  "/10",
-                  ""
-                )}`}
-              ></div>
+                className={`absolute inset-0 rounded-2xl opacity-10 transition-opacity duration-300 ${
+                  isDark ? "opacity-20" : "opacity-5"
+                } ${stat.bgColor.replace("/10", "")}`}
+              />
 
               {/* Icon */}
               <div
-                className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 ${stat.bgColor}`}
+                className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 transition-all duration-300 ${
+                  isDark
+                    ? `${stat.bgColor} shadow-lg shadow-blue-500/20`
+                    : stat.bgColor
+                }`}
               >
-                <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                <stat.icon
+                  className={`w-6 h-6 ${stat.color} ${
+                    isDark ? "drop-shadow-sm" : ""
+                  }`}
+                />
               </div>
 
               {/* Value */}
               <div className="mb-2">
                 <span
                   id={`counter-${index}`}
-                  className={`text-3xl md:text-4xl font-bold font-heading ${
-                    isDark ? "text-white" : "text-gray-900"
+                  className={`text-3xl md:text-4xl font-bold font-heading transition-colors duration-300 ${
+                    isDark ? "text-white drop-shadow-lg" : "text-gray-900"
                   }`}
                 >
                   0
                 </span>
                 <span
-                  className={`text-2xl md:text-3xl font-bold ${stat.color}`}
+                  className={`text-2xl md:text-3xl font-bold ${stat.color} ${
+                    isDark ? "drop-shadow-sm" : ""
+                  }`}
                 >
                   {stat.suffix}
                 </span>
@@ -156,7 +171,7 @@ const Statistics = () => {
 
               {/* Label */}
               <h3
-                className={`text-lg font-semibold mb-1 ${
+                className={`text-lg font-semibold mb-1 transition-colors duration-300 ${
                   isDark ? "text-gray-200" : "text-gray-800"
                 }`}
               >
@@ -165,7 +180,7 @@ const Statistics = () => {
 
               {/* Description */}
               <p
-                className={`text-sm ${
+                className={`text-sm transition-colors duration-300 ${
                   isDark ? "text-gray-400" : "text-gray-600"
                 }`}
               >
@@ -176,10 +191,10 @@ const Statistics = () => {
               <div
                 className={`absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 ${
                   isDark
-                    ? "bg-gradient-to-br from-white/5 to-white/10"
+                    ? "bg-gradient-to-br from-blue-500/5 to-teal-500/5"
                     : "bg-gradient-to-br from-gray-50/50 to-gray-100/50"
                 }`}
-              ></div>
+              />
             </motion.div>
           ))}
         </div>

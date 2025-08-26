@@ -14,7 +14,7 @@ const TestCard = ({ test, isActive = false }) => {
         return <FiX className="w-5 h-5 text-danger-600 dark:text-danger-400" />;
       case "running":
         return (
-          <FiLoader className="w-5 h-5 text-primary-600 dark:text-primary-400 animate-spin" />
+          <FiLoader className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin" />
         );
       default:
         return <FiClock className="w-5 h-5 text-gray-400" />;
@@ -28,66 +28,62 @@ const TestCard = ({ test, isActive = false }) => {
       case "failed":
         return "border-danger-200 dark:border-danger-800 bg-danger-50 dark:bg-danger-900/20";
       case "running":
-        return "border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/20";
+        return "border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20";
       default:
         return "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50";
-    }
-  };
-
-  const getTextColor = () => {
-    switch (test.status) {
-      case "completed":
-        return "text-success-900 dark:text-success-100";
-      case "failed":
-        return "text-danger-900 dark:text-danger-100";
-      case "running":
-        return "text-primary-900 dark:text-primary-100";
-      default:
-        return "text-gray-600 dark:text-gray-400";
     }
   };
 
   return (
     <motion.div
       className={`
-        relative p-4 rounded-xl border transition-all duration-300
+        relative p-6 rounded-2xl border transition-all duration-300 group overflow-hidden
         ${getStatusColor()}
         ${
           isActive
-            ? "ring-2 ring-primary-500 ring-offset-2 dark:ring-offset-gray-900"
+            ? "ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900 shadow-xl shadow-blue-500/20"
             : ""
         }
       `}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: isActive ? 1 : 1.02 }}
+      whileHover={{ scale: isActive ? 1 : 1.02, y: -2 }}
       transition={{ duration: 0.2 }}
     >
       <div className="flex items-center space-x-4">
         {/* Test Icon */}
-        <div className="flex-shrink-0">
-          <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-xl">
+        <div className="flex-shrink-0 relative">
+          <div
+            className={`w-12 h-12 rounded-2xl shadow-lg flex items-center justify-center text-2xl transition-all duration-200 ${
+              isActive
+                ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-xl shadow-blue-500/30"
+                : "bg-white dark:bg-gray-800"
+            }`}
+          >
             {test.icon}
           </div>
+          {isActive && (
+            <div className="absolute -inset-1 bg-blue-500/20 rounded-2xl blur-sm animate-pulse"></div>
+          )}
         </div>
 
         {/* Test Info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <h3 className={`font-semibold truncate ${getTextColor()}`}>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate">
               {test.name}
             </h3>
             <div className="flex items-center space-x-2 ml-2">
               {getStatusIcon()}
               {test.status === "running" && (
-                <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
+                <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
                   {test.progress}%
                 </span>
               )}
             </div>
           </div>
 
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
             {test.description}
           </p>
 
@@ -106,7 +102,7 @@ const TestCard = ({ test, isActive = false }) => {
       {/* Scanning Effect */}
       {isActive && test.status === "running" && (
         <motion.div
-          className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-primary-500/10 to-transparent"
+          className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-blue-500/10 to-transparent"
           initial={{ x: "-100%" }}
           animate={{ x: "100%" }}
           transition={{
