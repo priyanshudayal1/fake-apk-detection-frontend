@@ -41,7 +41,7 @@ const HeroSection = () => {
         {/* Main Hero Content */}
         <div className="animate-fade-up">
           {/* Security Badge */}
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-primary-200/50 dark:border-primary-600/50 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6 shadow-lg">
+          <div className="mt-4 inline-flex items-center px-4 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-primary-200/50 dark:border-primary-600/50 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6 shadow-lg">
             <HiShieldCheck className="w-4 h-4 mr-2" />
             Trusted by Security Experts
           </div>
