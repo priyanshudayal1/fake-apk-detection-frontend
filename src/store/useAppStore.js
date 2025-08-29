@@ -1,7 +1,40 @@
 import { create } from "zustand";
-import { apiEndpoints } from "../services/api";
+import api from "../services/api";
 
 const useAppStore = create((set, get) => ({
+  // API Methods
+  // Get WebSocket URL
+  getWebSocketUrl: () => api.get("/ws-url"),
+
+  // Traditional REST endpoints (fallback)
+  scanApk: (formData, options = {}) =>
+    api.post("/scan", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      ...options,
+    }),
+
+  scanBatch: (formData, options = {}) =>
+    api.post("/scan-batch", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      ...options,
+    }),
+
+  // Generate PDF report
+  generatePdfReport: (formData, options = {}) =>
+    api.post("/report-pdf", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 60000, // 60 seconds for PDF generation
+      ...options,
+    }),
+
+  // Health check
+  healthCheck: () => api.get("/"),
   // Theme state
   isDarkMode: false,
   toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
@@ -126,7 +159,8 @@ const useAppStore = create((set, get) => ({
 
     try {
       // Get WebSocket URL from backend
-      const response = await apiEndpoints.getWebSocketUrl();
+      const response = await state.getWebSocketUrl();
+      console.log("ws res : ", response.data);
       const wsUrl = response.data.websocket_url;
 
       set({ websocketUrl: wsUrl });
@@ -345,7 +379,7 @@ const useAppStore = create((set, get) => ({
   setPdfError: (error) => set({ pdfError: error }),
 
   // Generate and download PDF report
-  generatePdfReport: async () => {
+  generatePdfReportDownload: async () => {
     const state = get();
     if (!state.uploadedFile) {
       set({ pdfError: "No file uploaded for report generation" });
@@ -358,7 +392,7 @@ const useAppStore = create((set, get) => ({
       const formData = new FormData();
       formData.append("file", state.uploadedFile.file || state.uploadedFile);
 
-      const response = await apiEndpoints.generatePdfReport(formData);
+      const response = await state.generatePdfReport(formData);
 
       if (response.data.success) {
         // Convert base64 to blob and download
@@ -494,7 +528,7 @@ const useAppStore = create((set, get) => ({
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
-      const response = await apiEndpoints.scanApk(formData);
+      const response = await state.scanApk(formData);
 
       // Mark all tests as completed
       for (let i = 1; i <= 7; i++) {

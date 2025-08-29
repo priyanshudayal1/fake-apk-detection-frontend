@@ -35,40 +35,4 @@ api.interceptors.response.use(
   }
 );
 
-// API endpoints
-export const apiEndpoints = {
-  // Get WebSocket URL
-  getWebSocketUrl: () => api.get("/ws-url"),
-
-  // Traditional REST endpoints (fallback)
-  scanApk: (formData, options = {}) =>
-    api.post("/scan", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      ...options,
-    }),
-
-  scanBatch: (formData, options = {}) =>
-    api.post("/scan-batch", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      ...options,
-    }),
-
-  // Generate PDF report
-  generatePdfReport: (formData, options = {}) =>
-    api.post("/report-pdf", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      timeout: 60000, // 60 seconds for PDF generation
-      ...options,
-    }),
-
-  // Health check
-  healthCheck: () => api.get("/"),
-};
-
 export default api;

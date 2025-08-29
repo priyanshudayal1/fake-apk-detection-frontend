@@ -19,13 +19,13 @@ const ResultsSection = () => {
     analysisResults,
     uploadedFile,
     resetApp,
-    generatePdfReport,
+    generatePdfReportDownload,
     isGeneratingPdf,
     pdfError,
   } = useAppStore();
 
   const handleDownloadReport = async () => {
-    const success = await generatePdfReport();
+    const success = await generatePdfReportDownload();
     if (success) {
       // PDF download triggered successfully
       console.log("PDF report downloaded successfully");
