@@ -160,7 +160,7 @@ const AnalysisSection = () => {
       case "running":
         return "border-primary-200 dark:border-primary-700/50 bg-primary-50 dark:bg-primary-900/20 animate-pulse";
       default:
-        return "border-gray-200 dark:border-dark-700/50 bg-white dark:bg-dark-800";
+        return "border-gray-200 dark:border-gray-700/50 bg-white dark:bg-gray-800";
     }
   };
 
@@ -169,7 +169,7 @@ const AnalysisSection = () => {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-dark-900 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -233,7 +233,7 @@ const AnalysisSection = () => {
           </div>
 
           {/* Overall Progress Bar */}
-          <div className="w-full bg-gray-200 dark:bg-dark-700 rounded-full h-3 overflow-hidden shadow-inner">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden shadow-inner">
             <div
               className="h-full bg-gradient-to-r from-primary-500 to-teal-500 rounded-full transition-all duration-500 relative"
               style={{ width: `${analysisProgress}%` }}
@@ -272,7 +272,7 @@ const AnalysisSection = () => {
               </div>
 
               {/* Individual Progress Bar */}
-              <div className="w-full bg-gray-200/50 dark:bg-dark-600/50 rounded-full h-2 overflow-hidden">
+              <div className="w-full bg-gray-200/50 dark:bg-gray-600/50 rounded-full h-2 overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${
                     test.status === "completed"
@@ -281,7 +281,7 @@ const AnalysisSection = () => {
                       ? "bg-warning-500"
                       : test.status === "running"
                       ? "bg-gradient-to-r from-primary-500 to-accent-500"
-                      : "bg-gray-300 dark:bg-dark-600"
+                      : "bg-gray-300 dark:bg-gray-600"
                   }`}
                   style={{ width: `${test.progress}%` }}
                 />
@@ -305,7 +305,7 @@ const AnalysisSection = () => {
           className="mt-12 text-center animate-fade-up"
           style={{ animationDelay: "600ms" }}
         >
-          <div className="inline-flex items-center px-8 py-4 rounded-full bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-dark-700/50 shadow-lg">
+          <div className="inline-flex items-center px-8 py-4 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
             <div className="w-3 h-3 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full animate-pulse mr-3"></div>
             <span className="text-gray-700 dark:text-gray-300 font-medium">
               {currentTest

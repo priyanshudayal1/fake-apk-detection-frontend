@@ -16,12 +16,12 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-teal-50 dark:from-dark-900 dark:via-dark-800 dark:to-dark-900"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30 dark:opacity-10">
         <div className="absolute inset-0 bg-grid-pattern"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary-100/20 to-teal-100/20 dark:from-transparent dark:via-primary-900/10 dark:to-teal-900/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary-100/20 to-teal-100/20 dark:from-transparent dark:via-gray-800/10 dark:to-gray-700/10"></div>
       </div>
 
       {/* Floating Elements */}
@@ -41,7 +41,7 @@ const HeroSection = () => {
         {/* Main Hero Content */}
         <div className="animate-fade-up">
           {/* Security Badge */}
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm border border-primary-200/50 dark:border-primary-700/50 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6 shadow-lg">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-primary-200/50 dark:border-primary-600/50 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6 shadow-lg">
             <HiShieldCheck className="w-4 h-4 mr-2" />
             Trusted by Security Experts
           </div>
@@ -66,7 +66,7 @@ const HeroSection = () => {
             {trustIndicators.map((indicator, index) => (
               <div
                 key={index}
-                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-dark-700/50 shadow-sm"
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50 shadow-sm"
               >
                 <indicator.icon className={`w-5 h-5 ${indicator.color}`} />
                 <span className="text-gray-700 dark:text-gray-300 font-medium">
@@ -83,7 +83,7 @@ const HeroSection = () => {
               Start Security Analysis
             </button>
 
-            <button className="inline-flex items-center px-8 py-4 bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-dark-700/50 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-white dark:hover:bg-dark-800 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <button className="inline-flex items-center px-8 py-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50 text-gray-700 dark:text-gray-200 font-semibold rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl">
               <HiChip className="w-5 h-5 mr-2" />
               Learn How It Works
             </button>
@@ -99,7 +99,7 @@ const HeroSection = () => {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="p-4 rounded-lg bg-white/40 dark:bg-dark-800/40 backdrop-blur-sm border border-gray-200/30 dark:border-dark-700/30"
+                className="p-4 rounded-lg bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/30 dark:border-gray-600/30"
               >
                 <div className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
                   {stat.number}

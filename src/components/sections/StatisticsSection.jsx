@@ -48,7 +48,7 @@ const StatisticsSection = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-dark-900 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -75,17 +75,17 @@ const StatisticsSection = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="group relative p-6 md:p-8 rounded-2xl bg-white dark:bg-dark-800 border border-gray-200/50 dark:border-dark-700/50 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 animate-fade-up"
+              className="group relative p-6 md:p-8 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 animate-fade-up"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Glassmorphism Background */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/60 to-white/30 dark:from-dark-800/60 dark:to-dark-800/30 backdrop-blur-sm"></div>
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/60 to-white/30 dark:from-gray-800/60 dark:to-gray-800/30 backdrop-blur-sm"></div>
 
               {/* Gradient Border on Hover */}
               <div
                 className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-0.5`}
               >
-                <div className="w-full h-full rounded-2xl bg-white dark:bg-dark-800"></div>
+                <div className="w-full h-full rounded-2xl bg-white dark:bg-gray-800"></div>
               </div>
 
               <div className="relative z-10">
@@ -130,7 +130,7 @@ const StatisticsSection = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="p-6 rounded-xl bg-gray-50 dark:bg-dark-800/50 border border-gray-200/50 dark:border-dark-700/50">
+            <div className="p-6 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
               <div className="text-danger-500 text-4xl mb-4">⚠️</div>
               <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Growing Threat
@@ -141,7 +141,7 @@ const StatisticsSection = () => {
               </p>
             </div>
 
-            <div className="p-6 rounded-xl bg-gray-50 dark:bg-dark-800/50 border border-gray-200/50 dark:border-dark-700/50">
+            <div className="p-6 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
               <div className="text-danger-500 text-4xl mb-4">💳</div>
               <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Financial Risk
@@ -151,7 +151,7 @@ const StatisticsSection = () => {
               </p>
             </div>
 
-            <div className="p-6 rounded-xl bg-gray-50 dark:bg-dark-800/50 border border-gray-200/50 dark:border-dark-700/50">
+            <div className="p-6 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
               <div className="text-success-500 text-4xl mb-4">🛡️</div>
               <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Your Protection

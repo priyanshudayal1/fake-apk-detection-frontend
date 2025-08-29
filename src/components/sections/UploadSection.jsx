@@ -84,7 +84,7 @@ const UploadSection = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50 dark:bg-dark-800 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -111,7 +111,7 @@ const UploadSection = () => {
               className={`relative p-8 md:p-12 border-2 border-dashed rounded-2xl transition-all duration-300 ${
                 isDragOver
                   ? "border-primary-400 bg-primary-50 dark:bg-primary-900/20 scale-105"
-                  : "border-gray-300 dark:border-dark-600 bg-white dark:bg-dark-900 hover:border-primary-400 dark:hover:border-primary-500"
+                  : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 hover:border-primary-400 dark:hover:border-primary-500"
               } ${
                 isUploading
                   ? "pointer-events-none opacity-75"
@@ -129,7 +129,7 @@ const UploadSection = () => {
                   className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${
                     isDragOver
                       ? "bg-primary-100 dark:bg-primary-900/40 animate-pulse"
-                      : "bg-gray-100 dark:bg-dark-700"
+                      : "bg-gray-100 dark:bg-gray-700"
                   } transition-all duration-300`}
                 >
                   {isUploading ? (
@@ -170,7 +170,7 @@ const UploadSection = () => {
                 </button>
 
                 {/* File Requirements */}
-                <div className="mt-8 p-4 rounded-lg bg-gray-50 dark:bg-dark-800/50 border border-gray-200/50 dark:border-dark-700/50">
+                <div className="mt-8 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
                   <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
                     File Requirements:
                   </h4>
@@ -206,14 +206,14 @@ const UploadSection = () => {
         ) : (
           /* File Preview */
           <div className="animate-fade-up">
-            <div className="p-6 md:p-8 bg-white dark:bg-dark-900 rounded-2xl border border-gray-200/50 dark:border-dark-700/50 shadow-lg">
+            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   File Ready for Analysis
                 </h3>
                 <button
                   onClick={clearFile}
-                  className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-800 rounded-lg transition-all duration-200"
+                  className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
                 >
                   <HiX className="w-5 h-5" />
                 </button>

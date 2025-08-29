@@ -119,7 +119,7 @@ const ResultsSection = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50 dark:bg-dark-800 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -182,7 +182,7 @@ const ResultsSection = () => {
                     {100 - riskScore}/100
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-dark-700 rounded-full h-4 overflow-hidden shadow-inner">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden shadow-inner">
                   <div
                     className={`h-full bg-gradient-to-r ${getScoreBarColor(
                       100 - riskScore
@@ -214,7 +214,7 @@ const ResultsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Security Breakdown */}
           <div className="animate-fade-up" style={{ animationDelay: "400ms" }}>
-            <div className="h-full p-6 md:p-8 bg-white dark:bg-dark-900 rounded-2xl border border-gray-200/50 dark:border-dark-700/50 shadow-lg">
+            <div className="h-full p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
                 <HiShieldCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
                 Security Breakdown
@@ -234,7 +234,7 @@ const ResultsSection = () => {
                         {test.unit}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-dark-700 rounded-full h-3 overflow-hidden">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div
                         className={`h-full bg-gradient-to-r ${getScoreBarColor(
                           test.score
@@ -249,7 +249,7 @@ const ResultsSection = () => {
                 ))}
 
                 {/* Digital Signature */}
-                <div className="pt-4 border-t border-gray-200 dark:border-dark-700">
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between">
                     <span className="font-medium text-gray-900 dark:text-white">
                       Digital Signature
@@ -279,14 +279,14 @@ const ResultsSection = () => {
 
           {/* Threat Detection */}
           <div className="animate-fade-up" style={{ animationDelay: "600ms" }}>
-            <div className="h-full p-6 md:p-8 bg-white dark:bg-dark-900 rounded-2xl border border-gray-200/50 dark:border-dark-700/50 shadow-lg">
+            <div className="h-full p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
                 <HiXCircle className="w-6 h-6 text-danger-600 dark:text-danger-400 mr-3" />
                 Threat Detection
               </h3>
 
               <div className="space-y-6">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-dark-800/50">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                   <span className="font-medium text-gray-900 dark:text-white">
                     Malware Signatures
                   </span>
@@ -309,7 +309,7 @@ const ResultsSection = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-dark-800/50">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                   <span className="font-medium text-gray-900 dark:text-white">
                     Suspicious Permissions
                   </span>
@@ -332,7 +332,7 @@ const ResultsSection = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-dark-800/50">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                   <span className="font-medium text-gray-900 dark:text-white">
                     Known Threats
                   </span>
@@ -344,7 +344,7 @@ const ResultsSection = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-dark-800/50">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                   <span className="font-medium text-gray-900 dark:text-white">
                     Behavioral Analysis
                   </span>
@@ -365,7 +365,7 @@ const ResultsSection = () => {
           className="mb-12 animate-fade-up"
           style={{ animationDelay: "800ms" }}
         >
-          <div className="p-6 md:p-8 bg-white dark:bg-dark-900 rounded-2xl border border-gray-200/50 dark:border-dark-700/50 shadow-lg">
+          <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
               <HiShieldCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
               Security Recommendations
@@ -375,7 +375,7 @@ const ResultsSection = () => {
               {recommendations.map((recommendation, index) => (
                 <div
                   key={index}
-                  className="flex items-start space-x-3 p-4 rounded-lg bg-gray-50 dark:bg-dark-800/50"
+                  className="flex items-start space-x-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50"
                 >
                   <div className="flex-shrink-0 w-6 h-6 bg-primary-100 dark:bg-primary-900/40 rounded-full flex items-center justify-center mt-0.5">
                     <span className="text-primary-600 dark:text-primary-400 text-sm font-bold">
@@ -404,7 +404,7 @@ const ResultsSection = () => {
             Analyze Another APK
           </button>
 
-          <button className="inline-flex items-center px-8 py-4 bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-dark-700 shadow-lg hover:shadow-xl transition-all duration-300">
+          <button className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
             <HiDownload className="w-5 h-5 mr-2" />
             Download Report
           </button>

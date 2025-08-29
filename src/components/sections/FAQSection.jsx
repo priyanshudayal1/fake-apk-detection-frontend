@@ -64,7 +64,7 @@ const FAQSection = () => {
   return (
     <section
       id="faq"
-      className="py-16 md:py-24 bg-white dark:bg-dark-900 relative overflow-hidden"
+      className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
@@ -100,11 +100,11 @@ const FAQSection = () => {
           {faqData.map((item, index) => (
             <div
               key={index}
-              className="bg-gray-50 dark:bg-dark-800/50 rounded-2xl border border-gray-200/50 dark:border-dark-700/50 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+              className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
             >
               <button
                 onClick={() => toggleItem(index)}
-                className="w-full px-6 md:px-8 py-6 text-left flex items-center justify-between hover:bg-gray-100 dark:hover:bg-dark-800 transition-all duration-200"
+                className="w-full px-6 md:px-8 py-6 text-left flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
               >
                 <h3 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white pr-4">
                   {item.question}
@@ -120,7 +120,7 @@ const FAQSection = () => {
 
               {openItems.has(index) && (
                 <div className="px-6 md:px-8 pb-6 animate-fade-in">
-                  <div className="border-t border-gray-200/50 dark:border-dark-700/50 pt-6">
+                  <div className="border-t border-gray-200/50 dark:border-gray-700/50 pt-6">
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                       {item.answer}
                     </p>

@@ -71,7 +71,7 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="py-16 md:py-24 bg-gray-50 dark:bg-dark-800 relative overflow-hidden"
+      className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
@@ -90,7 +90,7 @@ const AboutSection = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16 animate-fade-up">
-          <div className="inline-flex items-center px-6 py-3 rounded-full bg-white/80 dark:bg-dark-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-dark-700/50 mb-6">
+          <div className="inline-flex items-center px-6 py-3 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 mb-6">
             <HiGlobeAlt className="w-5 h-5 text-primary-600 dark:text-primary-400 mr-2" />
             <span className="text-primary-700 dark:text-primary-300 font-medium">
               About SecureAPK Detector
@@ -115,7 +115,7 @@ const AboutSection = () => {
           className="mb-20 animate-fade-up"
           style={{ animationDelay: "200ms" }}
         >
-          <div className="max-w-4xl mx-auto p-8 md:p-12 rounded-2xl bg-white dark:bg-dark-900 border border-gray-200/50 dark:border-dark-700/50 shadow-lg text-center">
+          <div className="max-w-4xl mx-auto p-8 md:p-12 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/50 dark:border-gray-700/50 shadow-lg text-center">
             <BsShieldFillCheck className="w-16 h-16 text-primary-600 dark:text-primary-400 mx-auto mb-6" />
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
               Our Mission
@@ -190,7 +190,7 @@ const AboutSection = () => {
             {techStack.map((tech, index) => (
               <div
                 key={index}
-                className="p-6 rounded-2xl bg-white dark:bg-dark-900 border border-gray-200/50 dark:border-dark-700/50 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 animate-fade-up"
+                className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 animate-fade-up"
                 style={{ animationDelay: `${600 + index * 100}ms` }}
               >
                 <tech.icon className="w-12 h-12 text-primary-600 dark:text-primary-400 mb-4" />
@@ -258,7 +258,7 @@ const AboutSection = () => {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="p-6 rounded-xl bg-white dark:bg-dark-900 border border-gray-200/50 dark:border-dark-700/50 shadow-lg"
+                className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-200/50 dark:border-gray-700/50 shadow-lg"
               >
                 <feature.icon className="w-10 h-10 text-primary-600 dark:text-primary-400 mb-4" />
                 <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -292,7 +292,7 @@ const AboutSection = () => {
                 <HiGlobeAlt className="w-5 h-5 mr-2" />
                 Learn More
               </button>
-              <button className="inline-flex items-center px-8 py-3 bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-dark-700 shadow-lg hover:shadow-xl transition-all duration-300">
+              <button className="inline-flex items-center px-8 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
                 <HiShieldCheck className="w-5 h-5 mr-2" />
                 Contact Team
               </button>
