@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { apiEndpoints } from "../services/api";
 
 const useAppStore = create((set, get) => ({
   // Theme state
@@ -32,49 +33,49 @@ const useAppStore = create((set, get) => ({
     {
       id: 1,
       name: "Analyzing Package Structure",
-      icon: "📱",
+      icon: "HiDocumentMagnifyingGlass",
       status: "pending",
       progress: 0,
     },
     {
       id: 2,
       name: "Scanning for Malicious Code",
-      icon: "🔍",
+      icon: "HiMagnifyingGlass",
       status: "pending",
       progress: 0,
     },
     {
       id: 3,
       name: "Checking Digital Signatures",
-      icon: "🛡️",
+      icon: "HiShieldCheck",
       status: "pending",
       progress: 0,
     },
     {
       id: 4,
       name: "Verifying Banking Protocols",
-      icon: "🏦",
+      icon: "HiCreditCard",
       status: "pending",
       progress: 0,
     },
     {
       id: 5,
       name: "Testing Encryption Standards",
-      icon: "🔐",
+      icon: "HiLockClosed",
       status: "pending",
       progress: 0,
     },
     {
       id: 6,
       name: "Running ML Models",
-      icon: "📊",
+      icon: "HiChartBar",
       status: "pending",
       progress: 0,
     },
     {
       id: 7,
       name: "Generating Risk Score",
-      icon: "⚡",
+      icon: "HiBolt",
       status: "pending",
       progress: 0,
     },
@@ -105,9 +106,302 @@ const useAppStore = create((set, get) => ({
   // WebSocket state
   wsConnected: false,
   wsError: null,
+  websocket: null,
+  websocketUrl: null,
+  wsInitializing: false,
   setWSConnected: (connected) =>
     set({ wsConnected: connected, wsError: connected ? null : get().wsError }),
   setWSError: (error) => set({ wsError: error }),
+
+  // Initialize WebSocket connection
+  initWebSocket: async () => {
+    const state = get();
+
+    // Prevent multiple simultaneous initialization attempts
+    if (state.wsInitializing || state.wsConnected) {
+      return;
+    }
+
+    set({ wsInitializing: true });
+
+    try {
+      // Get WebSocket URL from backend
+      const response = await apiEndpoints.getWebSocketUrl();
+      const wsUrl = response.data.websocket_url;
+
+      set({ websocketUrl: wsUrl });
+
+      // Create WebSocket connection
+      const ws = new WebSocket(wsUrl);
+
+      return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error("WebSocket connection timeout"));
+        }, 5000);
+
+        ws.onopen = () => {
+          clearTimeout(timeout);
+          console.log("WebSocket connected");
+          set({
+            wsConnected: true,
+            wsError: null,
+            websocket: ws,
+            wsInitializing: false,
+          });
+          resolve();
+        };
+
+        ws.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          get().handleWebSocketMessage(data);
+        };
+
+        ws.onclose = () => {
+          clearTimeout(timeout);
+          console.log("WebSocket disconnected");
+          set({ wsConnected: false, websocket: null, wsInitializing: false });
+        };
+
+        ws.onerror = (error) => {
+          clearTimeout(timeout);
+          console.error("WebSocket error:", error);
+          set({
+            wsError: "WebSocket connection failed",
+            wsConnected: false,
+            wsInitializing: false,
+          });
+          reject(error);
+        };
+      });
+    } catch (error) {
+      console.error("Failed to initialize WebSocket:", error);
+      set({
+        wsError: "Failed to get WebSocket URL",
+        wsConnected: false,
+        wsInitializing: false,
+      });
+      throw error;
+    }
+  },
+
+  // Close WebSocket connection
+  closeWebSocket: () => {
+    const state = get();
+    if (state.websocket) {
+      state.websocket.close();
+      set({ websocket: null, wsConnected: false });
+    }
+  },
+
+  // Handle incoming WebSocket messages
+  handleWebSocketMessage: (data) => {
+    const state = get();
+
+    switch (data.type) {
+      case "progress":
+        set({
+          analysisProgress: data.progress || 0,
+          currentTest: data.stage,
+        });
+
+        // Update test status based on stage
+        if (data.stage === "parsing") {
+          state.updateTestStatus(1, "running", data.progress || 30);
+        } else if (data.stage === "analysis") {
+          state.updateTestStatus(1, "completed", 100);
+          state.updateTestStatus(6, "running", data.progress || 70);
+        }
+        break;
+
+      case "result":
+        if (data.result) {
+          state.completeAnalysis(data.result);
+        }
+        break;
+
+      case "file_result":
+        // Handle batch processing individual file results
+        console.log("File completed:", data.result);
+        break;
+
+      case "batch_result":
+        if (data.results) {
+          state.completeAnalysis({ results: data.results, batch: true });
+        }
+        break;
+
+      case "error":
+        set({
+          uploadError: data.message,
+          isAnalyzing: false,
+          currentView: "upload",
+        });
+        break;
+
+      case "pong":
+        // Handle ping/pong for connection health
+        break;
+
+      default:
+        console.log("Unknown WebSocket message type:", data.type);
+    }
+  },
+
+  // Send file via WebSocket for analysis
+  analyzeFileViaWebSocket: (file, quick = false, debug = false) => {
+    return new Promise((resolve, reject) => {
+      const state = get();
+
+      if (!state.websocket || !state.wsConnected) {
+        reject(new Error("WebSocket not connected"));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Data = btoa(
+          new Uint8Array(reader.result).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ""
+          )
+        );
+
+        const message = {
+          type: "scan_single",
+          filename: file.name,
+          file_data: base64Data,
+          quick,
+          debug,
+        };
+
+        try {
+          state.websocket.send(JSON.stringify(message));
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      reader.onerror = () => reject(new Error("Failed to read file"));
+      reader.readAsArrayBuffer(file);
+    });
+  },
+
+  // Send multiple files via WebSocket for batch analysis
+  analyzeBatchViaWebSocket: (files, quick = false, debug = false) => {
+    return new Promise((resolve, reject) => {
+      const state = get();
+
+      if (!state.websocket || !state.wsConnected) {
+        reject(new Error("WebSocket not connected"));
+        return;
+      }
+
+      const filePromises = Array.from(files).map((file) => {
+        return new Promise((fileResolve, fileReject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const base64Data = btoa(
+              new Uint8Array(reader.result).reduce(
+                (data, byte) => data + String.fromCharCode(byte),
+                ""
+              )
+            );
+            fileResolve({
+              filename: file.name,
+              file_data: base64Data,
+            });
+          };
+          reader.onerror = () =>
+            fileReject(new Error(`Failed to read file: ${file.name}`));
+          reader.readAsArrayBuffer(file);
+        });
+      });
+
+      Promise.all(filePromises)
+        .then((filesData) => {
+          const message = {
+            type: "scan_batch",
+            files: filesData,
+            quick,
+            debug,
+          };
+
+          try {
+            state.websocket.send(JSON.stringify(message));
+            resolve();
+          } catch (error) {
+            reject(error);
+          }
+        })
+        .catch(reject);
+    });
+  },
+
+  // PDF report state
+  isGeneratingPdf: false,
+  pdfError: null,
+  setGeneratingPdf: (generating) => set({ isGeneratingPdf: generating }),
+  setPdfError: (error) => set({ pdfError: error }),
+
+  // Generate and download PDF report
+  generatePdfReport: async () => {
+    const state = get();
+    if (!state.uploadedFile) {
+      set({ pdfError: "No file uploaded for report generation" });
+      return;
+    }
+
+    set({ isGeneratingPdf: true, pdfError: null });
+
+    try {
+      const formData = new FormData();
+      formData.append("file", state.uploadedFile.file || state.uploadedFile);
+
+      const response = await apiEndpoints.generatePdfReport(formData);
+
+      if (response.data.success) {
+        // Convert base64 to blob and download
+        const pdfData = response.data.pdf_data;
+        const filename = response.data.filename;
+
+        // Create blob from base64
+        const byteCharacters = atob(pdfData);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: "application/pdf" });
+
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+
+        // Cleanup
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
+        set({ isGeneratingPdf: false });
+        return true;
+      } else {
+        throw new Error(response.data.error || "PDF generation failed");
+      }
+    } catch (error) {
+      console.error("PDF generation failed:", error);
+      set({
+        pdfError: `PDF generation failed: ${
+          error.response?.data?.error || error.message
+        }`,
+        isGeneratingPdf: false,
+      });
+      return false;
+    }
+  },
 
   // Statistics (for demo)
   statistics: {
@@ -122,7 +416,7 @@ const useAppStore = create((set, get) => ({
   setCurrentView: (view) => set({ currentView: view }),
 
   // Start analysis flow
-  startAnalysis: () => {
+  startAnalysis: async () => {
     const state = get();
     if (!state.uploadedFile) return;
 
@@ -132,10 +426,92 @@ const useAppStore = create((set, get) => ({
       analysisProgress: 0,
       currentTest: null,
       analysisResults: null,
+      uploadError: null,
     });
 
     // Reset all tests
     state.resetAnalysisTests();
+
+    try {
+      // Initialize WebSocket if not connected
+      if (!state.wsConnected) {
+        await state.initWebSocket();
+
+        // Wait a bit for connection to establish
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        // Re-get state after waiting
+        const newState = get();
+        if (!newState.wsConnected) {
+          console.warn(
+            "WebSocket not available after init, using REST API fallback"
+          );
+          newState.analyzeFileViaREST();
+          return;
+        }
+      }
+
+      if (get().wsConnected) {
+        // Use WebSocket for real-time updates
+        await state.analyzeFileViaWebSocket(
+          state.uploadedFile.file || state.uploadedFile
+        );
+      } else {
+        // Fallback to REST API
+        console.warn("WebSocket not available, using REST API fallback");
+        state.analyzeFileViaREST();
+      }
+    } catch (error) {
+      console.error("Analysis failed:", error);
+      set({
+        uploadError: `Analysis failed: ${error.message}`,
+        isAnalyzing: false,
+        currentView: "upload",
+      });
+    }
+  },
+
+  // Fallback REST API analysis
+  analyzeFileViaREST: async () => {
+    const state = get();
+
+    try {
+      const formData = new FormData();
+      formData.append("file", state.uploadedFile.file || state.uploadedFile);
+
+      // Simulate progress updates for REST API
+      const progressSteps = [
+        { test: 1, status: "running", message: "Parsing APK..." },
+        { test: 2, status: "running", message: "Scanning code..." },
+        { test: 3, status: "running", message: "Checking signatures..." },
+        { test: 6, status: "running", message: "Running ML analysis..." },
+      ];
+
+      for (let i = 0; i < progressSteps.length; i++) {
+        const step = progressSteps[i];
+        state.updateTestStatus(step.test, step.status, 50);
+        set({ analysisProgress: (i + 1) * 20 });
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+
+      const response = await apiEndpoints.scanApk(formData);
+
+      // Mark all tests as completed
+      for (let i = 1; i <= 7; i++) {
+        state.updateTestStatus(i, "completed", 100);
+      }
+
+      state.completeAnalysis(response.data);
+    } catch (error) {
+      console.error("REST API analysis failed:", error);
+      set({
+        uploadError: `Analysis failed: ${
+          error.response?.data?.message || error.message
+        }`,
+        isAnalyzing: false,
+        currentView: "upload",
+      });
+    }
   },
 
   // Complete analysis
@@ -151,6 +527,10 @@ const useAppStore = create((set, get) => ({
   // Reset all state for new analysis
   resetApp: () => {
     const state = get();
+
+    // Close WebSocket connection
+    state.closeWebSocket();
+
     set({
       uploadedFile: null,
       isUploading: false,
@@ -161,6 +541,9 @@ const useAppStore = create((set, get) => ({
       analysisResults: null,
       currentView: "upload",
       wsError: null,
+      websocket: null,
+      websocketUrl: null,
+      wsInitializing: false,
     });
     state.resetAnalysisTests();
   },

@@ -15,7 +15,22 @@ import {
 import useAppStore from "../../store/useAppStore";
 
 const ResultsSection = () => {
-  const { analysisResults, uploadedFile, resetApp } = useAppStore();
+  const {
+    analysisResults,
+    uploadedFile,
+    resetApp,
+    generatePdfReport,
+    isGeneratingPdf,
+    pdfError,
+  } = useAppStore();
+
+  const handleDownloadReport = async () => {
+    const success = await generatePdfReport();
+    if (success) {
+      // PDF download triggered successfully
+      console.log("PDF report downloaded successfully");
+    }
+  };
 
   if (!analysisResults) {
     return null;
@@ -404,9 +419,22 @@ const ResultsSection = () => {
             Analyze Another APK
           </button>
 
-          <button className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
-            <HiDownload className="w-5 h-5 mr-2" />
-            Download Report
+          <button
+            onClick={handleDownloadReport}
+            disabled={isGeneratingPdf}
+            className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isGeneratingPdf ? (
+              <>
+                <div className="w-5 h-5 mr-2 animate-spin border-2 border-gray-400 border-t-gray-700 rounded-full" />
+                Generating Report...
+              </>
+            ) : (
+              <>
+                <HiDownload className="w-5 h-5 mr-2" />
+                Download Report
+              </>
+            )}
           </button>
         </div>
       </div>

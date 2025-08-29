@@ -5,6 +5,15 @@ import {
   HiXCircle,
   HiExclamation,
 } from "react-icons/hi";
+import {
+  HiMagnifyingGlass,
+  HiDocumentMagnifyingGlass,
+  HiShieldCheck,
+  HiCreditCard,
+  HiLockClosed,
+  HiChartBar,
+  HiBolt,
+} from "react-icons/hi2";
 import { BsShieldFillCheck } from "react-icons/bs";
 import useAppStore from "../../store/useAppStore";
 
@@ -149,6 +158,39 @@ const AnalysisSection = () => {
     }
   };
 
+  const getTestIcon = (iconName, status) => {
+    const iconProps = {
+      className: `w-6 h-6 transition-colors duration-300 ${
+        status === "completed"
+          ? "text-success-600 dark:text-success-400"
+          : status === "warning"
+          ? "text-warning-600 dark:text-warning-400"
+          : status === "failed"
+          ? "text-danger-600 dark:text-danger-400"
+          : status === "running"
+          ? "text-primary-600 dark:text-primary-400 animate-pulse"
+          : "text-gray-500 dark:text-gray-400"
+      }`,
+    };
+
+    const IconComponents = {
+      HiDocumentMagnifyingGlass,
+      HiMagnifyingGlass,
+      HiShieldCheck,
+      HiCreditCard,
+      HiLockClosed,
+      HiChartBar,
+      HiBolt,
+    };
+
+    const IconComponent = IconComponents[iconName];
+    return IconComponent ? (
+      <IconComponent {...iconProps} />
+    ) : (
+      <HiClock {...iconProps} />
+    );
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case "completed":
@@ -258,41 +300,113 @@ const AnalysisSection = () => {
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="text-2xl">{test.icon}</div>
+                  <div className="relative">
+                    {getTestIcon(test.icon, test.status)}
+                    {test.status === "running" && (
+                      <div className="absolute -inset-1 bg-primary-400/20 rounded-full animate-ping"></div>
+                    )}
+                  </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white">
                       {test.name}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
-                      {test.status === "running" ? "In Progress" : test.status}
+                    <p className="text-sm text-gray-600 dark:text-gray-400 capitalize flex items-center">
+                      {test.status === "running" ? (
+                        <>
+                          <span className="inline-flex items-center">
+                            <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse mr-2"></span>
+                            In Progress ({test.progress}%)
+                          </span>
+                        </>
+                      ) : test.status === "completed" ? (
+                        "Completed"
+                      ) : test.status === "warning" ? (
+                        "Warning"
+                      ) : test.status === "failed" ? (
+                        "Failed"
+                      ) : (
+                        "Pending"
+                      )}
                     </p>
                   </div>
                 </div>
-                {getStatusIcon(test.status)}
+                <div className="flex items-center space-x-2">
+                  {test.status === "running" && (
+                    <div className="text-sm text-primary-600 dark:text-primary-400 font-medium">
+                      {test.progress}%
+                    </div>
+                  )}
+                  {getStatusIcon(test.status)}
+                </div>
               </div>
 
               {/* Individual Progress Bar */}
               <div className="w-full bg-gray-200/50 dark:bg-gray-600/50 rounded-full h-2 overflow-hidden">
                 <div
-                  className={`h-full rounded-full transition-all duration-300 ${
+                  className={`h-full rounded-full transition-all duration-300 relative ${
                     test.status === "completed"
                       ? "bg-success-500"
                       : test.status === "warning"
                       ? "bg-warning-500"
+                      : test.status === "failed"
+                      ? "bg-danger-500"
                       : test.status === "running"
                       ? "bg-gradient-to-r from-primary-500 to-accent-500"
                       : "bg-gray-300 dark:bg-gray-600"
                   }`}
                   style={{ width: `${test.progress}%` }}
-                />
+                >
+                  {test.status === "running" && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-scan"></div>
+                  )}
+                </div>
               </div>
 
               {/* Test Details */}
               {test.status === "running" && currentTest === test.id && (
-                <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
-                  <div className="flex items-center space-x-2">
+                <div className="mt-3 p-3 rounded-lg bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700/50">
+                  <div className="flex items-center space-x-2 text-sm text-primary-700 dark:text-primary-300">
                     <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
-                    <span>Scanning for security vulnerabilities...</span>
+                    <span className="font-medium">Active Scan</span>
+                  </div>
+                  <p className="text-xs text-primary-600 dark:text-primary-400 mt-1">
+                    {test.id === 1 &&
+                      "Extracting and analyzing APK structure..."}
+                    {test.id === 2 && "Deep scanning for malicious patterns..."}
+                    {test.id === 3 &&
+                      "Validating certificates and signatures..."}
+                    {test.id === 4 && "Checking banking security protocols..."}
+                    {test.id === 5 && "Testing encryption implementation..."}
+                    {test.id === 6 && "Processing with ML algorithms..."}
+                    {test.id === 7 && "Calculating final risk assessment..."}
+                  </p>
+                </div>
+              )}
+
+              {/* Completed Test Summary */}
+              {test.status === "completed" && (
+                <div className="mt-3 p-3 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-700/50">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-success-700 dark:text-success-300 font-medium">
+                      Scan Complete
+                    </span>
+                    <span className="text-xs text-success-600 dark:text-success-400">
+                      ✓ No issues detected
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Warning State */}
+              {test.status === "warning" && (
+                <div className="mt-3 p-3 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-warning-700 dark:text-warning-300 font-medium">
+                      Minor Issues Found
+                    </span>
+                    <span className="text-xs text-warning-600 dark:text-warning-400">
+                      ⚠ Review required
+                    </span>
                   </div>
                 </div>
               )}
