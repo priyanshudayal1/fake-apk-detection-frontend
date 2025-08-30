@@ -97,7 +97,7 @@ const HeroSection = () => {
           </div>
 
           {/* Security Stats Preview */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6">
             {[
               { number: "10,000+", label: "APKs Analyzed" },
               { number: "99.7%", label: "Accuracy Rate" },
@@ -117,13 +117,6 @@ const HeroSection = () => {
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-600 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>
