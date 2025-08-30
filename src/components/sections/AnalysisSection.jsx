@@ -198,7 +198,7 @@ const AnalysisSection = () => {
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden shadow-inner">
             <div
               className="h-full bg-gradient-to-r from-primary-500 to-teal-500 rounded-full transition-all duration-500 relative"
-              style={{ width: `${analysisProgress}%` }}
+              style={{ width: `${Math.round(analysisProgress)}%` }}
             >
               {/* Scanning animation */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-scan"></div>
@@ -235,7 +235,7 @@ const AnalysisSection = () => {
                         <>
                           <span className="inline-flex items-center">
                             <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse mr-2"></span>
-                            In Progress ({test.progress}%)
+                            In Progress ({Math.round(test.progress)}%)
                           </span>
                         </>
                       ) : test.status === "completed" ? (
@@ -253,7 +253,7 @@ const AnalysisSection = () => {
                 <div className="flex items-center space-x-2">
                   {test.status === "running" && (
                     <div className="text-sm text-primary-600 dark:text-primary-400 font-medium">
-                      {test.progress}%
+                      {Math.round(test.progress)}%
                     </div>
                   )}
                   {getStatusIcon(test.status)}
@@ -274,7 +274,7 @@ const AnalysisSection = () => {
                       ? "bg-gradient-to-r from-primary-500 to-accent-500"
                       : "bg-gray-300 dark:bg-gray-600"
                   }`}
-                  style={{ width: `${test.progress}%` }}
+                  style={{ width: `${Math.round(test.progress)}%` }}
                 >
                   {test.status === "running" && (
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-scan"></div>
@@ -312,7 +312,7 @@ const AnalysisSection = () => {
                     </span>
                     <span className="text-xs text-success-600 dark:text-success-400 flex items-center">
                       <HiCheckCircle className="w-3 h-3 mr-1" />
-                      No issues detected
+                      Completed Successfully
                     </span>
                   </div>
                 </div>

@@ -9,7 +9,12 @@ import {
   HiClock,
   HiGlobe,
   HiCog,
+  HiCode,
+  HiCreditCard,
 } from "react-icons/hi";
+import {
+  HiExclamationTriangle,
+} from "react-icons/hi2";
 import {
   BsShieldFillCheck,
   BsShieldFillExclamation,
@@ -24,7 +29,6 @@ const NewResultsSection = () => {
     resetApp,
     generateHTMLReport,
     isGeneratingReport,
-    reportError,
   } = useAppStore();
 
   const handleDownloadReport = async () => {
@@ -42,35 +46,46 @@ const NewResultsSection = () => {
     prediction,
     probability,
     risk,
+    riskColor,
+    riskLevel,
     featureVector,
-    topFeatures,
-    verdict,
-    confidence,
-    securityBreakdown,
-    threatDetection,
     recommendations,
+    warnings,
   } = analysisResults;
 
   const getVerdictConfig = () => {
-    const riskLevel = prediction === "fake" ? "dangerous" : "safe";
+    // Use the risk level from backend response for better accuracy
+    const currentRiskColor = riskColor || (prediction === "fake" ? "danger" : "success");
+    const currentRiskLevel = riskLevel || (prediction === "fake" ? "High Risk" : "Low Risk");
 
-    switch (riskLevel) {
-      case "safe":
+    switch (currentRiskColor) {
+      case "success":
         return {
           icon: BsShieldFillCheck,
           title: "SAFE",
-          subtitle: "Application appears legitimate",
+          subtitle: `${currentRiskLevel} - Application appears legitimate`,
           color: "success",
           bgColor: "from-success-500 to-success-600",
           textColor: "text-success-600",
           borderColor: "border-success-200 dark:border-success-700/50",
           bgLight: "bg-success-50 dark:bg-success-900/20",
         };
-      case "dangerous":
+      case "warning":
+        return {
+          icon: BsShieldFillExclamation,
+          title: "CAUTION",
+          subtitle: `${currentRiskLevel} - Review carefully before installation`,
+          color: "warning",
+          bgColor: "from-warning-500 to-warning-600",
+          textColor: "text-warning-600",
+          borderColor: "border-warning-200 dark:border-warning-700/50",
+          bgLight: "bg-warning-50 dark:bg-warning-900/20",
+        };
+      case "danger":
         return {
           icon: BsShieldFillX,
           title: "MALICIOUS",
-          subtitle: "High-risk application - DO NOT INSTALL",
+          subtitle: `${currentRiskLevel} - DO NOT INSTALL`,
           color: "danger",
           bgColor: "from-danger-500 to-danger-600",
           textColor: "text-danger-600",
@@ -93,21 +108,74 @@ const NewResultsSection = () => {
 
   const verdictConfig = getVerdictConfig();
 
-  const getScoreColor = (score) => {
-    if (score >= 80) return "text-success-600 dark:text-success-400";
-    if (score >= 60) return "text-warning-600 dark:text-warning-400";
-    return "text-danger-600 dark:text-danger-400";
+  const getRiskBarColor = (currentRiskColor) => {
+    switch (currentRiskColor) {
+      case "success": return "from-success-500 to-success-600";
+      case "warning": return "from-warning-500 to-warning-600";
+      case "danger": return "from-danger-500 to-danger-600";
+      default: return prediction === "fake" ? "from-danger-500 to-danger-600" : "from-success-500 to-success-600";
+    }
   };
 
-  const getScoreBarColor = (score) => {
-    if (score >= 80) return "from-success-500 to-success-600";
-    if (score >= 60) return "from-warning-500 to-warning-600";
-    return "from-danger-500 to-danger-600";
+  const getRiskTextColor = (currentRiskColor) => {
+    switch (currentRiskColor) {
+      case "success": return "text-success-600 dark:text-success-400";
+      case "warning": return "text-warning-600 dark:text-warning-400";
+      case "danger": return "text-danger-600 dark:text-danger-400";
+      default: return prediction === "fake" ? "text-danger-600 dark:text-danger-400" : "text-success-600 dark:text-success-400";
+    }
+  };
+
+  const getWarningIcon = (iconName) => {
+    switch (iconName) {
+      case 'HiExclamationTriangle':
+        return HiExclamationTriangle;
+      case 'HiCode':
+        return HiCode;
+      case 'HiCreditCard':
+        return HiCreditCard;
+      case 'HiShieldExclamation':
+        return HiExclamation;
+      default:
+        return HiExclamation;
+    }
+  };
+
+  const getWarningColors = (type) => {
+    switch (type) {
+      case 'critical':
+        return {
+          bg: 'bg-danger-50 dark:bg-danger-900/20',
+          border: 'border-danger-200 dark:border-danger-700/50',
+          text: 'text-danger-700 dark:text-danger-300',
+          icon: 'text-danger-600 dark:text-danger-400'
+        };
+      case 'high':
+        return {
+          bg: 'bg-warning-50 dark:bg-warning-900/20',
+          border: 'border-warning-200 dark:border-warning-700/50',
+          text: 'text-warning-700 dark:text-warning-300',
+          icon: 'text-warning-600 dark:text-warning-400'
+        };
+      case 'medium':
+        return {
+          bg: 'bg-yellow-50 dark:bg-yellow-900/20',
+          border: 'border-yellow-200 dark:border-yellow-700/50',
+          text: 'text-yellow-700 dark:text-yellow-300',
+          icon: 'text-yellow-600 dark:text-yellow-400'
+        };
+      default:
+        return {
+          bg: 'bg-gray-50 dark:bg-gray-800/50',
+          border: 'border-gray-200 dark:border-gray-700/50',
+          text: 'text-gray-700 dark:text-gray-300',
+          icon: 'text-gray-600 dark:text-gray-400'
+        };
+    }
   };
 
   // Convert confidence percentage for display
   const confidenceScore = Math.round(probability * 100);
-  const riskScore = risk === "Red" ? 90 : risk === "Yellow" ? 60 : 30;
 
   return (
     <section
@@ -164,20 +232,14 @@ const NewResultsSection = () => {
                     Risk Level: {risk}
                   </span>
                   <span
-                    className={`text-2xl font-bold ${getScoreColor(
-                      100 - riskScore
-                    )}`}
+                    className={`text-2xl font-bold ${getRiskTextColor(riskColor)}`}
                   >
                     {confidenceScore}% Confidence
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden shadow-inner">
                   <div
-                    className={`h-full bg-gradient-to-r ${
-                      prediction === "fake"
-                        ? "from-danger-500 to-danger-600"
-                        : "from-success-500 to-success-600"
-                    } rounded-full transition-all duration-1000`}
+                    className={`h-full bg-gradient-to-r ${getRiskBarColor(riskColor)} rounded-full transition-all duration-1000`}
                     style={{ width: `${confidenceScore}%` }}
                   />
                 </div>
@@ -196,6 +258,45 @@ const NewResultsSection = () => {
             </div>
           </div>
         </div>
+
+        {/* Warnings Section */}
+        {warnings && warnings.length > 0 && (
+          <div
+            className="mb-12 animate-fade-up"
+            style={{ animationDelay: "300ms" }}
+          >
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <HiExclamationTriangle className="w-6 h-6 text-warning-600 dark:text-warning-400 mr-3" />
+                Security Warnings
+              </h3>
+              
+              {warnings.map((warning, index) => {
+                const WarningIcon = getWarningIcon(warning.icon);
+                const colors = getWarningColors(warning.type);
+                
+                return (
+                  <div
+                    key={index}
+                    className={`p-4 rounded-lg ${colors.bg} border ${colors.border}`}
+                  >
+                    <div className="flex items-start space-x-3">
+                      <WarningIcon className={`w-6 h-6 ${colors.icon} flex-shrink-0 mt-0.5`} />
+                      <div>
+                        <h4 className={`font-bold ${colors.text} mb-2`}>
+                          {warning.title}
+                        </h4>
+                        <p className={`${colors.text.replace('700', '600').replace('300', '400')}`}>
+                          {warning.message}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Feature Analysis Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
@@ -334,6 +435,24 @@ const NewResultsSection = () => {
 
                 <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                   <span className="font-medium text-gray-900 dark:text-white">
+                    Receivers Count
+                  </span>
+                  <span className="font-bold text-gray-700 dark:text-gray-300">
+                    {featureVector?.num_receivers || 0}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                  <span className="font-medium text-gray-900 dark:text-white">
+                    DEX Files Count
+                  </span>
+                  <span className="font-bold text-gray-700 dark:text-gray-300">
+                    {featureVector?.num_dex || 0}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                  <span className="font-medium text-gray-900 dark:text-white">
                     Network Domains
                   </span>
                   <span
@@ -427,10 +546,10 @@ const NewResultsSection = () => {
               {prediction === "fake" ? (
                 <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
                   <div className="flex items-start space-x-3">
-                    <HiExclamation className="w-6 h-6 text-danger-600 dark:text-danger-400 flex-shrink-0 mt-0.5" />
+                    <HiXCircle className="w-6 h-6 text-danger-600 dark:text-danger-400 flex-shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-bold text-danger-700 dark:text-danger-300 mb-2">
-                        ⚠️ HIGH RISK - DO NOT INSTALL
+                        HIGH RISK - DO NOT INSTALL
                       </h4>
                       <p className="text-danger-600 dark:text-danger-400">
                         This application has been identified as potentially
@@ -446,7 +565,7 @@ const NewResultsSection = () => {
                     <HiCheckCircle className="w-6 h-6 text-success-600 dark:text-success-400 flex-shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-bold text-success-700 dark:text-success-300 mb-2">
-                        ✅ Application Appears Safe
+                        Application Appears Safe
                       </h4>
                       <p className="text-success-600 dark:text-success-400">
                         The analysis indicates this application is likely safe

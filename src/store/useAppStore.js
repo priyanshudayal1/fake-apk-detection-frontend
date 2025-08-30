@@ -140,10 +140,32 @@ const useAppStore = create((set, get) => ({
 
       // Process the response data to match expected frontend format
       const result = response.data;
+      
+      // Map risk level to consistent format
+      const getRiskColor = (risk) => {
+        switch(risk?.toLowerCase()) {
+          case 'red': return 'danger';
+          case 'yellow': return 'warning';
+          case 'green': return 'success';
+          default: return result.prediction === "fake" ? 'danger' : 'success';
+        }
+      };
+
+      const getRiskLevel = (risk) => {
+        switch(risk?.toLowerCase()) {
+          case 'red': return 'High Risk';
+          case 'yellow': return 'Medium Risk';
+          case 'green': return 'Low Risk';
+          default: return result.prediction === "fake" ? 'High Risk' : 'Low Risk';
+        }
+      };
+
       const processedResults = {
         prediction: result.prediction,
         probability: result.probability,
         risk: result.risk,
+        riskColor: getRiskColor(result.risk),
+        riskLevel: getRiskLevel(result.risk),
         riskScore: Math.round(result.probability * 100),
         verdict: result.prediction === "fake" ? "dangerous" : "safe",
         confidence: Math.round(result.probability * 100),
@@ -157,7 +179,7 @@ const useAppStore = create((set, get) => ({
             result.prediction === "fake"
               ? "Potentially Malicious"
               : "Appears Safe",
-          riskLevel: result.risk,
+          riskLevel: getRiskLevel(result.risk),
           confidence: Math.round(result.probability * 100),
         },
 
@@ -179,8 +201,8 @@ const useAppStore = create((set, get) => ({
         threatDetection: {
           malwareSignatures: result.feature_vector?.count_suspicious || 0,
           suspiciousPermissions: result.feature_vector?.num_permissions || 0,
-          knownThreats: "none",
-          behavioralAnalysis: "clean",
+          knownThreats: result.prediction === "fake" ? "detected" : "none",
+          behavioralAnalysis: result.prediction === "fake" ? "suspicious" : "clean",
         },
 
         details: {
@@ -201,26 +223,97 @@ const useAppStore = create((set, get) => ({
           targetSDK: result.feature_vector?.target_sdk || 0,
           domains: result.feature_vector?.num_domains || 0,
           suspiciousDomains: result.feature_vector?.num_suspicious_tld || 0,
+          activities: result.feature_vector?.num_activities || 0,
+          services: result.feature_vector?.num_services || 0,
+          receivers: result.feature_vector?.num_receivers || 0,
+          dexFiles: result.feature_vector?.num_dex || 0,
         },
 
-        // Generate recommendations based on analysis
-        recommendations: [
-          result.prediction === "fake"
-            ? "Do not install this application - it appears to be malicious"
-            : "Application appears safe to install",
-          result.feature_vector?.cert_present === 0
-            ? "Verify the application source before installation"
-            : "Digital signature is valid",
-          result.feature_vector?.impersonation_score > 50
-            ? "Be cautious - this app may be impersonating another application"
-            : "No impersonation concerns detected",
-          "Always download applications from official app stores when possible",
-        ],
+        // Generate recommendations based on analysis and risk level
+        recommendations: (() => {
+          const recs = [];
+          
+          if (result.prediction === "fake") {
+            recs.push("DO NOT INSTALL - This application has been identified as potentially malicious");
+            recs.push("Installing this app may compromise your device security and personal data");
+          } else {
+            recs.push("Application appears safe based on our analysis");
+          }
+
+          if (result.feature_vector?.impersonation_score > 50) {
+            recs.push(`High impersonation risk score (${result.feature_vector.impersonation_score}/100) - This app may be impersonating another application`);
+          }
+
+          if (result.feature_vector?.cert_present === 0) {
+            recs.push("No digital certificate found - Verify the application source before installation");
+          }
+
+          if (result.feature_vector?.count_suspicious > 0) {
+            recs.push(`${result.feature_vector.count_suspicious} suspicious API calls detected`);
+          }
+
+          if (result.feature_vector?.num_suspicious_tld > 0) {
+            recs.push(`${result.feature_vector.num_suspicious_tld} suspicious network domains detected`);
+          }
+
+          if (result.feature_vector?.pkg_official === 0) {
+            recs.push("Not from an official package source - Exercise caution");
+          }
+
+          // Always add general security recommendations
+          recs.push("Always download applications from official app stores when possible");
+          recs.push("Review app permissions carefully before installation");
+          
+          return recs;
+        })(),
 
         // Include top SHAP features if available
         topFeatures: result.top_shap || [],
         // Raw feature vector for advanced users
         featureVector: result.feature_vector,
+
+        // Add warnings based on analysis
+        warnings: (() => {
+          const warnings = [];
+          
+          if (result.prediction === "fake") {
+            warnings.push({
+              type: 'critical',
+              icon: 'HiShieldExclamation',
+              title: 'Malicious Application Detected',
+              message: 'Our analysis indicates this APK contains malicious code. Do not install this application.'
+            });
+          }
+
+          if (result.feature_vector?.impersonation_score > 70) {
+            warnings.push({
+              type: 'high',
+              icon: 'HiExclamationTriangle',
+              title: 'High Impersonation Risk',
+              message: `This app has a ${result.feature_vector.impersonation_score}% impersonation score, suggesting it may be mimicking a legitimate application.`
+            });
+          }
+
+          if (result.feature_vector?.count_suspicious > 0) {
+            warnings.push({
+              type: result.feature_vector.count_suspicious > 3 ? 'high' : 'medium',
+              icon: 'HiCode',
+              title: 'Suspicious API Usage',
+              message: `Found ${result.feature_vector.count_suspicious} suspicious API calls that could be used for malicious purposes.`
+            });
+          }
+
+          if (result.feature_vector?.label_contains_bank === 1 || result.feature_vector?.package_contains_bank === 1) {
+            warnings.push({
+              type: 'high',
+              icon: 'HiCreditCard',
+              title: 'Banking-Related Application',
+              message: 'This app appears to be banking-related. Only install if from your official bank and verify authenticity.'
+            });
+          }
+
+          return warnings;
+        })(),
       };
 
       state.completeAnalysis(processedResults);
@@ -277,7 +370,10 @@ const useAppStore = create((set, get) => ({
       // Update current test progress
       if (testIndex < tests.length) {
         const currentTest = tests[testIndex];
-        currentTest.progress += Math.random() * 15 + 5; // Random progress increment
+        
+        // More realistic progress increments
+        const increment = Math.random() * 12 + 3; // 3-15% increments
+        currentTest.progress += increment;
 
         if (currentTest.progress >= 100) {
           currentTest.progress = 100;
@@ -292,8 +388,10 @@ const useAppStore = create((set, get) => ({
         }
       }
 
-      // Update overall progress
-      progress = Math.min(95, progress + Math.random() * 8 + 2);
+      // Update overall progress based on completed tests and current test progress
+      const completedTests = testIndex;
+      const currentTestProgress = testIndex < tests.length ? tests[testIndex].progress / 100 : 0;
+      progress = Math.min(95, ((completedTests + currentTestProgress) / tests.length) * 100);
 
       set({
         analysisProgress: progress,
@@ -302,10 +400,10 @@ const useAppStore = create((set, get) => ({
       });
 
       // Stop at 95% to wait for actual API response
-      if (progress >= 95) {
+      if (progress >= 95 || testIndex >= tests.length) {
         clearInterval(progressInterval);
       }
-    }, 800 + Math.random() * 400); // Random interval between 800-1200ms
+    }, 600 + Math.random() * 600); // Random interval between 600-1200ms
 
     return progressInterval;
   },
