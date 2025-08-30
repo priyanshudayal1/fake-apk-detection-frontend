@@ -12,6 +12,7 @@ const UploadSection = () => {
     uploadedFile,
     isUploading,
     uploadError,
+    isAnalyzing,
     setUploadedFile,
     setUploading,
     setUploadError,
@@ -216,7 +217,8 @@ const UploadSection = () => {
                 </h3>
                 <button
                   onClick={clearFile}
-                  className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                  disabled={isAnalyzing}
+                  className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <HiX className="w-5 h-5" />
                 </button>
@@ -242,14 +244,26 @@ const UploadSection = () => {
               {/* Analysis Button */}
               <button
                 onClick={handleStartAnalysis}
-                className="w-full inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-success-600 to-teal-600 hover:from-success-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+                disabled={isAnalyzing}
+                className="w-full inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-success-600 to-teal-600 hover:from-success-700 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:transform-none transition-all duration-300"
               >
-                <HiUpload className="w-5 h-5 mr-2" />
-                Start Security Analysis
+                {isAnalyzing ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                    Analyzing APK...
+                  </>
+                ) : (
+                  <>
+                    <HiUpload className="w-5 h-5 mr-2" />
+                    Start Security Analysis
+                  </>
+                )}
               </button>
 
               <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
-                Analysis typically takes 15-30 seconds
+                {isAnalyzing
+                  ? "Please wait while we analyze your APK file..."
+                  : "Analysis typically takes 15-30 seconds"}
               </p>
             </div>
           </div>

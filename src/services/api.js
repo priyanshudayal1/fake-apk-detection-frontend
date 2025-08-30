@@ -3,10 +3,8 @@ import axios from "axios";
 // Create axios instance with base configuration
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:9000",
-  timeout: 180000, // 3 minutes timeout for general API calls
-  headers: {
-    "Content-Type": "application/json",
-  },
+  timeout: 600000, // 10 minutes timeout to match backend processing time
+  // Don't set default Content-Type header to allow FormData requests to work properly
 });
 
 // Request interceptor
@@ -14,8 +12,23 @@ api.interceptors.request.use(
   (config) => {
     // You can add auth headers, logging, etc. here
     console.log(
-      `Making ${config.method?.toUpperCase()} request to ${config.url}`
+      `Making ${config.method?.toUpperCase()} request to ${config.baseURL}${
+        config.url
+      }`
     );
+    if (config.data instanceof FormData) {
+      console.log("Request contains FormData with files");
+      // Log FormData contents (for debugging)
+      for (let [key, value] of config.data.entries()) {
+        if (value instanceof File) {
+          console.log(
+            `FormData key: ${key}, File: ${value.name} (${value.size} bytes)`
+          );
+        } else {
+          console.log(`FormData key: ${key}, Value: ${value}`);
+        }
+      }
+    }
     return config;
   },
   (error) => {
@@ -27,10 +40,26 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
+    console.log(
+      `Response received from ${response.config.url}:`,
+      response.status
+    );
     return response;
   },
   (error) => {
-    console.error("API Error:", error.response?.data || error.message);
+    if (error.response) {
+      // Server responded with error status
+      console.error(`API Error ${error.response.status}:`, error.response.data);
+      console.error("Request URL:", error.config.url);
+      console.error("Request method:", error.config.method);
+    } else if (error.request) {
+      // Request made but no response received
+      console.error("No response received:", error.request);
+      console.error("Request URL:", error.config?.url);
+    } else {
+      // Something else happened
+      console.error("Request setup error:", error.message);
+    }
     return Promise.reject(error);
   }
 );
@@ -55,8 +84,9 @@ export class APKAnalysisService {
     const url = `/scan${params.toString() ? "?" + params.toString() : ""}`;
 
     return api.post(url, formData, {
+      timeout: 600000, // 10 minutes timeout to match Streamlit app
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": undefined, // Let browser set the Content-Type with boundary for FormData
       },
     });
   }
@@ -86,8 +116,9 @@ export class APKAnalysisService {
     }`;
 
     return api.post(url, formData, {
+      timeout: 600000, // 10 minutes timeout
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": undefined, // Let browser set the Content-Type with boundary for FormData
       },
     });
   }
@@ -102,8 +133,9 @@ export class APKAnalysisService {
     formData.append("file", file);
 
     return api.post("/report", formData, {
+      timeout: 600000, // 10 minutes timeout
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": undefined, // Let browser set the Content-Type with boundary for FormData
       },
     });
   }
@@ -113,7 +145,11 @@ export class APKAnalysisService {
    * @returns {Promise} Server status
    */
   static async healthCheck() {
-    return api.get("/");
+    return api.get("/", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 }
 

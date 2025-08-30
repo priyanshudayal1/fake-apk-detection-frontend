@@ -12,13 +12,18 @@ import HeroSection from "./components/sections/HeroSection";
 import StatisticsSection from "./components/sections/StatisticsSection";
 import UploadSection from "./components/sections/UploadSection";
 import AnalysisSection from "./components/sections/AnalysisSection";
-import ResultsSection from "./components/sections/ResultsSection";
+import NewResultsSection from "./components/sections/NewResultsSection";
 import FAQSection from "./components/sections/FAQSection";
 import AboutSection from "./components/sections/AboutSection";
 
 const App = () => {
-  const { isDarkMode, currentView, reportError, setReportError } =
-    useAppStore();
+  const {
+    isDarkMode,
+    analysisResults,
+    isAnalyzing,
+    reportError,
+    setReportError,
+  } = useAppStore();
 
   // Apply dark mode to document
   useEffect(() => {
@@ -28,22 +33,6 @@ const App = () => {
       document.documentElement.classList.remove("dark");
     }
   }, [isDarkMode]);
-
-  // Auto-scroll to analysis section when analyzing starts
-  useEffect(() => {
-    if (currentView === "analyzing") {
-      // Wait for the component to render before scrolling
-      setTimeout(() => {
-        const analysisSection = document.getElementById("analysis-section");
-        if (analysisSection) {
-          analysisSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }
-      }, 100);
-    }
-  }, [currentView]);
 
   // Show report error notifications
   useEffect(() => {
@@ -97,10 +86,10 @@ const App = () => {
         <HeroSection />
         <StatisticsSection />
 
-        {/* Conditional Sections based on current view */}
-        {currentView === "upload" && <UploadSection />}
-        {currentView === "analyzing" && <AnalysisSection />}
-        {currentView === "results" && <ResultsSection />}
+        {/* Conditional Sections based on analysis state */}
+        {!isAnalyzing && !analysisResults && <UploadSection />}
+        {isAnalyzing && <AnalysisSection />}
+        {analysisResults && <NewResultsSection />}
 
         {/* Always show FAQ and About sections */}
         <FAQSection />

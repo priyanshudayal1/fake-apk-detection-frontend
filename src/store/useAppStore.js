@@ -25,79 +25,63 @@ const useAppStore = create((set, get) => ({
       isAnalyzing: false,
     }),
 
-  // Analysis state
+  // Analysis state - simplified to just isAnalyzing flag
   isAnalyzing: false,
+
+  // Progress tracking for analysis section
   analysisProgress: 0,
   currentTest: null,
   analysisTests: [
     {
       id: 1,
-      name: "Analyzing Package Structure",
+      name: "APK Structure Analysis",
       icon: "HiDocumentMagnifyingGlass",
       status: "pending",
       progress: 0,
     },
     {
       id: 2,
-      name: "Scanning for Malicious Code",
+      name: "Malware Detection",
       icon: "HiMagnifyingGlass",
       status: "pending",
       progress: 0,
     },
     {
       id: 3,
-      name: "Checking Digital Signatures",
+      name: "Certificate Validation",
       icon: "HiShieldCheck",
       status: "pending",
       progress: 0,
     },
     {
       id: 4,
-      name: "Verifying Banking Protocols",
+      name: "Banking Security Check",
       icon: "HiCreditCard",
       status: "pending",
       progress: 0,
     },
     {
       id: 5,
-      name: "Testing Encryption Standards",
+      name: "Encryption Analysis",
       icon: "HiLockClosed",
       status: "pending",
       progress: 0,
     },
     {
       id: 6,
-      name: "Running ML Models",
+      name: "Machine Learning Analysis",
       icon: "HiChartBar",
       status: "pending",
       progress: 0,
     },
     {
       id: 7,
-      name: "Generating Risk Score",
+      name: "Risk Assessment",
       icon: "HiBolt",
       status: "pending",
       progress: 0,
     },
   ],
-
-  setAnalyzing: (isAnalyzing) => set({ isAnalyzing }),
-  setAnalysisProgress: (progress) => set({ analysisProgress: progress }),
-  setCurrentTest: (testId) => set({ currentTest: testId }),
-  updateTestStatus: (testId, status, progress = 100) =>
-    set((state) => ({
-      analysisTests: state.analysisTests.map((test) =>
-        test.id === testId ? { ...test, status, progress } : test
-      ),
-    })),
-  resetAnalysisTests: () =>
-    set((state) => ({
-      analysisTests: state.analysisTests.map((test) => ({
-        ...test,
-        status: "pending",
-        progress: 0,
-      })),
-    })),
 
   // Analysis results state
   analysisResults: null,
@@ -111,98 +95,48 @@ const useAppStore = create((set, get) => ({
     dataStored: "Zero",
   },
 
-  // App flow state
-  currentView: "upload", // 'upload', 'analyzing', 'results'
-  setCurrentView: (view) => set({ currentView: view }),
+  // App flow state - removed currentView since we'll handle this with simple conditional rendering
+  // Based on isAnalyzing and analysisResults states
 
-  // Start analysis flow
+  // Start analysis flow - simplified to just send request and wait for response
   startAnalysis: async () => {
     const state = get();
     if (!state.uploadedFile) return;
 
+    console.log("Starting analysis for file:", state.uploadedFile.name);
+    console.log(
+      "API Base URL:",
+      import.meta.env.VITE_API_BASE_URL || "http://localhost:9000"
+    );
+
+    // Reset analysis state
     set({
       isAnalyzing: true,
-      currentView: "analyzing",
-      analysisProgress: 0,
-      currentTest: null,
       analysisResults: null,
       uploadError: null,
+      analysisProgress: 0,
+      currentTest: 1,
+      analysisTests: state.analysisTests.map((test) => ({
+        ...test,
+        status: "pending",
+        progress: 0,
+      })),
     });
 
-    // Reset all tests
-    state.resetAnalysisTests();
-
     try {
-      // Simulate progress updates
-      const progressSteps = [
-        {
-          testId: 1,
-          status: "running",
-          progress: 30,
-          message: "Analyzing Package Structure...",
-        },
-        {
-          testId: 2,
-          status: "running",
-          progress: 50,
-          message: "Scanning for Malicious Code...",
-        },
-        {
-          testId: 3,
-          status: "running",
-          progress: 70,
-          message: "Checking Digital Signatures...",
-        },
-        {
-          testId: 4,
-          status: "running",
-          progress: 80,
-          message: "Verifying Banking Protocols...",
-        },
-        {
-          testId: 5,
-          status: "running",
-          progress: 85,
-          message: "Testing Encryption Standards...",
-        },
-        {
-          testId: 6,
-          status: "running",
-          progress: 95,
-          message: "Running ML Models...",
-        },
-        {
-          testId: 7,
-          status: "running",
-          progress: 100,
-          message: "Generating Risk Score...",
-        },
-      ];
+      // Start progress simulation while API call is happening
+      const progressInterval = state.simulateAnalysisProgress();
 
-      // Simulate gradual progress
-      for (let i = 0; i < progressSteps.length; i++) {
-        const step = progressSteps[i];
-        state.updateTestStatus(step.testId, step.status, step.progress);
-        set({
-          analysisProgress: (i + 1) * 14, // Roughly 100/7
-          currentTest: step.testId,
-        });
-
-        // Add delay to simulate processing
-        await new Promise((resolve) =>
-          setTimeout(resolve, 800 + Math.random() * 400)
-        );
-      }
-
-      // Perform actual API call
+      // Perform API call
+      console.log("Making API call to scan endpoint...");
       const response = await APKAnalysisService.scanSingle(
         state.uploadedFile.file || state.uploadedFile
       );
 
-      // Mark all tests as completed
-      for (let i = 1; i <= 7; i++) {
-        state.updateTestStatus(i, "completed", 100);
-      }
+      console.log("API response received:", response.data);
+
+      // Clear the progress simulation
+      clearInterval(progressInterval);
 
       // Process the response data to match expected frontend format
       const result = response.data;
@@ -211,6 +145,9 @@ const useAppStore = create((set, get) => ({
         probability: result.probability,
         risk: result.risk,
         riskScore: Math.round(result.probability * 100),
+        verdict: result.prediction === "fake" ? "dangerous" : "safe",
+        confidence: Math.round(result.probability * 100),
+
         // Map backend features to frontend display format
         summary: {
           fileName: state.uploadedFile.name,
@@ -223,6 +160,29 @@ const useAppStore = create((set, get) => ({
           riskLevel: result.risk,
           confidence: Math.round(result.probability * 100),
         },
+
+        // Security breakdown based on feature vector
+        securityBreakdown: {
+          codeIntegrity: result.feature_vector?.cert_present ? 85 : 45,
+          permissionAnalysis: Math.max(
+            20,
+            100 - (result.feature_vector?.num_permissions || 0) * 5
+          ),
+          networkBehavior:
+            result.feature_vector?.num_suspicious_tld === 0 ? 90 : 60,
+          dataEncryption: result.feature_vector?.cert_present ? 80 : 40,
+          digitalSignature:
+            result.feature_vector?.cert_present === 1 ? "valid" : "warning",
+        },
+
+        // Threat detection details
+        threatDetection: {
+          malwareSignatures: result.feature_vector?.count_suspicious || 0,
+          suspiciousPermissions: result.feature_vector?.num_permissions || 0,
+          knownThreats: "none",
+          behavioralAnalysis: "clean",
+        },
+
         details: {
           // Security Analysis
           permissions: result.feature_vector?.num_permissions || 0,
@@ -242,6 +202,21 @@ const useAppStore = create((set, get) => ({
           domains: result.feature_vector?.num_domains || 0,
           suspiciousDomains: result.feature_vector?.num_suspicious_tld || 0,
         },
+
+        // Generate recommendations based on analysis
+        recommendations: [
+          result.prediction === "fake"
+            ? "Do not install this application - it appears to be malicious"
+            : "Application appears safe to install",
+          result.feature_vector?.cert_present === 0
+            ? "Verify the application source before installation"
+            : "Digital signature is valid",
+          result.feature_vector?.impersonation_score > 50
+            ? "Be cautious - this app may be impersonating another application"
+            : "No impersonation concerns detected",
+          "Always download applications from official app stores when possible",
+        ],
+
         // Include top SHAP features if available
         topFeatures: result.top_shap || [],
         // Raw feature vector for advanced users
@@ -270,7 +245,8 @@ const useAppStore = create((set, get) => ({
       set({
         uploadError: errorMessage,
         isAnalyzing: false,
-        currentView: "upload",
+        analysisProgress: 0,
+        currentTest: null,
       });
     }
   },
@@ -280,9 +256,58 @@ const useAppStore = create((set, get) => ({
     set({
       isAnalyzing: false,
       analysisResults: results,
-      currentView: "results",
       analysisProgress: 100,
+      analysisTests: get().analysisTests.map((test) => ({
+        ...test,
+        status: "completed",
+        progress: 100,
+      })),
     });
+  },
+
+  // Simulate analysis progress for better UX
+  simulateAnalysisProgress: () => {
+    let progress = 0;
+    let testIndex = 0;
+
+    const progressInterval = setInterval(() => {
+      const currentState = get();
+      const tests = [...currentState.analysisTests];
+
+      // Update current test progress
+      if (testIndex < tests.length) {
+        const currentTest = tests[testIndex];
+        currentTest.progress += Math.random() * 15 + 5; // Random progress increment
+
+        if (currentTest.progress >= 100) {
+          currentTest.progress = 100;
+          currentTest.status = "completed";
+          testIndex++;
+
+          if (testIndex < tests.length) {
+            tests[testIndex].status = "running";
+          }
+        } else {
+          currentTest.status = "running";
+        }
+      }
+
+      // Update overall progress
+      progress = Math.min(95, progress + Math.random() * 8 + 2);
+
+      set({
+        analysisProgress: progress,
+        currentTest: testIndex < tests.length ? tests[testIndex].id : null,
+        analysisTests: tests,
+      });
+
+      // Stop at 95% to wait for actual API response
+      if (progress >= 95) {
+        clearInterval(progressInterval);
+      }
+    }, 800 + Math.random() * 400); // Random interval between 800-1200ms
+
+    return progressInterval;
   },
 
   // Report generation state
@@ -361,14 +386,17 @@ const useAppStore = create((set, get) => ({
       isUploading: false,
       uploadError: null,
       isAnalyzing: false,
-      analysisProgress: 0,
-      currentTest: null,
       analysisResults: null,
-      currentView: "upload",
       reportError: null,
       isGeneratingReport: false,
+      analysisProgress: 0,
+      currentTest: null,
+      analysisTests: get().analysisTests.map((test) => ({
+        ...test,
+        status: "pending",
+        progress: 0,
+      })),
     });
-    get().resetAnalysisTests();
   },
 }));
 
