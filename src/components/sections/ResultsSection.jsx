@@ -19,16 +19,16 @@ const ResultsSection = () => {
     analysisResults,
     uploadedFile,
     resetApp,
-    generatePdfReportDownload,
-    isGeneratingPdf,
-    pdfError,
+    generateHTMLReport,
+    isGeneratingReport,
+    reportError,
   } = useAppStore();
 
   const handleDownloadReport = async () => {
-    const success = await generatePdfReportDownload();
+    const success = await generateHTMLReport();
     if (success) {
-      // PDF download triggered successfully
-      console.log("PDF report downloaded successfully");
+      // HTML report download triggered successfully
+      console.log("HTML report downloaded successfully");
     }
   };
 
@@ -424,10 +424,10 @@ const ResultsSection = () => {
 
           <button
             onClick={handleDownloadReport}
-            disabled={isGeneratingPdf}
+            disabled={isGeneratingReport}
             className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isGeneratingPdf ? (
+            {isGeneratingReport ? (
               <>
                 <div className="w-5 h-5 mr-2 animate-spin border-2 border-gray-400 border-t-gray-700 rounded-full" />
                 Generating Report...
@@ -435,7 +435,7 @@ const ResultsSection = () => {
             ) : (
               <>
                 <HiDownload className="w-5 h-5 mr-2" />
-                Download Report
+                Download HTML Report
               </>
             )}
           </button>

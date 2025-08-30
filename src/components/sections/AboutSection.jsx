@@ -24,7 +24,7 @@ const AboutSection = () => {
     },
     {
       name: "Real-time Analysis",
-      description: "WebSocket communication",
+      description: "HTTP-based processing",
       icon: HiPlay,
     },
     {

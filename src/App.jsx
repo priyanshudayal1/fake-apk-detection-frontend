@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import { HiLink, HiExclamation, HiDocument } from "react-icons/hi";
+import { HiExclamation, HiDocument } from "react-icons/hi";
 import useAppStore from "./store/useAppStore";
 
 // Layout Components
@@ -17,18 +17,8 @@ import FAQSection from "./components/sections/FAQSection";
 import AboutSection from "./components/sections/AboutSection";
 
 const App = () => {
-  const {
-    isDarkMode,
-    currentView,
-    wsConnected,
-    wsError,
-    pdfError,
-    setPdfError,
-    initWebSocket,
-    closeWebSocket,
-  } = useAppStore();
-
-  const wsInitialized = useRef(false);
+  const { isDarkMode, currentView, reportError, setReportError } =
+    useAppStore();
 
   // Apply dark mode to document
   useEffect(() => {
@@ -55,69 +45,17 @@ const App = () => {
     }
   }, [currentView]);
 
-  // Initialize WebSocket connection when app starts
+  // Show report error notifications
   useEffect(() => {
-    if (wsInitialized.current) return;
-    wsInitialized.current = true;
-
-    let mounted = true;
-
-    const initializeWebSocket = async () => {
-      try {
-        await initWebSocket();
-        if (mounted) {
-          console.log("WebSocket initialization completed");
-        }
-      } catch (err) {
-        console.log(
-          "WebSocket initialization failed, using REST API fallback:",
-          err.message
-        );
-        // Don't show error toast as fallback is available
-      }
-    };
-
-    initializeWebSocket();
-
-    // Cleanup function
-    return () => {
-      mounted = false;
-      closeWebSocket();
-      wsInitialized.current = false;
-    };
-  }, [closeWebSocket, initWebSocket]); // Include dependencies
-
-  // Separate effect to show success toast when connected
-  useEffect(() => {
-    if (wsConnected) {
-      toast.success("Real-time analysis ready!", {
-        icon: <HiLink className="w-5 h-5 text-success-500" />,
-        duration: 3000,
-      });
-    }
-  }, [wsConnected]);
-
-  // Show WebSocket error notifications
-  useEffect(() => {
-    if (wsError) {
-      toast.error("Connection issue detected. Using standard analysis mode.", {
-        icon: <HiExclamation className="w-5 h-5 text-warning-500" />,
-        duration: 5000,
-      });
-    }
-  }, [wsError]);
-
-  // Show PDF error notifications
-  useEffect(() => {
-    if (pdfError) {
-      toast.error(pdfError, {
+    if (reportError) {
+      toast.error(reportError, {
         icon: <HiDocument className="w-5 h-5 text-danger-500" />,
         duration: 5000,
       });
       // Clear the error after showing it
-      setPdfError(null);
+      setReportError(null);
     }
-  }, [pdfError, setPdfError]);
+  }, [reportError, setReportError]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -152,20 +90,6 @@ const App = () => {
 
       {/* Header */}
       <Header />
-
-      {/* Connection Status (only show when there's an issue) */}
-      {wsError && (
-        <div className="fixed top-20 right-4 z-50 animate-fade-in">
-          <div className="bg-amber-100 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/50 text-amber-800 dark:text-amber-200 px-4 py-2 rounded-lg shadow-lg">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium">
-                Standard Analysis Mode
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Main Content */}
       <main className="pt-16 md:pt-20">

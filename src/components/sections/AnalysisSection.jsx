@@ -24,122 +24,37 @@ const AnalysisSection = () => {
     currentTest,
     analysisTests,
     uploadedFile,
-    setCurrentTest,
-    updateTestStatus,
-    setAnalysisProgress,
-    completeAnalysis,
   } = useAppStore();
 
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [estimatedTime, setEstimatedTime] = useState(25);
 
-  // Simulate analysis progress
-  useEffect(() => {
-    if (!isAnalyzing) return;
-
-    let timer;
-    const testDurations = [3000, 4000, 3500, 5000, 4500, 6000, 3000]; // Duration for each test in ms
-
-    const runTest = (index) => {
-      if (index >= analysisTests.length) {
-        // Analysis complete
-        const mockResults = generateMockResults();
-        completeAnalysis(mockResults);
-        return;
-      }
-
-      const test = analysisTests[index];
-      setCurrentTest(test.id);
-      updateTestStatus(test.id, "running", 0);
-
-      let progress = 0;
-      const duration = testDurations[index];
-      const interval = duration / 100;
-
-      const progressTimer = setInterval(() => {
-        progress += 1;
-        updateTestStatus(test.id, "running", progress);
-
-        const overallProgress =
-          ((index * 100 + progress) / (analysisTests.length * 100)) * 100;
-        setAnalysisProgress(overallProgress);
-
-        if (progress >= 100) {
-          clearInterval(progressTimer);
-          updateTestStatus(
-            test.id,
-            Math.random() > 0.1 ? "completed" : "warning",
-            100
-          );
-
-          setTimeout(() => {
-            runTest(index + 1);
-          }, 500);
-        }
-      }, interval);
-    };
-
-    // Start the first test after a short delay
-    timer = setTimeout(() => {
-      runTest(0);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [
-    isAnalyzing,
-    analysisTests,
-    completeAnalysis,
-    setAnalysisProgress,
-    setCurrentTest,
-    updateTestStatus,
-  ]);
-
-  // Time tracking
+  // Time tracking - only track when actually analyzing
   useEffect(() => {
     if (!isAnalyzing) {
       setTimeElapsed(0);
+      setEstimatedTime(25);
       return;
     }
 
     const timer = setInterval(() => {
       setTimeElapsed((prev) => prev + 1);
-      setEstimatedTime((prev) => Math.max(0, prev - 1));
+      // Update estimated time based on progress
+      if (analysisProgress > 0) {
+        const estimated = Math.max(
+          0,
+          Math.round(
+            ((100 - analysisProgress) / analysisProgress) * timeElapsed
+          )
+        );
+        setEstimatedTime(estimated);
+      } else {
+        setEstimatedTime((prev) => Math.max(0, prev - 1));
+      }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isAnalyzing]);
-
-  const generateMockResults = () => {
-    const riskScore = Math.floor(Math.random() * 30) + 10; // Low risk score (10-40)
-    const verdict = riskScore > 30 ? "suspicious" : "safe";
-
-    return {
-      verdict,
-      riskScore,
-      confidence: 96,
-      securityBreakdown: {
-        codeIntegrity: Math.floor(Math.random() * 20) + 80,
-        digitalSignature: Math.random() > 0.3 ? "valid" : "warning",
-        permissionAnalysis: Math.floor(Math.random() * 30) + 70,
-        networkBehavior: Math.floor(Math.random() * 25) + 75,
-        dataEncryption: Math.floor(Math.random() * 20) + 80,
-      },
-      threatDetection: {
-        malwareSignatures: 0,
-        suspiciousPermissions: Math.floor(Math.random() * 3),
-        knownThreats: "clean",
-        behavioralAnalysis: "normal",
-      },
-      recommendations: [
-        "Application appears to be legitimate",
-        "Always download banking apps from official app stores",
-        "Verify app publisher before installation",
-        "Keep your device security updated",
-      ],
-    };
-  };
+  }, [isAnalyzing, analysisProgress, timeElapsed]);
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -260,6 +175,8 @@ const AnalysisSection = () => {
               <BsShieldFillCheck className="w-4 h-4 mr-2" />
               ETA: {estimatedTime}s remaining
             </div>
+            {/* WebSocket Status */}
+            <div className="hidden md:block"></div>
           </div>
         </div>
 
