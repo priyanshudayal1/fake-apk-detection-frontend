@@ -29,7 +29,7 @@ const useAppStore = create((set, get) => ({
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      timeout: 60000, // 60 seconds for PDF generation
+      timeout: 300000, // 5 minutes for PDF generation (matches backend timeout)
       ...options,
     }),
 
@@ -383,7 +383,7 @@ const useAppStore = create((set, get) => ({
     const state = get();
     if (!state.uploadedFile) {
       set({ pdfError: "No file uploaded for report generation" });
-      return;
+      return false;
     }
 
     set({ isGeneratingPdf: true, pdfError: null });
@@ -427,10 +427,27 @@ const useAppStore = create((set, get) => ({
       }
     } catch (error) {
       console.error("PDF generation failed:", error);
+
+      let errorMessage;
+      if (error.code === "ECONNABORTED" || error.message.includes("timeout")) {
+        errorMessage =
+          "PDF generation timed out. The APK file may be too complex to analyze. Please try again or contact support.";
+      } else if (error.response?.status === 408) {
+        errorMessage = error.response.data?.error || "PDF generation timed out";
+      } else if (error.response?.status === 422) {
+        errorMessage = error.response.data?.details || "APK analysis failed";
+      } else if (error.response?.status >= 500) {
+        errorMessage =
+          "Server error during PDF generation. Please try again later.";
+      } else {
+        errorMessage =
+          error.response?.data?.error ||
+          error.message ||
+          "Unknown error occurred";
+      }
+
       set({
-        pdfError: `PDF generation failed: ${
-          error.response?.data?.error || error.message
-        }`,
+        pdfError: `PDF generation failed: ${errorMessage}`,
         isGeneratingPdf: false,
       });
       return false;

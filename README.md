@@ -1,6 +1,6 @@
-# 🛡️ SecureAPK Detector - Digital Sahayak
+# 🛡️ SecureAPK Detector - Digital Rakshak
 
-Advanced AI-powered security analysis platform for detecting malicious banking APK files. Built for the Digital Sahayak hackathon with modern web technologies.
+Advanced AI-powered security analysis platform for detecting malicious banking APK files. Built for the Digital Rakshak hackathon with modern web technologies.
 
 ![SecureAPK Detector](https://img.shields.io/badge/Status-Ready%20for%20Demo-brightgreen)
 ![React](https://img.shields.io/badge/React-18+-blue)
@@ -285,7 +285,7 @@ npm run preview
 
 ## 🤝 Contributing
 
-This project was built for the Digital Sahayak hackathon. Contributions welcome!
+This project was built for the Digital Rakshak hackathon. Contributions welcome!
 
 ### Development Guidelines
 - Follow ESLint configuration
@@ -296,14 +296,14 @@ This project was built for the Digital Sahayak hackathon. Contributions welcome!
 
 ## 📄 License
 
-Built for Digital Sahayak Hackathon 2025. 
+Built for Digital Rakshak Hackathon 2025. 
 
 ---
 
 ## 🏆 Hackathon Submission
 
 **Team**: Security Innovation Team  
-**Event**: Digital Sahayak Hackathon 2025  
+**Event**: Digital Rakshak Hackathon 2025  
 **Category**: Cybersecurity & Financial Technology  
 
 ### Key Achievements
@@ -322,4 +322,4 @@ Built for Digital Sahayak Hackathon 2025.
 
 ---
 
-**Made with ❤️ for Digital Sahayak Hackathon**
+**Made with ❤️ for Digital Rakshak Hackathon**

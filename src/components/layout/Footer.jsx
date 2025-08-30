@@ -25,7 +25,7 @@ const Footer = () => {
                     SecureAPK
                     <span className="text-primary-400 ml-1">Detector</span>
                   </h1>
-                  <p className="text-sm text-gray-400">Digital Sahayak</p>
+                  <p className="text-sm text-gray-400">Digital Rakshak</p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed max-w-md">
@@ -128,7 +128,7 @@ const Footer = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="text-gray-400 text-sm mb-4 md:mb-0">
-                © 2025 SecureAPK Detector. Built for Digital Sahayak Hackathon.
+                © 2025 SecureAPK Detector. Built for Digital Rakshak Hackathon.
                 All rights reserved.
               </div>
               <div className="flex items-center space-x-6 text-sm">

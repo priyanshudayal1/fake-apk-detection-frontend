@@ -30,7 +30,7 @@ const Header = () => {
                 </span>
               </h1>
               <p className="text-xs text-gray-500 dark:text-gray-400 hidden md:block">
-                Digital Sahayak
+                Digital Rakshak
               </p>
             </div>
           </div>

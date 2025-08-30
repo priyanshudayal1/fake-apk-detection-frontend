@@ -282,7 +282,7 @@ const AboutSection = () => {
               Built by Security Experts
             </h3>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              Developed as part of the Digital Sahayak hackathon to address the
+              Developed as part of the Digital Rakshak hackathon to address the
               growing threat of malicious banking applications. Our team
               combines expertise in cybersecurity, machine learning, and user
               experience design.
