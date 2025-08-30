@@ -57,69 +57,6 @@ const Footer = () => {
                 </a>
               </div>
             </div>
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-3">
-                {[
-                  { name: "Home", href: "#home" },
-                  { name: "About", href: "#about" },
-                  { name: "FAQ", href: "#faq" },
-                  { name: "Contact", href: "#contact" },
-                ].map((link) => (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className="text-gray-400 hover:text-primary-400 transition-colors duration-200"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Resources */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Security</h3>
-              <ul className="space-y-3">
-                {[
-                  "Privacy Policy",
-                  "Terms of Service",
-                  "Security Guidelines",
-                  "Threat Database",
-                ].map((item) => (
-                  <li key={item}>
-                    <a
-                      href="#"
-                      className="text-gray-400 hover:text-primary-400 transition-colors duration-200"
-                    >
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Statistics Bar */}
-          <div className="mt-12 pt-8 border-t border-gray-800">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              {[
-                { number: "10,000+", label: "APKs Analyzed" },
-                { number: "99.7%", label: "Accuracy Rate" },
-                { number: "< 2s", label: "Analysis Time" },
-                { number: "0", label: "Data Stored" },
-              ].map((stat, index) => (
-                <div key={index} className="p-4">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-400 mb-1">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm text-gray-400">{stat.label}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 

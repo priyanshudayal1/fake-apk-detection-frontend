@@ -4,6 +4,8 @@ import {
   HiCheckCircle,
   HiXCircle,
   HiExclamation,
+  HiArrowLeft,
+  HiArrowUp,
 } from "react-icons/hi";
 import {
   HiMagnifyingGlass,
@@ -16,6 +18,7 @@ import {
 } from "react-icons/hi2";
 import { BsShieldFillCheck } from "react-icons/bs";
 import useAppStore from "../../store/useAppStore";
+import { scrollToSection, scrollToTop } from "../../utils/scrollUtils";
 
 const AnalysisSection = () => {
   const {
@@ -24,6 +27,7 @@ const AnalysisSection = () => {
     currentTest,
     analysisTests,
     uploadedFile,
+    resetApp,
   } = useAppStore();
 
   const [timeElapsed, setTimeElapsed] = useState(0);
@@ -366,6 +370,27 @@ const AnalysisSection = () => {
             This analysis is performed locally and securely. No sensitive data
             is stored or transmitted to external servers.
           </p>
+        </div>
+
+        {/* Floating Navigation */}
+        <div className="fixed right-6 bottom-6 z-20 flex flex-col gap-3">
+          {/* Cancel Analysis Button */}
+          <button
+            onClick={resetApp}
+            className="p-3 bg-gray-600 hover:bg-gray-700 text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+            title="Cancel Analysis & Go Back"
+          >
+            <HiArrowLeft className="w-5 h-5" />
+          </button>
+
+          {/* Scroll to Top Button */}
+          <button
+            onClick={scrollToTop}
+            className="p-3 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+            title="Scroll to Top"
+          >
+            <HiArrowUp className="w-5 h-5" />
+          </button>
         </div>
       </div>
     </section>

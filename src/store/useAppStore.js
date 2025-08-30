@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { APKAnalysisService } from "../services/api";
+import { scrollToSection } from "../utils/scrollUtils";
 
 const useAppStore = create((set, get) => ({
   // Theme state
@@ -123,6 +124,11 @@ const useAppStore = create((set, get) => ({
       })),
     });
 
+    // Scroll to analysis section with a slight delay to ensure DOM is updated
+    setTimeout(() => {
+      scrollToSection("analysis-section", 100);
+    }, 100);
+
     try {
       // Start progress simulation while API call is happening
       const progressInterval = state.simulateAnalysisProgress();
@@ -140,23 +146,31 @@ const useAppStore = create((set, get) => ({
 
       // Process the response data to match expected frontend format
       const result = response.data;
-      
+
       // Map risk level to consistent format
       const getRiskColor = (risk) => {
-        switch(risk?.toLowerCase()) {
-          case 'red': return 'danger';
-          case 'yellow': return 'warning';
-          case 'green': return 'success';
-          default: return result.prediction === "fake" ? 'danger' : 'success';
+        switch (risk?.toLowerCase()) {
+          case "red":
+            return "danger";
+          case "yellow":
+            return "warning";
+          case "green":
+            return "success";
+          default:
+            return result.prediction === "fake" ? "danger" : "success";
         }
       };
 
       const getRiskLevel = (risk) => {
-        switch(risk?.toLowerCase()) {
-          case 'red': return 'High Risk';
-          case 'yellow': return 'Medium Risk';
-          case 'green': return 'Low Risk';
-          default: return result.prediction === "fake" ? 'High Risk' : 'Low Risk';
+        switch (risk?.toLowerCase()) {
+          case "red":
+            return "High Risk";
+          case "yellow":
+            return "Medium Risk";
+          case "green":
+            return "Low Risk";
+          default:
+            return result.prediction === "fake" ? "High Risk" : "Low Risk";
         }
       };
 
@@ -202,7 +216,8 @@ const useAppStore = create((set, get) => ({
           malwareSignatures: result.feature_vector?.count_suspicious || 0,
           suspiciousPermissions: result.feature_vector?.num_permissions || 0,
           knownThreats: result.prediction === "fake" ? "detected" : "none",
-          behavioralAnalysis: result.prediction === "fake" ? "suspicious" : "clean",
+          behavioralAnalysis:
+            result.prediction === "fake" ? "suspicious" : "clean",
         },
 
         details: {
@@ -232,28 +247,40 @@ const useAppStore = create((set, get) => ({
         // Generate recommendations based on analysis and risk level
         recommendations: (() => {
           const recs = [];
-          
+
           if (result.prediction === "fake") {
-            recs.push("DO NOT INSTALL - This application has been identified as potentially malicious");
-            recs.push("Installing this app may compromise your device security and personal data");
+            recs.push(
+              "DO NOT INSTALL - This application has been identified as potentially malicious"
+            );
+            recs.push(
+              "Installing this app may compromise your device security and personal data"
+            );
           } else {
             recs.push("Application appears safe based on our analysis");
           }
 
           if (result.feature_vector?.impersonation_score > 50) {
-            recs.push(`High impersonation risk score (${result.feature_vector.impersonation_score}/100) - This app may be impersonating another application`);
+            recs.push(
+              `High impersonation risk score (${result.feature_vector.impersonation_score}/100) - This app may be impersonating another application`
+            );
           }
 
           if (result.feature_vector?.cert_present === 0) {
-            recs.push("No digital certificate found - Verify the application source before installation");
+            recs.push(
+              "No digital certificate found - Verify the application source before installation"
+            );
           }
 
           if (result.feature_vector?.count_suspicious > 0) {
-            recs.push(`${result.feature_vector.count_suspicious} suspicious API calls detected`);
+            recs.push(
+              `${result.feature_vector.count_suspicious} suspicious API calls detected`
+            );
           }
 
           if (result.feature_vector?.num_suspicious_tld > 0) {
-            recs.push(`${result.feature_vector.num_suspicious_tld} suspicious network domains detected`);
+            recs.push(
+              `${result.feature_vector.num_suspicious_tld} suspicious network domains detected`
+            );
           }
 
           if (result.feature_vector?.pkg_official === 0) {
@@ -261,9 +288,11 @@ const useAppStore = create((set, get) => ({
           }
 
           // Always add general security recommendations
-          recs.push("Always download applications from official app stores when possible");
+          recs.push(
+            "Always download applications from official app stores when possible"
+          );
           recs.push("Review app permissions carefully before installation");
-          
+
           return recs;
         })(),
 
@@ -275,40 +304,46 @@ const useAppStore = create((set, get) => ({
         // Add warnings based on analysis
         warnings: (() => {
           const warnings = [];
-          
+
           if (result.prediction === "fake") {
             warnings.push({
-              type: 'critical',
-              icon: 'HiShieldExclamation',
-              title: 'Malicious Application Detected',
-              message: 'Our analysis indicates this APK contains malicious code. Do not install this application.'
+              type: "critical",
+              icon: "HiShieldExclamation",
+              title: "Malicious Application Detected",
+              message:
+                "Our analysis indicates this APK contains malicious code. Do not install this application.",
             });
           }
 
           if (result.feature_vector?.impersonation_score > 70) {
             warnings.push({
-              type: 'high',
-              icon: 'HiExclamationTriangle',
-              title: 'High Impersonation Risk',
-              message: `This app has a ${result.feature_vector.impersonation_score}% impersonation score, suggesting it may be mimicking a legitimate application.`
+              type: "high",
+              icon: "HiExclamationTriangle",
+              title: "High Impersonation Risk",
+              message: `This app has a ${result.feature_vector.impersonation_score}% impersonation score, suggesting it may be mimicking a legitimate application.`,
             });
           }
 
           if (result.feature_vector?.count_suspicious > 0) {
             warnings.push({
-              type: result.feature_vector.count_suspicious > 3 ? 'high' : 'medium',
-              icon: 'HiCode',
-              title: 'Suspicious API Usage',
-              message: `Found ${result.feature_vector.count_suspicious} suspicious API calls that could be used for malicious purposes.`
+              type:
+                result.feature_vector.count_suspicious > 3 ? "high" : "medium",
+              icon: "HiCode",
+              title: "Suspicious API Usage",
+              message: `Found ${result.feature_vector.count_suspicious} suspicious API calls that could be used for malicious purposes.`,
             });
           }
 
-          if (result.feature_vector?.label_contains_bank === 1 || result.feature_vector?.package_contains_bank === 1) {
+          if (
+            result.feature_vector?.label_contains_bank === 1 ||
+            result.feature_vector?.package_contains_bank === 1
+          ) {
             warnings.push({
-              type: 'high',
-              icon: 'HiCreditCard',
-              title: 'Banking-Related Application',
-              message: 'This app appears to be banking-related. Only install if from your official bank and verify authenticity.'
+              type: "high",
+              icon: "HiCreditCard",
+              title: "Banking-Related Application",
+              message:
+                "This app appears to be banking-related. Only install if from your official bank and verify authenticity.",
             });
           }
 
@@ -356,6 +391,11 @@ const useAppStore = create((set, get) => ({
         progress: 100,
       })),
     });
+
+    // Scroll to results section with a slight delay to ensure DOM is updated
+    setTimeout(() => {
+      scrollToSection("results", 100);
+    }, 300);
   },
 
   // Simulate analysis progress for better UX
@@ -370,7 +410,7 @@ const useAppStore = create((set, get) => ({
       // Update current test progress
       if (testIndex < tests.length) {
         const currentTest = tests[testIndex];
-        
+
         // More realistic progress increments
         const increment = Math.random() * 12 + 3; // 3-15% increments
         currentTest.progress += increment;
@@ -390,8 +430,12 @@ const useAppStore = create((set, get) => ({
 
       // Update overall progress based on completed tests and current test progress
       const completedTests = testIndex;
-      const currentTestProgress = testIndex < tests.length ? tests[testIndex].progress / 100 : 0;
-      progress = Math.min(95, ((completedTests + currentTestProgress) / tests.length) * 100);
+      const currentTestProgress =
+        testIndex < tests.length ? tests[testIndex].progress / 100 : 0;
+      progress = Math.min(
+        95,
+        ((completedTests + currentTestProgress) / tests.length) * 100
+      );
 
       set({
         analysisProgress: progress,
@@ -495,6 +539,11 @@ const useAppStore = create((set, get) => ({
         progress: 0,
       })),
     });
+
+    // Scroll to upload section for new analysis
+    setTimeout(() => {
+      scrollToSection("upload", 100);
+    }, 100);
   },
 }));
 

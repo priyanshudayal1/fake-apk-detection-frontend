@@ -11,16 +11,16 @@ import {
   HiCog,
   HiCode,
   HiCreditCard,
+  HiArrowUp,
 } from "react-icons/hi";
-import {
-  HiExclamationTriangle,
-} from "react-icons/hi2";
+import { HiExclamationTriangle } from "react-icons/hi2";
 import {
   BsShieldFillCheck,
   BsShieldFillExclamation,
   BsShieldFillX,
 } from "react-icons/bs";
 import useAppStore from "../../store/useAppStore";
+import { scrollToSection, scrollToTop } from "../../utils/scrollUtils";
 
 const NewResultsSection = () => {
   const {
@@ -55,8 +55,10 @@ const NewResultsSection = () => {
 
   const getVerdictConfig = () => {
     // Use the risk level from backend response for better accuracy
-    const currentRiskColor = riskColor || (prediction === "fake" ? "danger" : "success");
-    const currentRiskLevel = riskLevel || (prediction === "fake" ? "High Risk" : "Low Risk");
+    const currentRiskColor =
+      riskColor || (prediction === "fake" ? "danger" : "success");
+    const currentRiskLevel =
+      riskLevel || (prediction === "fake" ? "High Risk" : "Low Risk");
 
     switch (currentRiskColor) {
       case "success":
@@ -110,31 +112,43 @@ const NewResultsSection = () => {
 
   const getRiskBarColor = (currentRiskColor) => {
     switch (currentRiskColor) {
-      case "success": return "from-success-500 to-success-600";
-      case "warning": return "from-warning-500 to-warning-600";
-      case "danger": return "from-danger-500 to-danger-600";
-      default: return prediction === "fake" ? "from-danger-500 to-danger-600" : "from-success-500 to-success-600";
+      case "success":
+        return "from-success-500 to-success-600";
+      case "warning":
+        return "from-warning-500 to-warning-600";
+      case "danger":
+        return "from-danger-500 to-danger-600";
+      default:
+        return prediction === "fake"
+          ? "from-danger-500 to-danger-600"
+          : "from-success-500 to-success-600";
     }
   };
 
   const getRiskTextColor = (currentRiskColor) => {
     switch (currentRiskColor) {
-      case "success": return "text-success-600 dark:text-success-400";
-      case "warning": return "text-warning-600 dark:text-warning-400";
-      case "danger": return "text-danger-600 dark:text-danger-400";
-      default: return prediction === "fake" ? "text-danger-600 dark:text-danger-400" : "text-success-600 dark:text-success-400";
+      case "success":
+        return "text-success-600 dark:text-success-400";
+      case "warning":
+        return "text-warning-600 dark:text-warning-400";
+      case "danger":
+        return "text-danger-600 dark:text-danger-400";
+      default:
+        return prediction === "fake"
+          ? "text-danger-600 dark:text-danger-400"
+          : "text-success-600 dark:text-success-400";
     }
   };
 
   const getWarningIcon = (iconName) => {
     switch (iconName) {
-      case 'HiExclamationTriangle':
+      case "HiExclamationTriangle":
         return HiExclamationTriangle;
-      case 'HiCode':
+      case "HiCode":
         return HiCode;
-      case 'HiCreditCard':
+      case "HiCreditCard":
         return HiCreditCard;
-      case 'HiShieldExclamation':
+      case "HiShieldExclamation":
         return HiExclamation;
       default:
         return HiExclamation;
@@ -143,33 +157,33 @@ const NewResultsSection = () => {
 
   const getWarningColors = (type) => {
     switch (type) {
-      case 'critical':
+      case "critical":
         return {
-          bg: 'bg-danger-50 dark:bg-danger-900/20',
-          border: 'border-danger-200 dark:border-danger-700/50',
-          text: 'text-danger-700 dark:text-danger-300',
-          icon: 'text-danger-600 dark:text-danger-400'
+          bg: "bg-danger-50 dark:bg-danger-900/20",
+          border: "border-danger-200 dark:border-danger-700/50",
+          text: "text-danger-700 dark:text-danger-300",
+          icon: "text-danger-600 dark:text-danger-400",
         };
-      case 'high':
+      case "high":
         return {
-          bg: 'bg-warning-50 dark:bg-warning-900/20',
-          border: 'border-warning-200 dark:border-warning-700/50',
-          text: 'text-warning-700 dark:text-warning-300',
-          icon: 'text-warning-600 dark:text-warning-400'
+          bg: "bg-warning-50 dark:bg-warning-900/20",
+          border: "border-warning-200 dark:border-warning-700/50",
+          text: "text-warning-700 dark:text-warning-300",
+          icon: "text-warning-600 dark:text-warning-400",
         };
-      case 'medium':
+      case "medium":
         return {
-          bg: 'bg-yellow-50 dark:bg-yellow-900/20',
-          border: 'border-yellow-200 dark:border-yellow-700/50',
-          text: 'text-yellow-700 dark:text-yellow-300',
-          icon: 'text-yellow-600 dark:text-yellow-400'
+          bg: "bg-yellow-50 dark:bg-yellow-900/20",
+          border: "border-yellow-200 dark:border-yellow-700/50",
+          text: "text-yellow-700 dark:text-yellow-300",
+          icon: "text-yellow-600 dark:text-yellow-400",
         };
       default:
         return {
-          bg: 'bg-gray-50 dark:bg-gray-800/50',
-          border: 'border-gray-200 dark:border-gray-700/50',
-          text: 'text-gray-700 dark:text-gray-300',
-          icon: 'text-gray-600 dark:text-gray-400'
+          bg: "bg-gray-50 dark:bg-gray-800/50",
+          border: "border-gray-200 dark:border-gray-700/50",
+          text: "text-gray-700 dark:text-gray-300",
+          icon: "text-gray-600 dark:text-gray-400",
         };
     }
   };
@@ -204,6 +218,7 @@ const NewResultsSection = () => {
 
         {/* Main Verdict Card */}
         <div
+          id="verdict-card"
           className="mb-12 animate-fade-up"
           style={{ animationDelay: "200ms" }}
         >
@@ -232,14 +247,18 @@ const NewResultsSection = () => {
                     Risk Level: {risk}
                   </span>
                   <span
-                    className={`text-2xl font-bold ${getRiskTextColor(riskColor)}`}
+                    className={`text-2xl font-bold ${getRiskTextColor(
+                      riskColor
+                    )}`}
                   >
                     {confidenceScore}% Confidence
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden shadow-inner">
                   <div
-                    className={`h-full bg-gradient-to-r ${getRiskBarColor(riskColor)} rounded-full transition-all duration-1000`}
+                    className={`h-full bg-gradient-to-r ${getRiskBarColor(
+                      riskColor
+                    )} rounded-full transition-all duration-1000`}
                     style={{ width: `${confidenceScore}%` }}
                   />
                 </div>
@@ -262,6 +281,7 @@ const NewResultsSection = () => {
         {/* Warnings Section */}
         {warnings && warnings.length > 0 && (
           <div
+            id="warnings-section"
             className="mb-12 animate-fade-up"
             style={{ animationDelay: "300ms" }}
           >
@@ -270,23 +290,29 @@ const NewResultsSection = () => {
                 <HiExclamationTriangle className="w-6 h-6 text-warning-600 dark:text-warning-400 mr-3" />
                 Security Warnings
               </h3>
-              
+
               {warnings.map((warning, index) => {
                 const WarningIcon = getWarningIcon(warning.icon);
                 const colors = getWarningColors(warning.type);
-                
+
                 return (
                   <div
                     key={index}
                     className={`p-4 rounded-lg ${colors.bg} border ${colors.border}`}
                   >
                     <div className="flex items-start space-x-3">
-                      <WarningIcon className={`w-6 h-6 ${colors.icon} flex-shrink-0 mt-0.5`} />
+                      <WarningIcon
+                        className={`w-6 h-6 ${colors.icon} flex-shrink-0 mt-0.5`}
+                      />
                       <div>
                         <h4 className={`font-bold ${colors.text} mb-2`}>
                           {warning.title}
                         </h4>
-                        <p className={`${colors.text.replace('700', '600').replace('300', '400')}`}>
+                        <p
+                          className={`${colors.text
+                            .replace("700", "600")
+                            .replace("300", "400")}`}
+                        >
                           {warning.message}
                         </p>
                       </div>
@@ -299,7 +325,10 @@ const NewResultsSection = () => {
         )}
 
         {/* Feature Analysis Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <div
+          id="feature-analysis"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"
+        >
           {/* Permissions & Security */}
           <div className="animate-fade-up" style={{ animationDelay: "400ms" }}>
             <div className="h-full p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
@@ -533,6 +562,7 @@ const NewResultsSection = () => {
 
         {/* Recommendations */}
         <div
+          id="recommendations-section"
           className="mb-12 animate-fade-up"
           style={{ animationDelay: "1000ms" }}
         >
@@ -626,6 +656,68 @@ const NewResultsSection = () => {
                 Download HTML Report
               </>
             )}
+          </button>
+        </div>
+
+        {/* Floating Navigation & Scroll to Top */}
+        <div className="fixed right-6 bottom-6 z-20 flex flex-col gap-3">
+          {/* Quick Navigation */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="p-2">
+              <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-2 px-2">
+                Quick Navigation
+              </p>
+              <div className="space-y-1">
+                <button
+                  onClick={() => scrollToSection("verdict-card", 100)}
+                  className="w-full flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  title="View Verdict"
+                >
+                  <BsShieldFillCheck className="w-4 h-4 mr-2 text-primary-500" />
+                  <span>Verdict</span>
+                </button>
+
+                {warnings && warnings.length > 0 && (
+                  <button
+                    onClick={() => scrollToSection("warnings-section", 100)}
+                    className="w-full flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    title="View Warnings"
+                  >
+                    <HiExclamationTriangle className="w-4 h-4 mr-2 text-warning-500" />
+                    <span>Warnings</span>
+                  </button>
+                )}
+
+                <button
+                  onClick={() => scrollToSection("feature-analysis", 100)}
+                  className="w-full flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  title="View Technical Analysis"
+                >
+                  <HiCog className="w-4 h-4 mr-2 text-teal-500" />
+                  <span>Analysis</span>
+                </button>
+
+                <button
+                  onClick={() =>
+                    scrollToSection("recommendations-section", 100)
+                  }
+                  className="w-full flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  title="View Recommendations"
+                >
+                  <HiShieldCheck className="w-4 h-4 mr-2 text-success-500" />
+                  <span>Recommendations</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Scroll to Top Button */}
+          <button
+            onClick={scrollToTop}
+            className="p-3 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+            title="Scroll to Top"
+          >
+            <HiArrowUp className="w-5 h-5" />
           </button>
         </div>
       </div>

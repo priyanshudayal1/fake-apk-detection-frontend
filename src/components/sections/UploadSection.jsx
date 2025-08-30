@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { HiUpload, HiX, HiDocumentText, HiExclamation } from "react-icons/hi";
 import { BsFileEarmarkZip } from "react-icons/bs";
 import useAppStore from "../../store/useAppStore";
 import { validateAPKFile, createFilePreview } from "../../utils/fileUtils";
+import { scrollToSection } from "../../utils/scrollUtils";
 
 const UploadSection = () => {
   const fileInputRef = useRef(null);
@@ -19,6 +20,16 @@ const UploadSection = () => {
     clearFile,
     startAnalysis,
   } = useAppStore();
+
+  // Scroll to file preview section when file is successfully uploaded
+  useEffect(() => {
+    if (uploadedFile && !isUploading) {
+      // Small delay to ensure DOM is updated and smooth scroll
+      setTimeout(() => {
+        scrollToSection("upload", 60);
+      }, 200);
+    }
+  }, [uploadedFile, isUploading]);
 
   const handleDragEnter = (e) => {
     e.preventDefault();
