@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import { HiLink, HiExclamation, HiDocument } from "react-icons/hi";
 import useAppStore from "./store/useAppStore";
 
 // Layout Components
@@ -38,6 +39,22 @@ const App = () => {
     }
   }, [isDarkMode]);
 
+  // Auto-scroll to analysis section when analyzing starts
+  useEffect(() => {
+    if (currentView === "analyzing") {
+      // Wait for the component to render before scrolling
+      setTimeout(() => {
+        const analysisSection = document.getElementById("analysis-section");
+        if (analysisSection) {
+          analysisSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }, 100);
+    }
+  }, [currentView]);
+
   // Initialize WebSocket connection when app starts
   useEffect(() => {
     if (wsInitialized.current) return;
@@ -68,13 +85,13 @@ const App = () => {
       closeWebSocket();
       wsInitialized.current = false;
     };
-  }, []); // Empty deps array to run only once
+  }, [closeWebSocket, initWebSocket]); // Include dependencies
 
   // Separate effect to show success toast when connected
   useEffect(() => {
     if (wsConnected) {
       toast.success("Real-time analysis ready!", {
-        icon: "🔗",
+        icon: <HiLink className="w-5 h-5 text-success-500" />,
         duration: 3000,
       });
     }
@@ -84,7 +101,7 @@ const App = () => {
   useEffect(() => {
     if (wsError) {
       toast.error("Connection issue detected. Using standard analysis mode.", {
-        icon: "⚠️",
+        icon: <HiExclamation className="w-5 h-5 text-warning-500" />,
         duration: 5000,
       });
     }
@@ -94,7 +111,7 @@ const App = () => {
   useEffect(() => {
     if (pdfError) {
       toast.error(pdfError, {
-        icon: "📄",
+        icon: <HiDocument className="w-5 h-5 text-danger-500" />,
         duration: 5000,
       });
       // Clear the error after showing it

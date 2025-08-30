@@ -134,7 +134,10 @@ const ResultsSection = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
+    <section
+      id="results"
+      className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
+    >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>

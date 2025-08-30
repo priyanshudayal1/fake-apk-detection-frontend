@@ -8,6 +8,7 @@ import {
   HiGlobeAlt,
 } from "react-icons/hi";
 import { BsRobot, BsShieldFillCheck } from "react-icons/bs";
+import { scrollToSection } from "../../utils/scrollUtils";
 
 const AboutSection = () => {
   const techStack = [
@@ -288,11 +289,17 @@ const AboutSection = () => {
               experience design.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+              <button
+                onClick={() => scrollToSection("statistics")}
+                className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+              >
                 <HiGlobeAlt className="w-5 h-5 mr-2" />
                 Learn More
               </button>
-              <button className="inline-flex items-center px-8 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
+              <button
+                onClick={() => scrollToSection("faq")}
+                className="inline-flex items-center px-8 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
                 <HiShieldCheck className="w-5 h-5 mr-2" />
                 Contact Team
               </button>

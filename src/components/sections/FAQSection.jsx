@@ -4,6 +4,7 @@ import {
   HiChevronUp,
   HiQuestionMarkCircle,
 } from "react-icons/hi";
+import { scrollToSection } from "../../utils/scrollUtils";
 
 const FAQSection = () => {
   const [openItems, setOpenItems] = useState(new Set([0])); // First item open by default
@@ -144,7 +145,10 @@ const FAQSection = () => {
               Our security experts are here to help you understand APK threats
               and protection
             </p>
-            <button className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+            <button
+              onClick={() => scrollToSection("about")}
+              className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+            >
               <HiQuestionMarkCircle className="w-5 h-5 mr-2" />
               Contact Support
             </button>

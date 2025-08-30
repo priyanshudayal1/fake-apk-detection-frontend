@@ -4,6 +4,8 @@ import {
   HiCheckCircle,
   HiClock,
   HiShieldCheck,
+  HiExclamation,
+  HiCreditCard,
 } from "react-icons/hi";
 import { BsShieldFillCheck } from "react-icons/bs";
 
@@ -48,7 +50,10 @@ const StatisticsSection = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
+    <section
+      id="statistics"
+      className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
+    >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -131,7 +136,9 @@ const StatisticsSection = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="p-6 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
-              <div className="text-danger-500 text-4xl mb-4">⚠️</div>
+              <div className="flex items-center justify-center w-12 h-12 mb-4 text-danger-500">
+                <HiExclamation className="w-8 h-8" />
+              </div>
               <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Growing Threat
               </h4>
@@ -142,7 +149,9 @@ const StatisticsSection = () => {
             </div>
 
             <div className="p-6 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
-              <div className="text-danger-500 text-4xl mb-4">💳</div>
+              <div className="flex items-center justify-center w-12 h-12 mb-4 text-danger-500">
+                <HiCreditCard className="w-8 h-8" />
+              </div>
               <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Financial Risk
               </h4>
@@ -152,7 +161,9 @@ const StatisticsSection = () => {
             </div>
 
             <div className="p-6 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50">
-              <div className="text-success-500 text-4xl mb-4">🛡️</div>
+              <div className="flex items-center justify-center w-12 h-12 mb-4 text-success-500">
+                <BsShieldFillCheck className="w-8 h-8" />
+              </div>
               <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Your Protection
               </h4>

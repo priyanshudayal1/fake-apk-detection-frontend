@@ -1,6 +1,7 @@
 import React from "react";
 import { HiShieldCheck, HiPlay, HiChip } from "react-icons/hi";
 import { BsShieldFillCheck, BsRobot, BsClock } from "react-icons/bs";
+import { scrollToSection } from "../../utils/scrollUtils";
 
 const HeroSection = () => {
   const trustIndicators = [
@@ -78,12 +79,18 @@ const HeroSection = () => {
 
           {/* CTA Button */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+            <button
+              onClick={() => scrollToSection("upload")}
+              className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
+            >
               <HiPlay className="w-5 h-5 mr-2 group-hover:animate-bounce" />
               Start Security Analysis
             </button>
 
-            <button className="inline-flex items-center px-8 py-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50 text-gray-700 dark:text-gray-200 font-semibold rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <button
+              onClick={() => scrollToSection("about")}
+              className="inline-flex items-center px-8 py-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50 text-gray-700 dark:text-gray-200 font-semibold rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
               <HiChip className="w-5 h-5 mr-2" />
               Learn How It Works
             </button>

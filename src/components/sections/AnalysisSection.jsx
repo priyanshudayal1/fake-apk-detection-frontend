@@ -211,7 +211,10 @@ const AnalysisSection = () => {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
+    <section
+      id="analysis-section"
+      className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
+    >
       {/* Background Effects */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -390,8 +393,9 @@ const AnalysisSection = () => {
                     <span className="text-sm text-success-700 dark:text-success-300 font-medium">
                       Scan Complete
                     </span>
-                    <span className="text-xs text-success-600 dark:text-success-400">
-                      ✓ No issues detected
+                    <span className="text-xs text-success-600 dark:text-success-400 flex items-center">
+                      <HiCheckCircle className="w-3 h-3 mr-1" />
+                      No issues detected
                     </span>
                   </div>
                 </div>
@@ -404,8 +408,9 @@ const AnalysisSection = () => {
                     <span className="text-sm text-warning-700 dark:text-warning-300 font-medium">
                       Minor Issues Found
                     </span>
-                    <span className="text-xs text-warning-600 dark:text-warning-400">
-                      ⚠ Review required
+                    <span className="text-xs text-warning-600 dark:text-warning-400 flex items-center">
+                      <HiExclamation className="w-3 h-3 mr-1" />
+                      Review required
                     </span>
                   </div>
                 </div>
