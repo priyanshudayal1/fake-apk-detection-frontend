@@ -1,15 +1,7 @@
 import React from "react";
-import {
-  HiCube,
-  HiPlay,
-  HiShieldCheck,
-  HiChip,
-  HiCode,
-} from "react-icons/hi";
+import { HiCube, HiPlay } from "react-icons/hi";
 import { BsRobot, BsShieldFillCheck } from "react-icons/bs";
 const AboutSection = () => {
-
-
   const howItWorks = [
     {
       step: 1,
@@ -17,7 +9,7 @@ const AboutSection = () => {
       description:
         "Securely upload your banking APK file through our encrypted interface",
       icon: HiCube,
-      color: "from-primary-500 to-primary-600",
+      color: "from-teal-500 to-teal-600",
     },
     {
       step: 2,
@@ -25,7 +17,7 @@ const AboutSection = () => {
       description:
         "Advanced machine learning models analyze code patterns and behavior",
       icon: BsRobot,
-      color: "from-accent-500 to-accent-600",
+      color: "from-teal-500 to-teal-600",
     },
     {
       step: 3,
@@ -41,7 +33,7 @@ const AboutSection = () => {
       description:
         "Get detailed security report with recommendations and risk assessment",
       icon: HiPlay,
-      color: "from-success-500 to-success-600",
+      color: "from-teal-500 to-teal-600",
     },
   ];
 
@@ -65,7 +57,6 @@ const AboutSection = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         {/* How It Works */}
         <div className="mb-20">
           <div
@@ -88,13 +79,13 @@ const AboutSection = () => {
                 style={{ animationDelay: `${400 + index * 100}ms` }}
               >
                 <div className="relative mb-6">
+                  <div className="absolute -top-2 left-0 w-8 h-8 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center text-sm font-bold">
+                    {item.step}
+                  </div>
                   <div
                     className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-r ${item.color} shadow-lg mb-4`}
                   >
                     <item.icon className="w-10 h-10 text-white" />
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center text-sm font-bold">
-                    {item.step}
                   </div>
                 </div>
                 <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -102,73 +93,6 @@ const AboutSection = () => {
                 </h4>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                   {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Security Features */}
-        <div
-          className="mb-20 animate-fade-up"
-          style={{ animationDelay: "700ms" }}
-        >
-          <div className="text-center mb-12">
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Security Features
-            </h3>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Comprehensive protection through multiple analysis layers
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Code Integrity Analysis",
-                description:
-                  "Deep inspection of application code structure and patterns",
-                icon: HiCode,
-              },
-              {
-                title: "Digital Signature Verification",
-                description: "Validates authenticity and publisher identity",
-                icon: HiShieldCheck,
-              },
-              {
-                title: "Permission Analysis",
-                description:
-                  "Examines requested permissions for suspicious behavior",
-                icon: BsShieldFillCheck,
-              },
-              {
-                title: "Malware Detection",
-                description:
-                  "Scans against known malware signatures and patterns",
-                icon: HiPlay,
-              },
-              {
-                title: "Behavioral Analysis",
-                description:
-                  "AI-powered analysis of application behavior patterns",
-                icon: BsRobot,
-              },
-              {
-                title: "Real-time Processing",
-                description: "Instant analysis with live progress updates",
-                icon: HiChip,
-              },
-            ].map((feature, index) => (
-              <div
-                key={index}
-                className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-200/50 dark:border-gray-700/50 shadow-lg"
-              >
-                <feature.icon className="w-10 h-10 text-primary-600 dark:text-primary-400 mb-4" />
-                <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                  {feature.title}
-                </h4>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {feature.description}
                 </p>
               </div>
             ))}

@@ -103,8 +103,8 @@ const App = () => {
         {!isAnalyzing && !analysisResults && <BatchUploadSection />}
         {isAnalyzing && <AnalysisSection />}
         {analysisResults && <NewResultsSection />}
-        <AboutSection />
         <VideoDemoSection />
+        <AboutSection />
       </main>
 
       {/* Footer */}

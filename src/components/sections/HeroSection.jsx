@@ -4,16 +4,6 @@ import { BsShieldFillCheck, BsRobot, BsClock } from "react-icons/bs";
 import { scrollToSection } from "../../utils/scrollUtils";
 
 const HeroSection = () => {
-  const trustIndicators = [
-    { icon: BsRobot, text: "Powered by AI", color: "text-accent-500" },
-    { icon: BsClock, text: "Real-time Analysis", color: "text-primary-500" },
-    {
-      icon: BsShieldFillCheck,
-      text: "Bank-grade Security",
-      color: "text-success-500",
-    },
-  ];
-
   return (
     <section
       id="home"
@@ -57,25 +47,10 @@ const HeroSection = () => {
 
           {/* Subheading */}
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
-            Advanced AI-powered detection system that analyzes banking APK files
-            in real-time to identify malicious applications and protect your
-            financial data
+            An AI-powered tool that scans banking APKs in real time to detect
+            malicious code, suspicious permissions, embedded trackers, and
+            phishing risks — delivering rapid threat triage for security
           </p>
-
-          {/* Trust Indicators */}
-          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 mb-12">
-            {trustIndicators.map((indicator, index) => (
-              <div
-                key={index}
-                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50 shadow-sm"
-              >
-                <indicator.icon className={`w-5 h-5 ${indicator.color}`} />
-                <span className="text-gray-700 dark:text-gray-300 font-medium">
-                  {indicator.text}
-                </span>
-              </div>
-            ))}
-          </div>
 
           {/* CTA Button */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -88,11 +63,11 @@ const HeroSection = () => {
             </button>
 
             <button
-              onClick={() => scrollToSection("about")}
+              onClick={() => scrollToSection("demo")}
               className="inline-flex items-center px-8 py-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50 text-gray-700 dark:text-gray-200 font-semibold rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               <HiChip className="w-5 h-5 mr-2" />
-              Learn How It Works
+              See Our System in Action
             </button>
           </div>
         </div>
