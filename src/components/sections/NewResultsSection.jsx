@@ -527,22 +527,29 @@ const NewResultsSection = () => {
                   <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                     Permission Categories
                   </h4>
-                  
+
                   {permissions_analysis.high_risk?.length > 0 && (
                     <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
                       <h5 className="font-semibold text-danger-700 dark:text-danger-300 mb-2 flex items-center">
                         <HiExclamation className="w-4 h-4 mr-2" />
-                        High Risk Permissions ({permissions_analysis.high_risk.length})
+                        High Risk Permissions (
+                        {permissions_analysis.high_risk.length})
                       </h5>
                       <div className="space-y-1">
-                        {permissions_analysis.high_risk.slice(0, 5).map((perm, idx) => (
-                          <div key={idx} className="text-sm text-danger-600 dark:text-danger-400">
-                            • {perm}
-                          </div>
-                        ))}
+                        {permissions_analysis.high_risk
+                          .slice(0, 5)
+                          .map((perm, idx) => (
+                            <div
+                              key={idx}
+                              className="text-sm text-danger-600 dark:text-danger-400"
+                            >
+                              • {perm}
+                            </div>
+                          ))}
                         {permissions_analysis.high_risk.length > 5 && (
                           <div className="text-sm text-danger-500 dark:text-danger-500 italic">
-                            ... and {permissions_analysis.high_risk.length - 5} more
+                            ... and {permissions_analysis.high_risk.length - 5}{" "}
+                            more
                           </div>
                         )}
                       </div>
@@ -553,17 +560,24 @@ const NewResultsSection = () => {
                     <div className="p-4 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50">
                       <h5 className="font-semibold text-warning-700 dark:text-warning-300 mb-2 flex items-center">
                         <HiExclamationTriangle className="w-4 h-4 mr-2" />
-                        Medium Risk Permissions ({permissions_analysis.medium_risk.length})
+                        Medium Risk Permissions (
+                        {permissions_analysis.medium_risk.length})
                       </h5>
                       <div className="space-y-1">
-                        {permissions_analysis.medium_risk.slice(0, 5).map((perm, idx) => (
-                          <div key={idx} className="text-sm text-warning-600 dark:text-warning-400">
-                            • {perm}
-                          </div>
-                        ))}
+                        {permissions_analysis.medium_risk
+                          .slice(0, 5)
+                          .map((perm, idx) => (
+                            <div
+                              key={idx}
+                              className="text-sm text-warning-600 dark:text-warning-400"
+                            >
+                              • {perm}
+                            </div>
+                          ))}
                         {permissions_analysis.medium_risk.length > 5 && (
                           <div className="text-sm text-warning-500 dark:text-warning-500 italic">
-                            ... and {permissions_analysis.medium_risk.length - 5} more
+                            ... and{" "}
+                            {permissions_analysis.medium_risk.length - 5} more
                           </div>
                         )}
                       </div>
@@ -574,10 +588,12 @@ const NewResultsSection = () => {
                     <div className="p-4 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-700/50">
                       <h5 className="font-semibold text-success-700 dark:text-success-300 mb-2 flex items-center">
                         <HiCheckCircle className="w-4 h-4 mr-2" />
-                        Normal Permissions ({permissions_analysis.normal.length})
+                        Normal Permissions ({permissions_analysis.normal.length}
+                        )
                       </h5>
                       <div className="text-sm text-success-600 dark:text-success-400">
-                        {permissions_analysis.normal.length} standard permissions detected
+                        {permissions_analysis.normal.length} standard
+                        permissions detected
                       </div>
                     </div>
                   )}
@@ -588,7 +604,7 @@ const NewResultsSection = () => {
                   <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                     Permission Statistics
                   </h4>
-                  
+
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                       <div className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -598,13 +614,15 @@ const NewResultsSection = () => {
                         Total Permissions
                       </div>
                     </div>
-                    
+
                     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
-                      <div className={`text-2xl font-bold ${
-                        (permissions_analysis.high_risk?.length || 0) > 0 
-                          ? "text-danger-600 dark:text-danger-400"
-                          : "text-success-600 dark:text-success-400"
-                      }`}>
+                      <div
+                        className={`text-2xl font-bold ${
+                          (permissions_analysis.high_risk?.length || 0) > 0
+                            ? "text-danger-600 dark:text-danger-400"
+                            : "text-success-600 dark:text-success-400"
+                        }`}
+                      >
                         {permissions_analysis.high_risk?.length || 0}
                       </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -619,22 +637,30 @@ const NewResultsSection = () => {
                         <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Permission Risk Score
                         </span>
-                        <span className={`text-lg font-bold ${
-                          permissions_analysis.risk_score > 70 ? "text-danger-600 dark:text-danger-400" :
-                          permissions_analysis.risk_score > 40 ? "text-warning-600 dark:text-warning-400" :
-                          "text-success-600 dark:text-success-400"
-                        }`}>
+                        <span
+                          className={`text-lg font-bold ${
+                            permissions_analysis.risk_score > 70
+                              ? "text-danger-600 dark:text-danger-400"
+                              : permissions_analysis.risk_score > 40
+                              ? "text-warning-600 dark:text-warning-400"
+                              : "text-success-600 dark:text-success-400"
+                          }`}
+                        >
                           {permissions_analysis.risk_score}/100
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
                         <div
                           className={`h-3 rounded-full bg-gradient-to-r ${
-                            permissions_analysis.risk_score > 70 ? "from-danger-500 to-danger-600" :
-                            permissions_analysis.risk_score > 40 ? "from-warning-500 to-warning-600" :
-                            "from-success-500 to-success-600"
+                            permissions_analysis.risk_score > 70
+                              ? "from-danger-500 to-danger-600"
+                              : permissions_analysis.risk_score > 40
+                              ? "from-warning-500 to-warning-600"
+                              : "from-success-500 to-success-600"
                           }`}
-                          style={{ width: `${permissions_analysis.risk_score}%` }}
+                          style={{
+                            width: `${permissions_analysis.risk_score}%`,
+                          }}
                         />
                       </div>
                     </div>
@@ -665,17 +691,24 @@ const NewResultsSection = () => {
                     <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
                       <h5 className="font-semibold text-danger-700 dark:text-danger-300 mb-2 flex items-center">
                         <HiXCircle className="w-4 h-4 mr-2" />
-                        Critical APIs ({suspicious_apis_analysis.critical.length})
+                        Critical APIs (
+                        {suspicious_apis_analysis.critical.length})
                       </h5>
                       <div className="space-y-1">
-                        {suspicious_apis_analysis.critical.slice(0, 5).map((api, idx) => (
-                          <div key={idx} className="text-sm text-danger-600 dark:text-danger-400">
-                            • {api}
-                          </div>
-                        ))}
+                        {suspicious_apis_analysis.critical
+                          .slice(0, 5)
+                          .map((api, idx) => (
+                            <div
+                              key={idx}
+                              className="text-sm text-danger-600 dark:text-danger-400"
+                            >
+                              • {api}
+                            </div>
+                          ))}
                         {suspicious_apis_analysis.critical.length > 5 && (
                           <div className="text-sm text-danger-500 dark:text-danger-500 italic">
-                            ... and {suspicious_apis_analysis.critical.length - 5} more
+                            ... and{" "}
+                            {suspicious_apis_analysis.critical.length - 5} more
                           </div>
                         )}
                       </div>
@@ -686,17 +719,25 @@ const NewResultsSection = () => {
                     <div className="p-4 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50">
                       <h5 className="font-semibold text-warning-700 dark:text-warning-300 mb-2 flex items-center">
                         <HiExclamationTriangle className="w-4 h-4 mr-2" />
-                        Suspicious APIs ({suspicious_apis_analysis.suspicious.length})
+                        Suspicious APIs (
+                        {suspicious_apis_analysis.suspicious.length})
                       </h5>
                       <div className="space-y-1">
-                        {suspicious_apis_analysis.suspicious.slice(0, 5).map((api, idx) => (
-                          <div key={idx} className="text-sm text-warning-600 dark:text-warning-400">
-                            • {api}
-                          </div>
-                        ))}
+                        {suspicious_apis_analysis.suspicious
+                          .slice(0, 5)
+                          .map((api, idx) => (
+                            <div
+                              key={idx}
+                              className="text-sm text-warning-600 dark:text-warning-400"
+                            >
+                              • {api}
+                            </div>
+                          ))}
                         {suspicious_apis_analysis.suspicious.length > 5 && (
                           <div className="text-sm text-warning-500 dark:text-warning-500 italic">
-                            ... and {suspicious_apis_analysis.suspicious.length - 5} more
+                            ... and{" "}
+                            {suspicious_apis_analysis.suspicious.length - 5}{" "}
+                            more
                           </div>
                         )}
                       </div>
@@ -715,14 +756,17 @@ const NewResultsSection = () => {
                         Total APIs
                       </div>
                     </div>
-                    
+
                     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
-                      <div className={`text-2xl font-bold ${
-                        (suspicious_apis_analysis.critical?.length || 0) > 0 
-                          ? "text-danger-600 dark:text-danger-400"
-                          : "text-success-600 dark:text-success-400"
-                      }`}>
-                        {(suspicious_apis_analysis.critical?.length || 0) + (suspicious_apis_analysis.suspicious?.length || 0)}
+                      <div
+                        className={`text-2xl font-bold ${
+                          (suspicious_apis_analysis.critical?.length || 0) > 0
+                            ? "text-danger-600 dark:text-danger-400"
+                            : "text-success-600 dark:text-success-400"
+                        }`}
+                      >
+                        {(suspicious_apis_analysis.critical?.length || 0) +
+                          (suspicious_apis_analysis.suspicious?.length || 0)}
                       </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
                         Suspicious
@@ -736,22 +780,30 @@ const NewResultsSection = () => {
                         <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           API Risk Score
                         </span>
-                        <span className={`text-lg font-bold ${
-                          suspicious_apis_analysis.risk_score > 70 ? "text-danger-600 dark:text-danger-400" :
-                          suspicious_apis_analysis.risk_score > 40 ? "text-warning-600 dark:text-warning-400" :
-                          "text-success-600 dark:text-success-400"
-                        }`}>
+                        <span
+                          className={`text-lg font-bold ${
+                            suspicious_apis_analysis.risk_score > 70
+                              ? "text-danger-600 dark:text-danger-400"
+                              : suspicious_apis_analysis.risk_score > 40
+                              ? "text-warning-600 dark:text-warning-400"
+                              : "text-success-600 dark:text-success-400"
+                          }`}
+                        >
                           {suspicious_apis_analysis.risk_score}/100
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
                         <div
                           className={`h-3 rounded-full bg-gradient-to-r ${
-                            suspicious_apis_analysis.risk_score > 70 ? "from-danger-500 to-danger-600" :
-                            suspicious_apis_analysis.risk_score > 40 ? "from-warning-500 to-warning-600" :
-                            "from-success-500 to-success-600"
+                            suspicious_apis_analysis.risk_score > 70
+                              ? "from-danger-500 to-danger-600"
+                              : suspicious_apis_analysis.risk_score > 40
+                              ? "from-warning-500 to-warning-600"
+                              : "from-success-500 to-success-600"
                           }`}
-                          style={{ width: `${suspicious_apis_analysis.risk_score}%` }}
+                          style={{
+                            width: `${suspicious_apis_analysis.risk_score}%`,
+                          }}
                         />
                       </div>
                     </div>
@@ -775,25 +827,41 @@ const NewResultsSection = () => {
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {Object.entries(security_indicators).map(([key, value], idx) => {
-                  const isBoolean = typeof value === 'boolean';
-                  const isGoodIndicator = key.includes('certificate') || key.includes('signature') || key.includes('official');
-                  const displayValue = isBoolean ? (value ? 'Yes' : 'No') : value;
-                  const colorClass = isBoolean 
-                    ? (value === isGoodIndicator ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400')
-                    : 'text-gray-700 dark:text-gray-300';
+                {Object.entries(security_indicators).map(
+                  ([key, value], idx) => {
+                    const isBoolean = typeof value === "boolean";
+                    const isGoodIndicator =
+                      key.includes("certificate") ||
+                      key.includes("signature") ||
+                      key.includes("official");
+                    const displayValue = isBoolean
+                      ? value
+                        ? "Yes"
+                        : "No"
+                      : value;
+                    const colorClass = isBoolean
+                      ? value === isGoodIndicator
+                        ? "text-success-600 dark:text-success-400"
+                        : "text-danger-600 dark:text-danger-400"
+                      : "text-gray-700 dark:text-gray-300";
 
-                  return (
-                    <div key={idx} className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                        {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    return (
+                      <div
+                        key={idx}
+                        className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                      >
+                        <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                          {key
+                            .replace(/_/g, " ")
+                            .replace(/\b\w/g, (l) => l.toUpperCase())}
+                        </div>
+                        <div className={`text-lg font-bold ${colorClass}`}>
+                          {displayValue}
+                        </div>
                       </div>
-                      <div className={`text-lg font-bold ${colorClass}`}>
-                        {displayValue}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  }
+                )}
               </div>
             </div>
           </div>
@@ -872,7 +940,7 @@ const NewResultsSection = () => {
                 <HiCog className="w-6 h-6 text-teal-600 dark:text-teal-400 mr-3" />
                 AI Security Analysis Explanation
               </h3>
-              
+
               <div className="prose dark:prose-invert max-w-none">
                 <div className="p-4 rounded-lg bg-gradient-to-r from-teal-50 to-blue-50 dark:from-teal-900/20 dark:to-blue-900/20 border border-teal-200 dark:border-teal-700/50">
                   <div className="flex items-start space-x-3">
@@ -916,7 +984,10 @@ const NewResultsSection = () => {
                     </h4>
                     <div className="space-y-3">
                       {risk_factors.high.map((factor, idx) => (
-                        <div key={idx} className="p-3 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
+                        <div
+                          key={idx}
+                          className="p-3 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50"
+                        >
                           <div className="font-medium text-danger-800 dark:text-danger-200 mb-1">
                             {factor.factor}
                           </div>
@@ -943,7 +1014,10 @@ const NewResultsSection = () => {
                     </h4>
                     <div className="space-y-3">
                       {risk_factors.medium.map((factor, idx) => (
-                        <div key={idx} className="p-3 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50">
+                        <div
+                          key={idx}
+                          className="p-3 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50"
+                        >
                           <div className="font-medium text-warning-800 dark:text-warning-200 mb-1">
                             {factor.factor}
                           </div>
@@ -970,7 +1044,10 @@ const NewResultsSection = () => {
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {risk_factors.low.map((factor, idx) => (
-                        <div key={idx} className="p-3 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-700/50">
+                        <div
+                          key={idx}
+                          className="p-3 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-700/50"
+                        >
                           <div className="font-medium text-success-800 dark:text-success-200 mb-1">
                             {factor.factor}
                           </div>
@@ -991,22 +1068,30 @@ const NewResultsSection = () => {
                         <span className="text-lg font-semibold text-gray-900 dark:text-white">
                           Overall Risk Score
                         </span>
-                        <span className={`text-2xl font-bold ${
-                          risk_factors.overall_risk_score > 70 ? "text-danger-600 dark:text-danger-400" :
-                          risk_factors.overall_risk_score > 40 ? "text-warning-600 dark:text-warning-400" :
-                          "text-success-600 dark:text-success-400"
-                        }`}>
+                        <span
+                          className={`text-2xl font-bold ${
+                            risk_factors.overall_risk_score > 70
+                              ? "text-danger-600 dark:text-danger-400"
+                              : risk_factors.overall_risk_score > 40
+                              ? "text-warning-600 dark:text-warning-400"
+                              : "text-success-600 dark:text-success-400"
+                          }`}
+                        >
                           {risk_factors.overall_risk_score}/100
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
                         <div
                           className={`h-4 rounded-full bg-gradient-to-r ${
-                            risk_factors.overall_risk_score > 70 ? "from-danger-500 to-danger-600" :
-                            risk_factors.overall_risk_score > 40 ? "from-warning-500 to-warning-600" :
-                            "from-success-500 to-success-600"
+                            risk_factors.overall_risk_score > 70
+                              ? "from-danger-500 to-danger-600"
+                              : risk_factors.overall_risk_score > 40
+                              ? "from-warning-500 to-warning-600"
+                              : "from-success-500 to-success-600"
                           }`}
-                          style={{ width: `${risk_factors.overall_risk_score}%` }}
+                          style={{
+                            width: `${risk_factors.overall_risk_score}%`,
+                          }}
                         />
                       </div>
                     </div>
@@ -1028,14 +1113,18 @@ const NewResultsSection = () => {
                 <HiChartBar className="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3" />
                 AI Model Feature Analysis
               </h3>
-              
+
               <div className="space-y-4">
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  These features had the most influence on the AI model's decision:
+                  These features had the most influence on the AI model's
+                  decision:
                 </p>
-                
+
                 {top_shap.map((feature, idx) => (
-                  <div key={idx} className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                  <div
+                    key={idx}
+                    className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                  >
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex-1">
                         <h4 className="font-semibold text-gray-900 dark:text-white">
@@ -1046,29 +1135,37 @@ const NewResultsSection = () => {
                         </p>
                       </div>
                       <div className="text-right">
-                        <div className={`text-lg font-bold ${
-                          feature.shap_value > 0 
-                            ? "text-danger-600 dark:text-danger-400" 
-                            : "text-success-600 dark:text-success-400"
-                        }`}>
-                          {feature.shap_value > 0 ? '+' : ''}{feature.shap_value.toFixed(3)}
+                        <div
+                          className={`text-lg font-bold ${
+                            feature.shap_value > 0
+                              ? "text-danger-600 dark:text-danger-400"
+                              : "text-success-600 dark:text-success-400"
+                          }`}
+                        >
+                          {feature.shap_value > 0 ? "+" : ""}
+                          {feature.shap_value.toFixed(3)}
                         </div>
                         <div className="text-xs text-gray-500 dark:text-gray-500">
-                          {feature.shap_value > 0 ? 'Increases Risk' : 'Decreases Risk'}
+                          {feature.shap_value > 0
+                            ? "Increases Risk"
+                            : "Decreases Risk"}
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* SHAP value bar */}
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
                         className={`h-2 rounded-full ${
-                          feature.shap_value > 0 
-                            ? 'bg-gradient-to-r from-danger-500 to-danger-600' 
-                            : 'bg-gradient-to-r from-success-500 to-success-600'
+                          feature.shap_value > 0
+                            ? "bg-gradient-to-r from-danger-500 to-danger-600"
+                            : "bg-gradient-to-r from-success-500 to-success-600"
                         }`}
-                        style={{ 
-                          width: `${Math.min(Math.abs(feature.shap_value) * 100, 100)}%` 
+                        style={{
+                          width: `${Math.min(
+                            Math.abs(feature.shap_value) * 100,
+                            100
+                          )}%`,
                         }}
                       />
                     </div>
@@ -1106,7 +1203,10 @@ const NewResultsSection = () => {
                 {performance_metrics.file_size && (
                   <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {(performance_metrics.file_size / (1024 * 1024)).toFixed(1)}MB
+                      {(performance_metrics.file_size / (1024 * 1024)).toFixed(
+                        1
+                      )}
+                      MB
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                       File Size
@@ -1190,26 +1290,33 @@ const NewResultsSection = () => {
                 </div>
               </div>
 
-              {batch_summary.high_risk_files && batch_summary.high_risk_files.length > 0 && (
-                <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
-                  <h4 className="font-semibold text-danger-700 dark:text-danger-300 mb-3 flex items-center">
-                    <HiXCircle className="w-4 h-4 mr-2" />
-                    High Risk Files ({batch_summary.high_risk_files.length})
-                  </h4>
-                  <div className="space-y-2">
-                    {batch_summary.high_risk_files.slice(0, 5).map((file, idx) => (
-                      <div key={idx} className="text-sm text-danger-600 dark:text-danger-400">
-                        • {file}
-                      </div>
-                    ))}
-                    {batch_summary.high_risk_files.length > 5 && (
-                      <div className="text-sm text-danger-500 dark:text-danger-500 italic">
-                        ... and {batch_summary.high_risk_files.length - 5} more high risk files
-                      </div>
-                    )}
+              {batch_summary.high_risk_files &&
+                batch_summary.high_risk_files.length > 0 && (
+                  <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
+                    <h4 className="font-semibold text-danger-700 dark:text-danger-300 mb-3 flex items-center">
+                      <HiXCircle className="w-4 h-4 mr-2" />
+                      High Risk Files ({batch_summary.high_risk_files.length})
+                    </h4>
+                    <div className="space-y-2">
+                      {batch_summary.high_risk_files
+                        .slice(0, 5)
+                        .map((file, idx) => (
+                          <div
+                            key={idx}
+                            className="text-sm text-danger-600 dark:text-danger-400"
+                          >
+                            • {file}
+                          </div>
+                        ))}
+                      {batch_summary.high_risk_files.length > 5 && (
+                        <div className="text-sm text-danger-500 dark:text-danger-500 italic">
+                          ... and {batch_summary.high_risk_files.length - 5}{" "}
+                          more high risk files
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </div>
         )}
