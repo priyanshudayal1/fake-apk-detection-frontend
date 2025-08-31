@@ -465,7 +465,7 @@ const useAppStore = create((set, get) => ({
     set({ isGeneratingBatchReport: generating }),
   setBatchReportError: (error) => set({ batchReportError: error }),
 
-  // Generate and download HTML report - now uses batch endpoint for consistency
+  // Generate and Download Detailed Report - now uses batch endpoint for consistency
   generateHTMLReport: async () => {
     const state = get();
     if (!state.uploadedFile) {
