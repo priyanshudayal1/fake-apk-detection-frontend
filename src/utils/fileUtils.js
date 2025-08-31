@@ -23,9 +23,13 @@ export const validateAPKFile = (file) => {
     return { isValid: false, error: "No file selected" };
   }
 
-  // Check file extension
-  if (!file.name.toLowerCase().endsWith(".apk")) {
-    return { isValid: false, error: "File must be an APK file" };
+  // Check file extension - support .apk, .apks, .xapk
+  const fileName = file.name.toLowerCase();
+  const validExtensions = ['.apk', '.apks', '.xapk'];
+  const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+  
+  if (!hasValidExtension) {
+    return { isValid: false, error: "File must be an APK file (.apk, .apks, or .xapk)" };
   }
 
   // Check file size (100MB limit)
@@ -54,6 +58,8 @@ export const getFileTypeIcon = (fileName) => {
 
   switch (extension) {
     case "apk":
+    case "apks":
+    case "xapk":
       return "📱";
     case "pdf":
       return "📄";

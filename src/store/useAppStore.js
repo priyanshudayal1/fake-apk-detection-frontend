@@ -465,7 +465,7 @@ const useAppStore = create((set, get) => ({
     set({ isGeneratingBatchReport: generating }),
   setBatchReportError: (error) => set({ batchReportError: error }),
 
-  // Generate and download HTML report
+  // Generate and download HTML report - now uses batch endpoint for consistency
   generateHTMLReport: async () => {
     const state = get();
     if (!state.uploadedFile) {
@@ -476,31 +476,49 @@ const useAppStore = create((set, get) => ({
     set({ isGeneratingReport: true, reportError: null });
 
     try {
-      const response = await APKAnalysisService.generateReport(
+      // Use the batch report endpoint for single files too
+      const response = await APKAnalysisService.generateBatchReport([
         state.uploadedFile.file || state.uploadedFile
-      );
+      ]);
 
-      if (response.data?.result && response.data?.html) {
-        // Create blob from HTML content and download
-        const htmlContent = response.data.html;
-        const blob = new Blob([htmlContent], { type: "text/html" });
+      if (response.data?.word_report) {
+        // Create blob from base64 Word document content and download
+        const base64Data = response.data.word_report;
 
-        // Create download link
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${state.uploadedFile.name}_report.html`;
-        document.body.appendChild(a);
-        a.click();
+        try {
+          // Convert base64 to binary
+          const binaryString = window.atob(base64Data);
+          const bytes = new Uint8Array(binaryString.length);
+          for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
 
-        // Cleanup
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+          const blob = new Blob([bytes], {
+            type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          });
 
-        set({ isGeneratingReport: false });
-        return true;
+          // Create download link
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${state.uploadedFile.name}_analysis_report_${
+            new Date().toISOString().split("T")[0]
+          }.docx`;
+          document.body.appendChild(a);
+          a.click();
+
+          // Cleanup
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+
+          set({ isGeneratingReport: false });
+          return true;
+        } catch (decodeError) {
+          console.error("Failed to decode base64 report data:", decodeError);
+          throw new Error("Failed to process report data");
+        }
       } else {
-        throw new Error("Invalid report response format");
+        throw new Error("Invalid report response format - no word_report field");
       }
     } catch (error) {
       console.error("Report generation failed:", error);
@@ -508,6 +526,10 @@ const useAppStore = create((set, get) => ({
       let errorMessage;
       if (error.code === "ECONNABORTED" || error.message.includes("timeout")) {
         errorMessage = "Report generation timed out. Please try again.";
+      } else if (error.response?.status === 400) {
+        const detail =
+          error.response.data?.detail || error.response.data?.error;
+        errorMessage = detail || "Invalid request for report generation.";
       } else if (error.response?.status === 422) {
         errorMessage = "Could not analyze APK for report generation.";
       } else if (error.response?.status >= 500) {

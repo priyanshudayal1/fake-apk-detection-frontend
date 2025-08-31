@@ -60,6 +60,12 @@ const BatchUploadSection = () => {
     if (uploadMode === "single" && files.length > 0) {
       handleFileSelection(files[0]);
     } else if (uploadMode === "batch" && files.length > 0) {
+      // Check file limit before processing
+      const totalFiles = batchFiles.length + files.length;
+      if (totalFiles > 15) {
+        setBatchError(`Maximum 15 files allowed per batch. You're trying to add ${files.length} files but already have ${batchFiles.length} files. Please remove ${totalFiles - 15} files.`);
+        return;
+      }
       handleBatchFileSelection(files);
     }
   };
@@ -69,6 +75,12 @@ const BatchUploadSection = () => {
     if (uploadMode === "single" && files.length > 0) {
       handleFileSelection(files[0]);
     } else if (uploadMode === "batch" && files.length > 0) {
+      // Check file limit before processing
+      const totalFiles = batchFiles.length + files.length;
+      if (totalFiles > 15) {
+        setBatchError(`Maximum 15 files allowed per batch. You're trying to add ${files.length} files but already have ${batchFiles.length} files. Please remove ${totalFiles - 15} files.`);
+        return;
+      }
       handleBatchFileSelection(files);
     }
   };
@@ -96,6 +108,13 @@ const BatchUploadSection = () => {
     setBatchError(null);
     const validFiles = [];
     const errors = [];
+
+    // Check total file limit (existing + new files)
+    const totalFiles = batchFiles.length + files.length;
+    if (totalFiles > 15) {
+      setBatchError(`Maximum 15 files allowed per batch. You're trying to add ${files.length} files but already have ${batchFiles.length} files. Please remove ${totalFiles - 15} files.`);
+      return;
+    }
 
     files.forEach((file, index) => {
       const validation = validateAPKFile(file);
@@ -460,7 +479,7 @@ const BatchUploadSection = () => {
                   Drop multiple APK files here
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Select multiple files for batch analysis
+                  Select multiple files for batch analysis (up to 15 files)
                 </p>
 
                 <button
@@ -495,7 +514,7 @@ const BatchUploadSection = () => {
                 <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                      Batch Analysis Queue ({batchFiles.length} files)
+                      Batch Analysis Queue ({batchFiles.length}/15 files)
                     </h3>
                     <div className="flex items-center space-x-3">
                       <button
@@ -522,6 +541,21 @@ const BatchUploadSection = () => {
                       </button>
                     </div>
                   </div>
+                  {/* File limit warnings */}
+                  {batchFiles.length >= 12 && batchFiles.length < 15 && (
+                    <div className="px-6 pb-3">
+                      <p className="text-xs text-amber-600 dark:text-amber-400">
+                        {15 - batchFiles.length} more files allowed
+                      </p>
+                    </div>
+                  )}
+                  {batchFiles.length === 15 && (
+                    <div className="px-6 pb-3">
+                      <p className="text-xs text-red-600 dark:text-red-400">
+                        Maximum file limit reached (15/15)
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -736,7 +770,7 @@ const BatchUploadSection = () => {
                 <li>
                   •{" "}
                   {uploadMode === "batch"
-                    ? "Multiple files supported"
+                    ? "Up to 15 files per batch"
                     : "Banking applications recommended"}
                 </li>
               </ul>

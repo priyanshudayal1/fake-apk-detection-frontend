@@ -190,9 +190,9 @@ const UploadSection = () => {
                     File Requirements:
                   </h4>
                   <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
-                    <li>• File format: .apk only</li>
+                    <li>• File format: .apk, .apks, .xapk</li>
                     <li>• Maximum size: 100MB</li>
-                    <li>• Banking applications only</li>
+                    <li>• Banking applications recommended</li>
                     <li>• No personal data is stored</li>
                   </ul>
                 </div>
@@ -284,7 +284,7 @@ const UploadSection = () => {
         <input
           ref={fileInputRef}
           type="file"
-          accept=".apk"
+          accept=".apk,.apks,.xapk"
           onChange={handleFileInputChange}
           className="hidden"
         />
