@@ -44,7 +44,7 @@ const HeroSection = () => {
           {/* Security Badge */}
           <div className="mt-4 inline-flex items-center px-4 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-primary-200/50 dark:border-primary-600/50 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6 shadow-lg">
             <HiShieldCheck className="w-4 h-4 mr-2" />
-            Trusted by Security Experts
+            Real Time APK Analysis
           </div>
 
           {/* Main Headline */}
@@ -94,28 +94,6 @@ const HeroSection = () => {
               <HiChip className="w-5 h-5 mr-2" />
               Learn How It Works
             </button>
-          </div>
-
-          {/* Security Stats Preview */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6">
-            {[
-              { number: "10,000+", label: "APKs Analyzed" },
-              { number: "99.7%", label: "Accuracy Rate" },
-              { number: "<2s", label: "Analysis Time" },
-              { number: "0", label: "Data Stored" },
-            ].map((stat, index) => (
-              <div
-                key={index}
-                className="p-4 rounded-lg bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/30 dark:border-gray-600/30"
-              >
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
-                  {stat.number}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>

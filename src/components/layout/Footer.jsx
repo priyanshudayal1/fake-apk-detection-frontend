@@ -33,29 +33,7 @@ const Footer = () => {
                 Protecting users from malicious applications with real-time
                 threat detection.
               </p>
-              <div className="flex space-x-4">
-                <a
-                  href="#"
-                  className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-all duration-200"
-                  aria-label="GitHub"
-                >
-                  <BsGithub className="w-5 h-5" />
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-all duration-200"
-                  aria-label="Twitter"
-                >
-                  <BsTwitter className="w-5 h-5" />
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-all duration-200"
-                  aria-label="LinkedIn"
-                >
-                  <BsLinkedin className="w-5 h-5" />
-                </a>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -72,10 +50,6 @@ const Footer = () => {
                 <div className="flex items-center text-gray-400">
                   <HiGlobeAlt className="w-4 h-4 mr-2" />
                   Made in India
-                </div>
-                <div className="flex items-center text-gray-400">
-                  <HiMail className="w-4 h-4 mr-2" />
-                  security@secureapk.com
                 </div>
               </div>
             </div>

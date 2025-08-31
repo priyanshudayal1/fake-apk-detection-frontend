@@ -85,12 +85,12 @@ const App = () => {
       <main className="pt-16 md:pt-20">
         {/* Always show Hero and Stats sections */}
         <HeroSection />
-        <VideoDemoSection />
         {/* Conditional Sections based on analysis state */}
         {!isAnalyzing && !analysisResults && <UploadSection />}
         {isAnalyzing && <AnalysisSection />}
         {analysisResults && <NewResultsSection />}
         <AboutSection />
+        <VideoDemoSection />
       </main>
 
       {/* Footer */}
