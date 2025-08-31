@@ -461,7 +461,8 @@ const useAppStore = create((set, get) => ({
   // Batch report generation state
   isGeneratingBatchReport: false,
   batchReportError: null,
-  setGeneratingBatchReport: (generating) => set({ isGeneratingBatchReport: generating }),
+  setGeneratingBatchReport: (generating) =>
+    set({ isGeneratingBatchReport: generating }),
   setBatchReportError: (error) => set({ batchReportError: error }),
 
   // Generate and download HTML report
@@ -530,7 +531,9 @@ const useAppStore = create((set, get) => ({
   // Generate and download batch Word report
   generateBatchReport: async (files) => {
     if (!files || files.length === 0) {
-      set({ batchReportError: "No files provided for batch report generation" });
+      set({
+        batchReportError: "No files provided for batch report generation",
+      });
       return false;
     }
 
@@ -542,7 +545,7 @@ const useAppStore = create((set, get) => ({
       if (response.data?.word_report) {
         // Create blob from base64 Word document content and download
         const base64Data = response.data.word_report;
-        
+
         try {
           // Convert base64 to binary
           const binaryString = window.atob(base64Data);
@@ -550,16 +553,18 @@ const useAppStore = create((set, get) => ({
           for (let i = 0; i < binaryString.length; i++) {
             bytes[i] = binaryString.charCodeAt(i);
           }
-          
-          const blob = new Blob([bytes], { 
-            type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
+
+          const blob = new Blob([bytes], {
+            type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           });
 
           // Create download link
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = `batch_analysis_report_${new Date().toISOString().split('T')[0]}.docx`;
+          a.download = `batch_analysis_report_${
+            new Date().toISOString().split("T")[0]
+          }.docx`;
           document.body.appendChild(a);
           a.click();
 
@@ -574,7 +579,9 @@ const useAppStore = create((set, get) => ({
           throw new Error("Failed to process report data");
         }
       } else {
-        throw new Error("Invalid batch report response format - no word_report field");
+        throw new Error(
+          "Invalid batch report response format - no word_report field"
+        );
       }
     } catch (error) {
       console.error("Batch report generation failed:", error);
@@ -583,7 +590,8 @@ const useAppStore = create((set, get) => ({
       if (error.code === "ECONNABORTED" || error.message.includes("timeout")) {
         errorMessage = "Batch report generation timed out. Please try again.";
       } else if (error.response?.status === 400) {
-        const detail = error.response.data?.detail || error.response.data?.error;
+        const detail =
+          error.response.data?.detail || error.response.data?.error;
         if (detail === "Maximum 15 files allowed per batch") {
           errorMessage = "Maximum 15 files allowed per batch report.";
         } else if (detail === "No valid APK files found") {
@@ -592,11 +600,16 @@ const useAppStore = create((set, get) => ({
           errorMessage = detail || "Invalid request for batch report.";
         }
       } else if (error.response?.status === 422) {
-        errorMessage = "Could not analyze one or more APK files for batch report.";
+        errorMessage =
+          "Could not analyze one or more APK files for batch report.";
       } else if (error.response?.status >= 500) {
-        errorMessage = "Server error during batch report generation. Please try again later.";
+        errorMessage =
+          "Server error during batch report generation. Please try again later.";
       } else {
-        errorMessage = error.response?.data?.error || error.message || "Unknown error occurred";
+        errorMessage =
+          error.response?.data?.error ||
+          error.message ||
+          "Unknown error occurred";
       }
 
       set({

@@ -1,5 +1,11 @@
 import React, { useRef, useState } from "react";
-import { HiUpload, HiX, HiDocumentText, HiExclamation, HiDownload } from "react-icons/hi";
+import {
+  HiUpload,
+  HiX,
+  HiDocumentText,
+  HiExclamation,
+  HiDownload,
+} from "react-icons/hi";
 import { BsFileEarmarkZip } from "react-icons/bs";
 import { HiQueueList, HiTrash } from "react-icons/hi2";
 import useAppStore from "../../store/useAppStore";
@@ -191,7 +197,7 @@ const BatchUploadSection = () => {
 
     const filesToReport = batchFiles.map((f) => f.file);
     const success = await generateBatchReport(filesToReport);
-    
+
     if (success) {
       console.log("Batch Word report downloaded successfully");
     }
@@ -623,11 +629,13 @@ const BatchUploadSection = () => {
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                     Batch Analysis Results
                   </h3>
-                  
+
                   {/* Download Report Button */}
                   <button
                     onClick={handleDownloadBatchReport}
-                    disabled={isGeneratingBatchReport || batchFiles.length === 0}
+                    disabled={
+                      isGeneratingBatchReport || batchFiles.length === 0
+                    }
                     className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:cursor-not-allowed"
                   >
                     {isGeneratingBatchReport ? (
@@ -697,8 +705,9 @@ const BatchUploadSection = () => {
                         Comprehensive Analysis Report
                       </h4>
                       <p className="text-sm text-blue-600 dark:text-blue-400">
-                        Download a detailed Word document containing complete analysis results, 
-                        security assessments, and AI-powered explanations for all processed APK files.
+                        Download a detailed Word document containing complete
+                        analysis results, security assessments, and AI-powered
+                        explanations for all processed APK files.
                       </p>
                     </div>
                   </div>
