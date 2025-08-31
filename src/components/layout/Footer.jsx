@@ -12,7 +12,7 @@ const Footer = () => {
 
       <div className="relative z-10">
         {/* Main Footer Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Brand Section */}
             <div className="lg:col-span-2">
@@ -28,12 +28,12 @@ const Footer = () => {
                   <p className="text-sm text-gray-400">Digital Rakshak</p>
                 </div>
               </div>
-              <p className="text-gray-300 mb-6 leading-relaxed max-w-md">
-                Advanced AI-powered security analysis for banking APK files.
-                Protecting users from malicious applications with real-time
-                threat detection.
+              <p className="text-gray-300 mb-2 mt-8 leading-relaxed max-w-md">
+                An AI-powered tool that scans banking APKs in real time to
+                detect malicious code, suspicious permissions, embedded
+                trackers, and phishing risks — delivering rapid threat
+                triage for security
               </p>
-              
             </div>
           </div>
         </div>

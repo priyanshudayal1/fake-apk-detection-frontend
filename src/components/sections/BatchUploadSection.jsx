@@ -6,7 +6,7 @@ import {
   HiExclamation,
   HiDownload,
 } from "react-icons/hi";
-import { BsFileEarmarkZip } from "react-icons/bs";
+import { BsFileEarmarkZip, BsShieldFillCheck } from "react-icons/bs";
 import { HiQueueList, HiTrash } from "react-icons/hi2";
 import useAppStore from "../../store/useAppStore";
 import { validateAPKFile, createFilePreview } from "../../utils/fileUtils";
@@ -263,7 +263,7 @@ const BatchUploadSection = () => {
   return (
     <section
       id="upload"
-      className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
+      className="py-8 md:py-16 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">
@@ -769,39 +769,172 @@ const BatchUploadSection = () => {
           </div>
         )}
 
-        {/* File Requirements */}
+        {/* Sample APKs */}
         <div
-          className="mt-8 p-6 rounded-xl bg-gradient-to-r from-teal-50 to-primary-50 dark:from-teal-900/20 dark:to-primary-900/20 border border-teal-200/50 dark:border-teal-700/50 animate-fade-up"
-          style={{ animationDelay: "400ms" }}
+          className="mt-12 animate-fade-up"
+          style={{ animationDelay: "500ms" }}
         >
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-center">
-            File Requirements & Privacy
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h5 className="font-medium text-gray-900 dark:text-white mb-2">
-                Supported Files:
-              </h5>
-              <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <li>• File format: .apk, .apks, .xapk</li>
-                <li>• Maximum size: 100MB per file</li>
-                <li>
-                  •{" "}
-                  {uploadMode === "batch"
-                    ? "Up to 15 files per batch"
-                    : "Banking applications recommended"}
-                </li>
-              </ul>
+          <div className="text-center mb-8">
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              Download Sample APKs
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              Test our detection system with pre-verified real and fake banking
+              apps
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Real APKs */}
+            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-success-200 dark:border-success-700/30 shadow-lg overflow-hidden">
+              <div className="p-6 border-b border-success-100 dark:border-success-700/30 bg-success-50 dark:bg-success-900/20">
+                <h4 className="flex items-center text-xl font-bold text-success-700 dark:text-success-400">
+                  <BsShieldFillCheck className="w-5 h-5 mr-2" />
+                  Legitimate Banking APKs
+                </h4>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  These are verified, legitimate banking applications that our
+                  system should identify as safe:
+                </p>
+
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                    <div>
+                      <h5 className="font-medium text-gray-900 dark:text-white">
+                        Jana Bank App
+                      </h5>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        com.janabank.mtc_2.3.1.apk
+                      </p>
+                    </div>
+                    <a
+                      href="/sample/real/com.janabank.mtc_2.3.1.apk"
+                      download
+                      className="px-3 py-1 bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 text-white text-sm font-medium rounded-lg flex items-center"
+                    >
+                      <HiDownload className="w-4 h-4 mr-1" />
+                      Download
+                    </a>
+                  </div>
+
+                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                    <div>
+                      <h5 className="font-medium text-gray-900 dark:text-white">
+                        IMPS NE App
+                      </h5>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        app.imps.north_east_4.5.0.apks.universal.apk
+                      </p>
+                    </div>
+                    <a
+                      href="/sample/real/app.imps.north_east_4.5.0.apks.universal.apk"
+                      download
+                      className="px-3 py-1 bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 text-white text-sm font-medium rounded-lg flex items-center"
+                    >
+                      <HiDownload className="w-4 h-4 mr-1" />
+                      Download
+                    </a>
+                  </div>
+
+                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                    <div>
+                      <h5 className="font-medium text-gray-900 dark:text-white">
+                        IOB Banking App
+                      </h5>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        com.fss.iob6_6.5.8.apks.universal.apk
+                      </p>
+                    </div>
+                    <a
+                      href="/sample/real/com.fss.iob6_6.5.8.apks.universal.apk"
+                      download
+                      className="px-3 py-1 bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 text-white text-sm font-medium rounded-lg flex items-center"
+                    >
+                      <HiDownload className="w-4 h-4 mr-1" />
+                      Download
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-              <h5 className="font-medium text-gray-900 dark:text-white mb-2">
-                Privacy & Security:
-              </h5>
-              <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <li>• No personal data is stored</li>
-                <li>• Files analyzed locally</li>
-                <li>• Results not shared externally</li>
-              </ul>
+
+            {/* Fake APKs */}
+            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-danger-200 dark:border-danger-700/30 shadow-lg overflow-hidden">
+              <div className="p-6 border-b border-danger-100 dark:border-danger-700/30 bg-danger-50 dark:bg-danger-900/20">
+                <h4 className="flex items-center text-xl font-bold text-danger-700 dark:text-danger-400">
+                  <HiExclamation className="w-5 h-5 mr-2" />
+                  Malicious Sample APKs
+                </h4>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  These are known malicious applications that our system should
+                  identify as threats:
+                </p>
+
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                    <div>
+                      <h5 className="font-medium text-gray-900 dark:text-white">
+                        AES-Decrypt Malware
+                      </h5>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        AES-Decrypt.apk
+                      </p>
+                    </div>
+                    <a
+                      href="/sample/fake/._AES-Decrypt.apk"
+                      download
+                      className="px-3 py-1 bg-gradient-to-r from-danger-500 to-danger-600 hover:from-danger-600 hover:to-danger-700 text-white text-sm font-medium rounded-lg flex items-center"
+                    >
+                      <HiDownload className="w-4 h-4 mr-1" />
+                      Download
+                    </a>
+                  </div>
+
+                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                    <div>
+                      <h5 className="font-medium text-gray-900 dark:text-white">
+                        Native Exploit
+                      </h5>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        aBunchOfNative.apk
+                      </p>
+                    </div>
+                    <a
+                      href="/sample/fake/._aBunchOfNative.apk"
+                      download
+                      className="px-3 py-1 bg-gradient-to-r from-danger-500 to-danger-600 hover:from-danger-600 hover:to-danger-700 text-white text-sm font-medium rounded-lg flex items-center"
+                    >
+                      <HiDownload className="w-4 h-4 mr-1" />
+                      Download
+                    </a>
+                  </div>
+
+                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                    <div>
+                      <h5 className="font-medium text-gray-900 dark:text-white">
+                        Dynamic Challenge Trojan
+                      </h5>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        dynChallenge.apk
+                      </p>
+                    </div>
+                    <a
+                      href="/sample/fake/._dynChallenge.apk"
+                      download
+                      className="px-3 py-1 bg-gradient-to-r from-danger-500 to-danger-600 hover:from-danger-600 hover:to-danger-700 text-white text-sm font-medium rounded-lg flex items-center"
+                    >
+                      <HiDownload className="w-4 h-4 mr-1" />
+                      Download
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

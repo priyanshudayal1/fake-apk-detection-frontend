@@ -96,7 +96,7 @@ const App = () => {
       <Header />
 
       {/* Main Content */}
-      <main className="pt-16 md:pt-20">
+      <main className="pt-16 md:pt-5">
         {/* Always show Hero and Stats sections */}
         <HeroSection />
         {/* Conditional Sections based on analysis state */}

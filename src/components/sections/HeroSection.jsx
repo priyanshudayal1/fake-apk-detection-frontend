@@ -59,7 +59,7 @@ const HeroSection = () => {
               className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
             >
               <HiPlay className="w-5 h-5 mr-2 group-hover:animate-bounce" />
-              Detect Fake Bank Apps
+              Detect Fake Banking Apps
             </button>
 
             <button
