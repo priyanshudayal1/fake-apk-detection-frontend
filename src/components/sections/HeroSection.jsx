@@ -2,8 +2,21 @@ import React from "react";
 import { HiShieldCheck, HiPlay, HiChip } from "react-icons/hi";
 import { BsShieldFillCheck, BsRobot, BsClock } from "react-icons/bs";
 import { scrollToSection } from "../../utils/scrollUtils";
+import useAppStore from "../../store/useAppStore";
 
 const HeroSection = () => {
+  const { analysisResults, resetApp } = useAppStore();
+
+  const handleDetectAppsClick = () => {
+    // If results are showing, reset the app first
+    if (analysisResults) {
+      resetApp();
+    } else {
+      // If no results, just scroll to upload section
+      scrollToSection("upload");
+    }
+  };
+
   return (
     <section
       id="home"
@@ -55,7 +68,7 @@ const HeroSection = () => {
           {/* CTA Button */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
-              onClick={() => scrollToSection("upload")}
+              onClick={handleDetectAppsClick}
               className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
             >
               <HiPlay className="w-5 h-5 mr-2 group-hover:animate-bounce" />
