@@ -194,7 +194,7 @@ const NewResultsSection = () => {
   return (
     <section
       id="results"
-      className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
+      className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-2">

@@ -48,7 +48,7 @@ const App = () => {
   }, [reportError, setReportError]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       {/* Toast Notifications */}
       <Toaster
         position="top-right"
