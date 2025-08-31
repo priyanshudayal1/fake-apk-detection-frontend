@@ -15,6 +15,7 @@ import AnalysisSection from "./components/sections/AnalysisSection";
 import NewResultsSection from "./components/sections/NewResultsSection";
 import FAQSection from "./components/sections/FAQSection";
 import AboutSection from "./components/sections/AboutSection";
+import VideoDemoSection from "./components/sections/VideoDemoSection";
 
 const App = () => {
   const {
@@ -84,6 +85,7 @@ const App = () => {
       <main className="pt-16 md:pt-20">
         {/* Always show Hero and Stats sections */}
         <HeroSection />
+        <VideoDemoSection />
         {/* Conditional Sections based on analysis state */}
         {!isAnalyzing && !analysisResults && <UploadSection />}
         {isAnalyzing && <AnalysisSection />}
