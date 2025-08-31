@@ -10,7 +10,7 @@ import Footer from "./components/layout/Footer";
 // Section Components
 import HeroSection from "./components/sections/HeroSection";
 import StatisticsSection from "./components/sections/StatisticsSection";
-import UploadSection from "./components/sections/UploadSection";
+import BatchUploadSection from "./components/sections/BatchUploadSection";
 import AnalysisSection from "./components/sections/AnalysisSection";
 import NewResultsSection from "./components/sections/NewResultsSection";
 import FAQSection from "./components/sections/FAQSection";
@@ -24,6 +24,8 @@ const App = () => {
     isAnalyzing,
     reportError,
     setReportError,
+    batchReportError,
+    setBatchReportError,
   } = useAppStore();
 
   // Apply dark mode to document
@@ -46,6 +48,18 @@ const App = () => {
       setReportError(null);
     }
   }, [reportError, setReportError]);
+
+  // Show batch report error notifications
+  useEffect(() => {
+    if (batchReportError) {
+      toast.error(batchReportError, {
+        icon: <HiDocument className="w-5 h-5 text-danger-500" />,
+        duration: 5000,
+      });
+      // Clear the error after showing it
+      setBatchReportError(null);
+    }
+  }, [batchReportError, setBatchReportError]);
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -86,7 +100,7 @@ const App = () => {
         {/* Always show Hero and Stats sections */}
         <HeroSection />
         {/* Conditional Sections based on analysis state */}
-        {!isAnalyzing && !analysisResults && <UploadSection />}
+        {!isAnalyzing && !analysisResults && <BatchUploadSection />}
         {isAnalyzing && <AnalysisSection />}
         {analysisResults && <NewResultsSection />}
         <AboutSection />

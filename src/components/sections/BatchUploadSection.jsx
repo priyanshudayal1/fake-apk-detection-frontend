@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { HiUpload, HiX, HiDocumentText, HiExclamation } from "react-icons/hi";
+import { HiUpload, HiX, HiDocumentText, HiExclamation, HiDownload } from "react-icons/hi";
 import { BsFileEarmarkZip } from "react-icons/bs";
 import { HiQueueList, HiTrash } from "react-icons/hi2";
 import useAppStore from "../../store/useAppStore";
@@ -24,6 +24,8 @@ const BatchUploadSection = () => {
     setUploadError,
     clearFile,
     startAnalysis,
+    generateBatchReport,
+    isGeneratingBatchReport,
   } = useAppStore();
 
   const handleDragEnter = (e) => {
@@ -181,6 +183,17 @@ const BatchUploadSection = () => {
       );
     } finally {
       setIsBatchAnalyzing(false);
+    }
+  };
+
+  const handleDownloadBatchReport = async () => {
+    if (batchFiles.length === 0) return;
+
+    const filesToReport = batchFiles.map((f) => f.file);
+    const success = await generateBatchReport(filesToReport);
+    
+    if (success) {
+      console.log("Batch Word report downloaded successfully");
     }
   };
 
@@ -606,9 +619,30 @@ const BatchUploadSection = () => {
             {/* Batch Results Summary */}
             {batchResults && (
               <div className="mt-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                  Batch Analysis Results
-                </h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    Batch Analysis Results
+                  </h3>
+                  
+                  {/* Download Report Button */}
+                  <button
+                    onClick={handleDownloadBatchReport}
+                    disabled={isGeneratingBatchReport || batchFiles.length === 0}
+                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:cursor-not-allowed"
+                  >
+                    {isGeneratingBatchReport ? (
+                      <>
+                        <div className="w-4 h-4 mr-2 animate-spin border-2 border-white border-t-transparent rounded-full" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <HiDownload className="w-4 h-4 mr-2" />
+                        Download Report
+                      </>
+                    )}
+                  </button>
+                </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -650,6 +684,22 @@ const BatchUploadSection = () => {
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                       Errors
+                    </div>
+                  </div>
+                </div>
+
+                {/* Report Description */}
+                <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 rounded-lg">
+                  <div className="flex items-start space-x-3">
+                    <HiDocumentText className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium text-blue-700 dark:text-blue-300 mb-1">
+                        Comprehensive Analysis Report
+                      </h4>
+                      <p className="text-sm text-blue-600 dark:text-blue-400">
+                        Download a detailed Word document containing complete analysis results, 
+                        security assessments, and AI-powered explanations for all processed APK files.
+                      </p>
                     </div>
                   </div>
                 </div>

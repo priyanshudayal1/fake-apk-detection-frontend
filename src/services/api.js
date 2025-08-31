@@ -141,6 +141,28 @@ export class APKAnalysisService {
   }
 
   /**
+   * Generate batch report for multiple APK files
+   * @param {FileList|Array} files - The APK files to analyze
+   * @returns {Promise} Batch report data with Word document
+   */
+  static async generateBatchReport(files) {
+    const formData = new FormData();
+
+    // Handle both FileList and Array
+    const fileArray = Array.from(files);
+    fileArray.forEach((file) => {
+      formData.append("files", file);
+    });
+
+    return api.post("/report-batch", formData, {
+      timeout: 900000, // 15 minutes timeout for batch processing
+      headers: {
+        "Content-Type": undefined, // Let browser set the Content-Type with boundary for FormData
+      },
+    });
+  }
+
+  /**
    * Health check endpoint
    * @returns {Promise} Server status
    */
