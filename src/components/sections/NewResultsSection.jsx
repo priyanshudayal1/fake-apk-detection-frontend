@@ -198,7 +198,7 @@ const NewResultsSection = () => {
   };
 
   // Convert confidence percentage for display
-  const confidenceScore = Math.round(probability * 100);
+  const confidenceScore = Math.round((probability || 0) * 100);
 
   return (
     <section
@@ -253,7 +253,7 @@ const NewResultsSection = () => {
               <div className="max-w-md mx-auto mb-8">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Risk Level: {risk}
+                    Risk Level: {risk || 'Unknown'}
                   </span>
                   <span
                     className={`text-2xl font-bold ${getRiskTextColor(
@@ -276,7 +276,7 @@ const NewResultsSection = () => {
               <div className="flex items-center justify-center space-x-8 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex items-center">
                   <HiShieldCheck className="w-4 h-4 mr-2" />
-                  Prediction: {prediction}
+                  Prediction: {prediction || 'Unknown'}
                 </div>
                 <div className="flex items-center">
                   <HiCheckCircle className="w-4 h-4 mr-2" />
@@ -315,14 +315,14 @@ const NewResultsSection = () => {
                       />
                       <div>
                         <h4 className={`font-bold ${colors.text} mb-2`}>
-                          {warning.title}
+                          {warning?.title || 'Security Warning'}
                         </h4>
                         <p
                           className={`${colors.text
                             .replace("700", "600")
                             .replace("300", "400")}`}
                         >
-                          {warning.message}
+                          {warning?.message || 'No details available'}
                         </p>
                       </div>
                     </div>
@@ -546,7 +546,7 @@ const NewResultsSection = () => {
                               • {perm}
                             </div>
                           ))}
-                        {permissions_analysis.high_risk.length > 5 && (
+                        {permissions_analysis.high_risk?.length > 0 && (
                           <div className="text-sm text-danger-500 dark:text-danger-500 italic">
                             ... and {permissions_analysis.high_risk.length - 5}{" "}
                             more
@@ -574,7 +574,7 @@ const NewResultsSection = () => {
                               • {perm}
                             </div>
                           ))}
-                        {permissions_analysis.medium_risk.length > 5 && (
+                        {permissions_analysis.medium_risk?.length > 5 && (
                           <div className="text-sm text-warning-500 dark:text-warning-500 italic">
                             ... and{" "}
                             {permissions_analysis.medium_risk.length - 5} more
@@ -631,7 +631,7 @@ const NewResultsSection = () => {
                     </div>
                   </div>
 
-                  {permissions_analysis.risk_score !== undefined && (
+                  {permissions_analysis.risk_score !== undefined && permissions_analysis.risk_score !== null && (
                     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -646,7 +646,7 @@ const NewResultsSection = () => {
                               : "text-success-600 dark:text-success-400"
                           }`}
                         >
-                          {permissions_analysis.risk_score}/100
+                          {typeof permissions_analysis.risk_score === 'number' ? permissions_analysis.risk_score : 0}/100
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
@@ -659,7 +659,7 @@ const NewResultsSection = () => {
                               : "from-success-500 to-success-600"
                           }`}
                           style={{
-                            width: `${permissions_analysis.risk_score}%`,
+                            width: `${typeof permissions_analysis.risk_score === 'number' ? permissions_analysis.risk_score : 0}%`,
                           }}
                         />
                       </div>
@@ -705,7 +705,7 @@ const NewResultsSection = () => {
                               • {api}
                             </div>
                           ))}
-                        {suspicious_apis_analysis.critical.length > 5 && (
+                        {suspicious_apis_analysis.critical?.length > 5 && (
                           <div className="text-sm text-danger-500 dark:text-danger-500 italic">
                             ... and{" "}
                             {suspicious_apis_analysis.critical.length - 5} more
@@ -733,7 +733,7 @@ const NewResultsSection = () => {
                               • {api}
                             </div>
                           ))}
-                        {suspicious_apis_analysis.suspicious.length > 5 && (
+                        {suspicious_apis_analysis.suspicious?.length > 5 && (
                           <div className="text-sm text-warning-500 dark:text-warning-500 italic">
                             ... and{" "}
                             {suspicious_apis_analysis.suspicious.length - 5}{" "}
@@ -774,7 +774,7 @@ const NewResultsSection = () => {
                     </div>
                   </div>
 
-                  {suspicious_apis_analysis.risk_score !== undefined && (
+                  {suspicious_apis_analysis.risk_score !== undefined && suspicious_apis_analysis.risk_score !== null && (
                     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -789,7 +789,7 @@ const NewResultsSection = () => {
                               : "text-success-600 dark:text-success-400"
                           }`}
                         >
-                          {suspicious_apis_analysis.risk_score}/100
+                          {typeof suspicious_apis_analysis.risk_score === 'number' ? suspicious_apis_analysis.risk_score : 0}/100
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
@@ -802,7 +802,7 @@ const NewResultsSection = () => {
                               : "from-success-500 to-success-600"
                           }`}
                           style={{
-                            width: `${suspicious_apis_analysis.risk_score}%`,
+                            width: `${typeof suspicious_apis_analysis.risk_score === 'number' ? suspicious_apis_analysis.risk_score : 0}%`,
                           }}
                         />
                       </div>
@@ -989,12 +989,12 @@ const NewResultsSection = () => {
                           className="p-3 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50"
                         >
                           <div className="font-medium text-danger-800 dark:text-danger-200 mb-1">
-                            {factor.factor}
+                            {factor?.factor || 'Unknown Factor'}
                           </div>
                           <div className="text-sm text-danger-600 dark:text-danger-400">
-                            {factor.description}
+                            {factor?.description || 'No description available'}
                           </div>
-                          {factor.impact_score && (
+                          {factor?.impact_score && (
                             <div className="text-xs text-danger-500 dark:text-danger-500 mt-1">
                               Impact Score: {factor.impact_score}/10
                             </div>
@@ -1019,12 +1019,12 @@ const NewResultsSection = () => {
                           className="p-3 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50"
                         >
                           <div className="font-medium text-warning-800 dark:text-warning-200 mb-1">
-                            {factor.factor}
+                            {factor?.factor || 'Unknown Factor'}
                           </div>
                           <div className="text-sm text-warning-600 dark:text-warning-400">
-                            {factor.description}
+                            {factor?.description || 'No description available'}
                           </div>
-                          {factor.impact_score && (
+                          {factor?.impact_score && (
                             <div className="text-xs text-warning-500 dark:text-warning-500 mt-1">
                               Impact Score: {factor.impact_score}/10
                             </div>
@@ -1049,10 +1049,10 @@ const NewResultsSection = () => {
                           className="p-3 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-700/50"
                         >
                           <div className="font-medium text-success-800 dark:text-success-200 mb-1">
-                            {factor.factor}
+                            {factor?.factor || 'Unknown Factor'}
                           </div>
                           <div className="text-sm text-success-600 dark:text-success-400">
-                            {factor.description}
+                            {factor?.description || 'No description available'}
                           </div>
                         </div>
                       ))}
@@ -1061,7 +1061,7 @@ const NewResultsSection = () => {
                 )}
 
                 {/* Overall Risk Score */}
-                {risk_factors.overall_risk_score !== undefined && (
+                {risk_factors.overall_risk_score !== undefined && risk_factors.overall_risk_score !== null && (
                   <div className="md:col-span-2">
                     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                       <div className="flex justify-between items-center mb-2">
@@ -1077,7 +1077,7 @@ const NewResultsSection = () => {
                               : "text-success-600 dark:text-success-400"
                           }`}
                         >
-                          {risk_factors.overall_risk_score}/100
+                          {typeof risk_factors.overall_risk_score === 'number' ? risk_factors.overall_risk_score : 0}/100
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
@@ -1090,7 +1090,7 @@ const NewResultsSection = () => {
                               : "from-success-500 to-success-600"
                           }`}
                           style={{
-                            width: `${risk_factors.overall_risk_score}%`,
+                            width: `${typeof risk_factors.overall_risk_score === 'number' ? risk_factors.overall_risk_score : 0}%`,
                           }}
                         />
                       </div>
@@ -1128,25 +1128,25 @@ const NewResultsSection = () => {
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex-1">
                         <h4 className="font-semibold text-gray-900 dark:text-white">
-                          {feature.feature_name}
+                          {feature.feature_name || 'Unknown Feature'}
                         </h4>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                          Value: {feature.feature_value}
+                          Value: {feature.feature_value !== undefined && feature.feature_value !== null ? feature.feature_value : 'N/A'}
                         </p>
                       </div>
                       <div className="text-right">
                         <div
                           className={`text-lg font-bold ${
-                            feature.shap_value > 0
+                            (feature.shap_value || 0) > 0
                               ? "text-danger-600 dark:text-danger-400"
                               : "text-success-600 dark:text-success-400"
                           }`}
                         >
-                          {feature.shap_value > 0 ? "+" : ""}
-                          {feature.shap_value.toFixed(3)}
+                          {(feature.shap_value || 0) > 0 ? "+" : ""}
+                          {feature.shap_value !== undefined && feature.shap_value !== null ? feature.shap_value.toFixed(3) : "0.000"}
                         </div>
                         <div className="text-xs text-gray-500 dark:text-gray-500">
-                          {feature.shap_value > 0
+                          {(feature.shap_value || 0) > 0
                             ? "Increases Risk"
                             : "Decreases Risk"}
                         </div>
@@ -1157,13 +1157,13 @@ const NewResultsSection = () => {
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
                         className={`h-2 rounded-full ${
-                          feature.shap_value > 0
+                          (feature.shap_value || 0) > 0
                             ? "bg-gradient-to-r from-danger-500 to-danger-600"
                             : "bg-gradient-to-r from-success-500 to-success-600"
                         }`}
                         style={{
                           width: `${Math.min(
-                            Math.abs(feature.shap_value) * 100,
+                            Math.abs(feature.shap_value || 0) * 100,
                             100
                           )}%`,
                         }}
@@ -1192,7 +1192,7 @@ const NewResultsSection = () => {
                 {performance_metrics.analysis_time && (
                   <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                     <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                      {performance_metrics.analysis_time}s
+                      {typeof performance_metrics.analysis_time === 'number' ? performance_metrics.analysis_time.toFixed(2) : performance_metrics.analysis_time}s
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                       Analysis Time
@@ -1203,9 +1203,7 @@ const NewResultsSection = () => {
                 {performance_metrics.file_size && (
                   <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {(performance_metrics.file_size / (1024 * 1024)).toFixed(
-                        1
-                      )}
+                      {(typeof performance_metrics.file_size === 'number' ? (performance_metrics.file_size / (1024 * 1024)) : 0).toFixed(1)}
                       MB
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -1225,10 +1223,10 @@ const NewResultsSection = () => {
                   </div>
                 )}
 
-                {performance_metrics.model_confidence && (
+                {performance_metrics.model_confidence !== undefined && performance_metrics.model_confidence !== null && (
                   <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                     <div className="text-2xl font-bold text-teal-600 dark:text-teal-400">
-                      {(performance_metrics.model_confidence * 100).toFixed(1)}%
+                      {(typeof performance_metrics.model_confidence === 'number' ? (performance_metrics.model_confidence * 100) : 0).toFixed(1)}%
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                       Model Confidence
@@ -1255,7 +1253,7 @@ const NewResultsSection = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {batch_summary.total_files}
+                    {batch_summary?.total_files || 0}
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
                     Total Files
@@ -1264,7 +1262,7 @@ const NewResultsSection = () => {
 
                 <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                   <div className="text-2xl font-bold text-danger-600 dark:text-danger-400">
-                    {batch_summary.malicious_count}
+                    {batch_summary?.malicious_count || 0}
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
                     Malicious
@@ -1273,7 +1271,7 @@ const NewResultsSection = () => {
 
                 <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                   <div className="text-2xl font-bold text-success-600 dark:text-success-400">
-                    {batch_summary.safe_count}
+                    {batch_summary?.safe_count || 0}
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
                     Safe
@@ -1282,7 +1280,9 @@ const NewResultsSection = () => {
 
                 <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                   <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    {batch_summary.average_confidence?.toFixed(1)}%
+                    {batch_summary.average_confidence !== undefined && batch_summary.average_confidence !== null 
+                      ? (typeof batch_summary.average_confidence === 'number' ? batch_summary.average_confidence.toFixed(1) : '0.0')
+                      : '0.0'}%
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
                     Avg Confidence
@@ -1308,7 +1308,7 @@ const NewResultsSection = () => {
                             • {file}
                           </div>
                         ))}
-                      {batch_summary.high_risk_files.length > 5 && (
+                      {batch_summary.high_risk_files?.length > 5 && (
                         <div className="text-sm text-danger-500 dark:text-danger-500 italic">
                           ... and {batch_summary.high_risk_files.length - 5}{" "}
                           more high risk files

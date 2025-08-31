@@ -180,9 +180,9 @@ const useAppStore = create((set, get) => ({
         risk: result.risk,
         riskColor: getRiskColor(result.risk),
         riskLevel: getRiskLevel(result.risk),
-        riskScore: Math.round(result.probability * 100),
+        riskScore: Math.round((result.probability || 0) * 100),
         verdict: result.prediction === "fake" ? "dangerous" : "safe",
-        confidence: Math.round(result.probability * 100),
+        confidence: Math.round((result.probability || 0) * 100),
 
         // Enhanced API response fields
         permissions_analysis: result.permissions_analysis,
@@ -204,7 +204,7 @@ const useAppStore = create((set, get) => ({
               ? "Potentially Malicious"
               : "Appears Safe",
           riskLevel: getRiskLevel(result.risk),
-          confidence: Math.round(result.probability * 100),
+          confidence: Math.round((result.probability || 0) * 100),
         },
 
         // Security breakdown based on feature vector
@@ -212,10 +212,10 @@ const useAppStore = create((set, get) => ({
           codeIntegrity: result.feature_vector?.cert_present ? 85 : 45,
           permissionAnalysis: Math.max(
             20,
-            100 - (result.feature_vector?.num_permissions || 0) * 5
+            100 - ((result.feature_vector?.num_permissions || 0) * 5)
           ),
           networkBehavior:
-            result.feature_vector?.num_suspicious_tld === 0 ? 90 : 60,
+            (result.feature_vector?.num_suspicious_tld || 0) === 0 ? 90 : 60,
           dataEncryption: result.feature_vector?.cert_present ? 80 : 40,
           digitalSignature:
             result.feature_vector?.cert_present === 1 ? "valid" : "warning",
@@ -271,7 +271,7 @@ const useAppStore = create((set, get) => ({
 
           if (result.feature_vector?.impersonation_score > 50) {
             recs.push(
-              `High impersonation risk score (${result.feature_vector.impersonation_score}/100) - This app may be impersonating another application`
+              `High impersonation risk score (${result.feature_vector.impersonation_score || 0}/100) - This app may be impersonating another application`
             );
           }
 
@@ -283,13 +283,13 @@ const useAppStore = create((set, get) => ({
 
           if (result.feature_vector?.count_suspicious > 0) {
             recs.push(
-              `${result.feature_vector.count_suspicious} suspicious API calls detected`
+              `${result.feature_vector.count_suspicious || 0} suspicious API calls detected`
             );
           }
 
           if (result.feature_vector?.num_suspicious_tld > 0) {
             recs.push(
-              `${result.feature_vector.num_suspicious_tld} suspicious network domains detected`
+              `${result.feature_vector.num_suspicious_tld || 0} suspicious network domains detected`
             );
           }
 
@@ -330,17 +330,17 @@ const useAppStore = create((set, get) => ({
               type: "high",
               icon: "HiExclamationTriangle",
               title: "High Impersonation Risk",
-              message: `This app has a ${result.feature_vector.impersonation_score}% impersonation score, suggesting it may be mimicking a legitimate application.`,
+              message: `This app has a ${result.feature_vector.impersonation_score || 0}% impersonation score, suggesting it may be mimicking a legitimate application.`,
             });
           }
 
           if (result.feature_vector?.count_suspicious > 0) {
             warnings.push({
               type:
-                result.feature_vector.count_suspicious > 3 ? "high" : "medium",
+                (result.feature_vector.count_suspicious || 0) > 3 ? "high" : "medium",
               icon: "HiCode",
               title: "Suspicious API Usage",
-              message: `Found ${result.feature_vector.count_suspicious} suspicious API calls that could be used for malicious purposes.`,
+              message: `Found ${result.feature_vector.count_suspicious || 0} suspicious API calls that could be used for malicious purposes.`,
             });
           }
 
