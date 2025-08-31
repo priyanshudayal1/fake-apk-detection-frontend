@@ -184,6 +184,16 @@ const useAppStore = create((set, get) => ({
         verdict: result.prediction === "fake" ? "dangerous" : "safe",
         confidence: Math.round(result.probability * 100),
 
+        // Enhanced API response fields
+        permissions_analysis: result.permissions_analysis,
+        suspicious_apis_analysis: result.suspicious_apis_analysis,
+        security_indicators: result.security_indicators,
+        risk_factors: result.risk_factors,
+        ai_explanation: result.ai_explanation,
+        performance_metrics: result.performance_metrics,
+        top_shap: result.top_shap,
+        batch_summary: result.batch_summary, // For batch processing
+
         // Map backend features to frontend display format
         summary: {
           fileName: state.uploadedFile.name,

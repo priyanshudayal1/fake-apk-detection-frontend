@@ -12,6 +12,7 @@ import {
   HiCode,
   HiCreditCard,
   HiArrowUp,
+  HiChartBar,
 } from "react-icons/hi";
 import { HiExclamationTriangle } from "react-icons/hi2";
 import {
@@ -51,6 +52,14 @@ const NewResultsSection = () => {
     featureVector,
     recommendations,
     warnings,
+    permissions_analysis,
+    suspicious_apis_analysis,
+    security_indicators,
+    risk_factors,
+    ai_explanation,
+    performance_metrics,
+    top_shap,
+    batch_summary,
   } = analysisResults;
 
   const getVerdictConfig = () => {
@@ -499,12 +508,303 @@ const NewResultsSection = () => {
           </div>
         </div>
 
+        {/* Enhanced Permissions Analysis */}
+        {permissions_analysis && (
+          <div
+            id="permissions-analysis"
+            className="mb-12 animate-fade-up"
+            style={{ animationDelay: "800ms" }}
+          >
+            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <HiShieldCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
+                Detailed Permissions Analysis
+              </h3>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Permission Categories */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                    Permission Categories
+                  </h4>
+                  
+                  {permissions_analysis.high_risk?.length > 0 && (
+                    <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
+                      <h5 className="font-semibold text-danger-700 dark:text-danger-300 mb-2 flex items-center">
+                        <HiExclamation className="w-4 h-4 mr-2" />
+                        High Risk Permissions ({permissions_analysis.high_risk.length})
+                      </h5>
+                      <div className="space-y-1">
+                        {permissions_analysis.high_risk.slice(0, 5).map((perm, idx) => (
+                          <div key={idx} className="text-sm text-danger-600 dark:text-danger-400">
+                            • {perm}
+                          </div>
+                        ))}
+                        {permissions_analysis.high_risk.length > 5 && (
+                          <div className="text-sm text-danger-500 dark:text-danger-500 italic">
+                            ... and {permissions_analysis.high_risk.length - 5} more
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {permissions_analysis.medium_risk?.length > 0 && (
+                    <div className="p-4 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50">
+                      <h5 className="font-semibold text-warning-700 dark:text-warning-300 mb-2 flex items-center">
+                        <HiExclamationTriangle className="w-4 h-4 mr-2" />
+                        Medium Risk Permissions ({permissions_analysis.medium_risk.length})
+                      </h5>
+                      <div className="space-y-1">
+                        {permissions_analysis.medium_risk.slice(0, 5).map((perm, idx) => (
+                          <div key={idx} className="text-sm text-warning-600 dark:text-warning-400">
+                            • {perm}
+                          </div>
+                        ))}
+                        {permissions_analysis.medium_risk.length > 5 && (
+                          <div className="text-sm text-warning-500 dark:text-warning-500 italic">
+                            ... and {permissions_analysis.medium_risk.length - 5} more
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {permissions_analysis.normal?.length > 0 && (
+                    <div className="p-4 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-700/50">
+                      <h5 className="font-semibold text-success-700 dark:text-success-300 mb-2 flex items-center">
+                        <HiCheckCircle className="w-4 h-4 mr-2" />
+                        Normal Permissions ({permissions_analysis.normal.length})
+                      </h5>
+                      <div className="text-sm text-success-600 dark:text-success-400">
+                        {permissions_analysis.normal.length} standard permissions detected
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Permission Statistics */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                    Permission Statistics
+                  </h4>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {permissions_analysis.total_permissions || 0}
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        Total Permissions
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                      <div className={`text-2xl font-bold ${
+                        (permissions_analysis.high_risk?.length || 0) > 0 
+                          ? "text-danger-600 dark:text-danger-400"
+                          : "text-success-600 dark:text-success-400"
+                      }`}>
+                        {permissions_analysis.high_risk?.length || 0}
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        High Risk
+                      </div>
+                    </div>
+                  </div>
+
+                  {permissions_analysis.risk_score !== undefined && (
+                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                          Permission Risk Score
+                        </span>
+                        <span className={`text-lg font-bold ${
+                          permissions_analysis.risk_score > 70 ? "text-danger-600 dark:text-danger-400" :
+                          permissions_analysis.risk_score > 40 ? "text-warning-600 dark:text-warning-400" :
+                          "text-success-600 dark:text-success-400"
+                        }`}>
+                          {permissions_analysis.risk_score}/100
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                        <div
+                          className={`h-3 rounded-full bg-gradient-to-r ${
+                            permissions_analysis.risk_score > 70 ? "from-danger-500 to-danger-600" :
+                            permissions_analysis.risk_score > 40 ? "from-warning-500 to-warning-600" :
+                            "from-success-500 to-success-600"
+                          }`}
+                          style={{ width: `${permissions_analysis.risk_score}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Suspicious APIs Analysis */}
+        {suspicious_apis_analysis && (
+          <div
+            id="apis-analysis"
+            className="mb-12 animate-fade-up"
+            style={{ animationDelay: "900ms" }}
+          >
+            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <HiCode className="w-6 h-6 text-warning-600 dark:text-warning-400 mr-3" />
+                Suspicious API Analysis
+              </h3>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* API Categories */}
+                <div className="space-y-4">
+                  {suspicious_apis_analysis.critical?.length > 0 && (
+                    <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
+                      <h5 className="font-semibold text-danger-700 dark:text-danger-300 mb-2 flex items-center">
+                        <HiXCircle className="w-4 h-4 mr-2" />
+                        Critical APIs ({suspicious_apis_analysis.critical.length})
+                      </h5>
+                      <div className="space-y-1">
+                        {suspicious_apis_analysis.critical.slice(0, 5).map((api, idx) => (
+                          <div key={idx} className="text-sm text-danger-600 dark:text-danger-400">
+                            • {api}
+                          </div>
+                        ))}
+                        {suspicious_apis_analysis.critical.length > 5 && (
+                          <div className="text-sm text-danger-500 dark:text-danger-500 italic">
+                            ... and {suspicious_apis_analysis.critical.length - 5} more
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {suspicious_apis_analysis.suspicious?.length > 0 && (
+                    <div className="p-4 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50">
+                      <h5 className="font-semibold text-warning-700 dark:text-warning-300 mb-2 flex items-center">
+                        <HiExclamationTriangle className="w-4 h-4 mr-2" />
+                        Suspicious APIs ({suspicious_apis_analysis.suspicious.length})
+                      </h5>
+                      <div className="space-y-1">
+                        {suspicious_apis_analysis.suspicious.slice(0, 5).map((api, idx) => (
+                          <div key={idx} className="text-sm text-warning-600 dark:text-warning-400">
+                            • {api}
+                          </div>
+                        ))}
+                        {suspicious_apis_analysis.suspicious.length > 5 && (
+                          <div className="text-sm text-warning-500 dark:text-warning-500 italic">
+                            ... and {suspicious_apis_analysis.suspicious.length - 5} more
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* API Statistics */}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {suspicious_apis_analysis.total_apis || 0}
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        Total APIs
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                      <div className={`text-2xl font-bold ${
+                        (suspicious_apis_analysis.critical?.length || 0) > 0 
+                          ? "text-danger-600 dark:text-danger-400"
+                          : "text-success-600 dark:text-success-400"
+                      }`}>
+                        {(suspicious_apis_analysis.critical?.length || 0) + (suspicious_apis_analysis.suspicious?.length || 0)}
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        Suspicious
+                      </div>
+                    </div>
+                  </div>
+
+                  {suspicious_apis_analysis.risk_score !== undefined && (
+                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                          API Risk Score
+                        </span>
+                        <span className={`text-lg font-bold ${
+                          suspicious_apis_analysis.risk_score > 70 ? "text-danger-600 dark:text-danger-400" :
+                          suspicious_apis_analysis.risk_score > 40 ? "text-warning-600 dark:text-warning-400" :
+                          "text-success-600 dark:text-success-400"
+                        }`}>
+                          {suspicious_apis_analysis.risk_score}/100
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                        <div
+                          className={`h-3 rounded-full bg-gradient-to-r ${
+                            suspicious_apis_analysis.risk_score > 70 ? "from-danger-500 to-danger-600" :
+                            suspicious_apis_analysis.risk_score > 40 ? "from-warning-500 to-warning-600" :
+                            "from-success-500 to-success-600"
+                          }`}
+                          style={{ width: `${suspicious_apis_analysis.risk_score}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Security Indicators */}
+        {security_indicators && (
+          <div
+            className="mb-12 animate-fade-up"
+            style={{ animationDelay: "1000ms" }}
+          >
+            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <BsShieldFillCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
+                Security Indicators
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Object.entries(security_indicators).map(([key, value], idx) => {
+                  const isBoolean = typeof value === 'boolean';
+                  const isGoodIndicator = key.includes('certificate') || key.includes('signature') || key.includes('official');
+                  const displayValue = isBoolean ? (value ? 'Yes' : 'No') : value;
+                  const colorClass = isBoolean 
+                    ? (value === isGoodIndicator ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400')
+                    : 'text-gray-700 dark:text-gray-300';
+
+                  return (
+                    <div key={idx} className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                      <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                        {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </div>
+                      <div className={`text-lg font-bold ${colorClass}`}>
+                        {displayValue}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Banking & Impersonation Analysis */}
         {(featureVector?.impersonation_score > 0 ||
           featureVector?.label_contains_bank === 1) && (
           <div
             className="mb-12 animate-fade-up"
-            style={{ animationDelay: "800ms" }}
+            style={{ animationDelay: "1100ms" }}
           >
             <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
@@ -560,11 +860,365 @@ const NewResultsSection = () => {
           </div>
         )}
 
+        {/* AI Explanation */}
+        {ai_explanation && (
+          <div
+            id="ai-explanation"
+            className="mb-12 animate-fade-up"
+            style={{ animationDelay: "1200ms" }}
+          >
+            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <HiCog className="w-6 h-6 text-teal-600 dark:text-teal-400 mr-3" />
+                AI Security Analysis Explanation
+              </h3>
+              
+              <div className="prose dark:prose-invert max-w-none">
+                <div className="p-4 rounded-lg bg-gradient-to-r from-teal-50 to-blue-50 dark:from-teal-900/20 dark:to-blue-900/20 border border-teal-200 dark:border-teal-700/50">
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-teal-100 dark:bg-teal-900/40 rounded-full flex items-center justify-center mt-1">
+                      <HiCog className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-lg font-semibold text-teal-900 dark:text-teal-100 mb-3">
+                        Professional Security Assessment
+                      </h4>
+                      <div className="text-teal-800 dark:text-teal-200 whitespace-pre-wrap leading-relaxed">
+                        {ai_explanation}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Risk Factors Analysis */}
+        {risk_factors && (
+          <div
+            className="mb-12 animate-fade-up"
+            style={{ animationDelay: "1300ms" }}
+          >
+            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <HiExclamationTriangle className="w-6 h-6 text-warning-600 dark:text-warning-400 mr-3" />
+                Risk Factors Assessment
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* High Risk Factors */}
+                {risk_factors.high?.length > 0 && (
+                  <div className="space-y-3">
+                    <h4 className="text-lg font-semibold text-danger-700 dark:text-danger-300 flex items-center">
+                      <HiXCircle className="w-5 h-5 mr-2" />
+                      High Risk Factors ({risk_factors.high.length})
+                    </h4>
+                    <div className="space-y-3">
+                      {risk_factors.high.map((factor, idx) => (
+                        <div key={idx} className="p-3 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
+                          <div className="font-medium text-danger-800 dark:text-danger-200 mb-1">
+                            {factor.factor}
+                          </div>
+                          <div className="text-sm text-danger-600 dark:text-danger-400">
+                            {factor.description}
+                          </div>
+                          {factor.impact_score && (
+                            <div className="text-xs text-danger-500 dark:text-danger-500 mt-1">
+                              Impact Score: {factor.impact_score}/10
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Medium Risk Factors */}
+                {risk_factors.medium?.length > 0 && (
+                  <div className="space-y-3">
+                    <h4 className="text-lg font-semibold text-warning-700 dark:text-warning-300 flex items-center">
+                      <HiExclamationTriangle className="w-5 h-5 mr-2" />
+                      Medium Risk Factors ({risk_factors.medium.length})
+                    </h4>
+                    <div className="space-y-3">
+                      {risk_factors.medium.map((factor, idx) => (
+                        <div key={idx} className="p-3 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50">
+                          <div className="font-medium text-warning-800 dark:text-warning-200 mb-1">
+                            {factor.factor}
+                          </div>
+                          <div className="text-sm text-warning-600 dark:text-warning-400">
+                            {factor.description}
+                          </div>
+                          {factor.impact_score && (
+                            <div className="text-xs text-warning-500 dark:text-warning-500 mt-1">
+                              Impact Score: {factor.impact_score}/10
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Low Risk Factors */}
+                {risk_factors.low?.length > 0 && (
+                  <div className="space-y-3 md:col-span-2">
+                    <h4 className="text-lg font-semibold text-success-700 dark:text-success-300 flex items-center">
+                      <HiCheckCircle className="w-5 h-5 mr-2" />
+                      Low Risk Factors ({risk_factors.low.length})
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {risk_factors.low.map((factor, idx) => (
+                        <div key={idx} className="p-3 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-700/50">
+                          <div className="font-medium text-success-800 dark:text-success-200 mb-1">
+                            {factor.factor}
+                          </div>
+                          <div className="text-sm text-success-600 dark:text-success-400">
+                            {factor.description}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Overall Risk Score */}
+                {risk_factors.overall_risk_score !== undefined && (
+                  <div className="md:col-span-2">
+                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-lg font-semibold text-gray-900 dark:text-white">
+                          Overall Risk Score
+                        </span>
+                        <span className={`text-2xl font-bold ${
+                          risk_factors.overall_risk_score > 70 ? "text-danger-600 dark:text-danger-400" :
+                          risk_factors.overall_risk_score > 40 ? "text-warning-600 dark:text-warning-400" :
+                          "text-success-600 dark:text-success-400"
+                        }`}>
+                          {risk_factors.overall_risk_score}/100
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+                        <div
+                          className={`h-4 rounded-full bg-gradient-to-r ${
+                            risk_factors.overall_risk_score > 70 ? "from-danger-500 to-danger-600" :
+                            risk_factors.overall_risk_score > 40 ? "from-warning-500 to-warning-600" :
+                            "from-success-500 to-success-600"
+                          }`}
+                          style={{ width: `${risk_factors.overall_risk_score}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SHAP Feature Importance */}
+        {top_shap && top_shap.length > 0 && (
+          <div
+            className="mb-12 animate-fade-up"
+            style={{ animationDelay: "1400ms" }}
+          >
+            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <HiChartBar className="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3" />
+                AI Model Feature Analysis
+              </h3>
+              
+              <div className="space-y-4">
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  These features had the most influence on the AI model's decision:
+                </p>
+                
+                {top_shap.map((feature, idx) => (
+                  <div key={idx} className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 dark:text-white">
+                          {feature.feature_name}
+                        </h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          Value: {feature.feature_value}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <div className={`text-lg font-bold ${
+                          feature.shap_value > 0 
+                            ? "text-danger-600 dark:text-danger-400" 
+                            : "text-success-600 dark:text-success-400"
+                        }`}>
+                          {feature.shap_value > 0 ? '+' : ''}{feature.shap_value.toFixed(3)}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-500">
+                          {feature.shap_value > 0 ? 'Increases Risk' : 'Decreases Risk'}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* SHAP value bar */}
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div
+                        className={`h-2 rounded-full ${
+                          feature.shap_value > 0 
+                            ? 'bg-gradient-to-r from-danger-500 to-danger-600' 
+                            : 'bg-gradient-to-r from-success-500 to-success-600'
+                        }`}
+                        style={{ 
+                          width: `${Math.min(Math.abs(feature.shap_value) * 100, 100)}%` 
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Performance Metrics */}
+        {performance_metrics && (
+          <div
+            className="mb-12 animate-fade-up"
+            style={{ animationDelay: "1500ms" }}
+          >
+            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <HiClock className="w-6 h-6 text-green-600 dark:text-green-400 mr-3" />
+                Analysis Performance
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {performance_metrics.analysis_time && (
+                  <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                    <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                      {performance_metrics.analysis_time}s
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      Analysis Time
+                    </div>
+                  </div>
+                )}
+
+                {performance_metrics.file_size && (
+                  <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      {(performance_metrics.file_size / (1024 * 1024)).toFixed(1)}MB
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      File Size
+                    </div>
+                  </div>
+                )}
+
+                {performance_metrics.features_extracted && (
+                  <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                    <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                      {performance_metrics.features_extracted}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      Features Extracted
+                    </div>
+                  </div>
+                )}
+
+                {performance_metrics.model_confidence && (
+                  <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                    <div className="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                      {(performance_metrics.model_confidence * 100).toFixed(1)}%
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      Model Confidence
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Batch Summary (for batch analysis) */}
+        {batch_summary && (
+          <div
+            className="mb-12 animate-fade-up"
+            style={{ animationDelay: "1600ms" }}
+          >
+            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <HiCog className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mr-3" />
+                Batch Analysis Summary
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {batch_summary.total_files}
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Total Files
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                  <div className="text-2xl font-bold text-danger-600 dark:text-danger-400">
+                    {batch_summary.malicious_count}
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Malicious
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                  <div className="text-2xl font-bold text-success-600 dark:text-success-400">
+                    {batch_summary.safe_count}
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Safe
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    {batch_summary.average_confidence?.toFixed(1)}%
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Avg Confidence
+                  </div>
+                </div>
+              </div>
+
+              {batch_summary.high_risk_files && batch_summary.high_risk_files.length > 0 && (
+                <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
+                  <h4 className="font-semibold text-danger-700 dark:text-danger-300 mb-3 flex items-center">
+                    <HiXCircle className="w-4 h-4 mr-2" />
+                    High Risk Files ({batch_summary.high_risk_files.length})
+                  </h4>
+                  <div className="space-y-2">
+                    {batch_summary.high_risk_files.slice(0, 5).map((file, idx) => (
+                      <div key={idx} className="text-sm text-danger-600 dark:text-danger-400">
+                        • {file}
+                      </div>
+                    ))}
+                    {batch_summary.high_risk_files.length > 5 && (
+                      <div className="text-sm text-danger-500 dark:text-danger-500 italic">
+                        ... and {batch_summary.high_risk_files.length - 5} more high risk files
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Recommendations */}
         <div
           id="recommendations-section"
           className="mb-12 animate-fade-up"
-          style={{ animationDelay: "1000ms" }}
+          style={{ animationDelay: "1700ms" }}
         >
           <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
@@ -696,6 +1350,39 @@ const NewResultsSection = () => {
                   <HiCog className="w-4 h-4 mr-2 text-teal-500" />
                   <span>Analysis</span>
                 </button>
+
+                {permissions_analysis && (
+                  <button
+                    onClick={() => scrollToSection("permissions-analysis", 100)}
+                    className="w-full flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    title="View Permissions"
+                  >
+                    <HiShieldCheck className="w-4 h-4 mr-2 text-primary-500" />
+                    <span>Permissions</span>
+                  </button>
+                )}
+
+                {suspicious_apis_analysis && (
+                  <button
+                    onClick={() => scrollToSection("apis-analysis", 100)}
+                    className="w-full flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    title="View APIs"
+                  >
+                    <HiCode className="w-4 h-4 mr-2 text-warning-500" />
+                    <span>APIs</span>
+                  </button>
+                )}
+
+                {ai_explanation && (
+                  <button
+                    onClick={() => scrollToSection("ai-explanation", 100)}
+                    className="w-full flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    title="View AI Analysis"
+                  >
+                    <HiCog className="w-4 h-4 mr-2 text-teal-500" />
+                    <span>AI Analysis</span>
+                  </button>
+                )}
 
                 <button
                   onClick={() =>
