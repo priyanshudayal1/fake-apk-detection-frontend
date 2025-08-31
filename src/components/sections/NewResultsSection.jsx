@@ -20,6 +20,7 @@ import {
   BsShieldFillExclamation,
   BsShieldFillX,
 } from "react-icons/bs";
+import { marked } from 'marked';
 import useAppStore from "../../store/useAppStore";
 import { scrollToSection, scrollToTop } from "../../utils/scrollUtils";
 
@@ -253,7 +254,7 @@ const NewResultsSection = () => {
               <div className="max-w-md mx-auto mb-8">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Risk Level: {risk || 'Unknown'}
+                    Risk Level: {risk || "Unknown"}
                   </span>
                   <span
                     className={`text-2xl font-bold ${getRiskTextColor(
@@ -276,7 +277,7 @@ const NewResultsSection = () => {
               <div className="flex items-center justify-center space-x-8 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex items-center">
                   <HiShieldCheck className="w-4 h-4 mr-2" />
-                  Prediction: {prediction || 'Unknown'}
+                  Prediction: {prediction || "Unknown"}
                 </div>
                 <div className="flex items-center">
                   <HiCheckCircle className="w-4 h-4 mr-2" />
@@ -315,14 +316,14 @@ const NewResultsSection = () => {
                       />
                       <div>
                         <h4 className={`font-bold ${colors.text} mb-2`}>
-                          {warning?.title || 'Security Warning'}
+                          {warning?.title || "Security Warning"}
                         </h4>
                         <p
                           className={`${colors.text
                             .replace("700", "600")
                             .replace("300", "400")}`}
                         >
-                          {warning?.message || 'No details available'}
+                          {warning?.message || "No details available"}
                         </p>
                       </div>
                     </div>
@@ -631,40 +632,49 @@ const NewResultsSection = () => {
                     </div>
                   </div>
 
-                  {permissions_analysis.risk_score !== undefined && permissions_analysis.risk_score !== null && (
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          Permission Risk Score
-                        </span>
-                        <span
-                          className={`text-lg font-bold ${
-                            permissions_analysis.risk_score > 70
-                              ? "text-danger-600 dark:text-danger-400"
-                              : permissions_analysis.risk_score > 40
-                              ? "text-warning-600 dark:text-warning-400"
-                              : "text-success-600 dark:text-success-400"
-                          }`}
-                        >
-                          {typeof permissions_analysis.risk_score === 'number' ? permissions_analysis.risk_score : 0}/100
-                        </span>
+                  {permissions_analysis.risk_score !== undefined &&
+                    permissions_analysis.risk_score !== null && (
+                      <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Permission Risk Score
+                          </span>
+                          <span
+                            className={`text-lg font-bold ${
+                              permissions_analysis.risk_score > 70
+                                ? "text-danger-600 dark:text-danger-400"
+                                : permissions_analysis.risk_score > 40
+                                ? "text-warning-600 dark:text-warning-400"
+                                : "text-success-600 dark:text-success-400"
+                            }`}
+                          >
+                            {typeof permissions_analysis.risk_score === "number"
+                              ? permissions_analysis.risk_score
+                              : 0}
+                            /100
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                          <div
+                            className={`h-3 rounded-full bg-gradient-to-r ${
+                              permissions_analysis.risk_score > 70
+                                ? "from-danger-500 to-danger-600"
+                                : permissions_analysis.risk_score > 40
+                                ? "from-warning-500 to-warning-600"
+                                : "from-success-500 to-success-600"
+                            }`}
+                            style={{
+                              width: `${
+                                typeof permissions_analysis.risk_score ===
+                                "number"
+                                  ? permissions_analysis.risk_score
+                                  : 0
+                              }%`,
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                        <div
-                          className={`h-3 rounded-full bg-gradient-to-r ${
-                            permissions_analysis.risk_score > 70
-                              ? "from-danger-500 to-danger-600"
-                              : permissions_analysis.risk_score > 40
-                              ? "from-warning-500 to-warning-600"
-                              : "from-success-500 to-success-600"
-                          }`}
-                          style={{
-                            width: `${typeof permissions_analysis.risk_score === 'number' ? permissions_analysis.risk_score : 0}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               </div>
             </div>
@@ -774,40 +784,50 @@ const NewResultsSection = () => {
                     </div>
                   </div>
 
-                  {suspicious_apis_analysis.risk_score !== undefined && suspicious_apis_analysis.risk_score !== null && (
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          API Risk Score
-                        </span>
-                        <span
-                          className={`text-lg font-bold ${
-                            suspicious_apis_analysis.risk_score > 70
-                              ? "text-danger-600 dark:text-danger-400"
-                              : suspicious_apis_analysis.risk_score > 40
-                              ? "text-warning-600 dark:text-warning-400"
-                              : "text-success-600 dark:text-success-400"
-                          }`}
-                        >
-                          {typeof suspicious_apis_analysis.risk_score === 'number' ? suspicious_apis_analysis.risk_score : 0}/100
-                        </span>
+                  {suspicious_apis_analysis.risk_score !== undefined &&
+                    suspicious_apis_analysis.risk_score !== null && (
+                      <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                            API Risk Score
+                          </span>
+                          <span
+                            className={`text-lg font-bold ${
+                              suspicious_apis_analysis.risk_score > 70
+                                ? "text-danger-600 dark:text-danger-400"
+                                : suspicious_apis_analysis.risk_score > 40
+                                ? "text-warning-600 dark:text-warning-400"
+                                : "text-success-600 dark:text-success-400"
+                            }`}
+                          >
+                            {typeof suspicious_apis_analysis.risk_score ===
+                            "number"
+                              ? suspicious_apis_analysis.risk_score
+                              : 0}
+                            /100
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                          <div
+                            className={`h-3 rounded-full bg-gradient-to-r ${
+                              suspicious_apis_analysis.risk_score > 70
+                                ? "from-danger-500 to-danger-600"
+                                : suspicious_apis_analysis.risk_score > 40
+                                ? "from-warning-500 to-warning-600"
+                                : "from-success-500 to-success-600"
+                            }`}
+                            style={{
+                              width: `${
+                                typeof suspicious_apis_analysis.risk_score ===
+                                "number"
+                                  ? suspicious_apis_analysis.risk_score
+                                  : 0
+                              }%`,
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                        <div
-                          className={`h-3 rounded-full bg-gradient-to-r ${
-                            suspicious_apis_analysis.risk_score > 70
-                              ? "from-danger-500 to-danger-600"
-                              : suspicious_apis_analysis.risk_score > 40
-                              ? "from-warning-500 to-warning-600"
-                              : "from-success-500 to-success-600"
-                          }`}
-                          style={{
-                            width: `${typeof suspicious_apis_analysis.risk_score === 'number' ? suspicious_apis_analysis.risk_score : 0}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               </div>
             </div>
@@ -951,9 +971,14 @@ const NewResultsSection = () => {
                       <h4 className="text-lg font-semibold text-teal-900 dark:text-teal-100 mb-3">
                         Professional Security Assessment
                       </h4>
-                      <div className="text-teal-800 dark:text-teal-200 whitespace-pre-wrap leading-relaxed">
-                        {ai_explanation}
-                      </div>
+                      <div 
+                        className="text-teal-800 dark:text-teal-200 leading-relaxed markdown-content"
+                        dangerouslySetInnerHTML={{ 
+                          __html: ai_explanation 
+                            ? marked.parse(ai_explanation) 
+                            : ''
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -964,6 +989,11 @@ const NewResultsSection = () => {
 
         {/* Risk Factors Analysis */}
         {risk_factors && (
+          (risk_factors.high?.length > 0 || 
+           risk_factors.medium?.length > 0 || 
+           risk_factors.low?.length > 0 || 
+           (risk_factors.overall_risk_score !== undefined && risk_factors.overall_risk_score !== null))
+        ) && (
           <div
             className="mb-12 animate-fade-up"
             style={{ animationDelay: "1300ms" }}
@@ -989,12 +1019,12 @@ const NewResultsSection = () => {
                           className="p-3 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50"
                         >
                           <div className="font-medium text-danger-800 dark:text-danger-200 mb-1">
-                            {factor?.factor || 'Unknown Factor'}
+                            {factor?.factor || "Unknown Factor"}
                           </div>
                           <div className="text-sm text-danger-600 dark:text-danger-400">
-                            {factor?.description || 'No description available'}
+                            {factor?.description || "No description available"}
                           </div>
-                          {factor?.impact_score && (
+                          {factor?.impact_score !== undefined && factor?.impact_score !== null && (
                             <div className="text-xs text-danger-500 dark:text-danger-500 mt-1">
                               Impact Score: {factor.impact_score}/10
                             </div>
@@ -1019,12 +1049,12 @@ const NewResultsSection = () => {
                           className="p-3 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50"
                         >
                           <div className="font-medium text-warning-800 dark:text-warning-200 mb-1">
-                            {factor?.factor || 'Unknown Factor'}
+                            {factor?.factor || "Unknown Factor"}
                           </div>
                           <div className="text-sm text-warning-600 dark:text-warning-400">
-                            {factor?.description || 'No description available'}
+                            {factor?.description || "No description available"}
                           </div>
-                          {factor?.impact_score && (
+                          {factor?.impact_score !== undefined && factor?.impact_score !== null && (
                             <div className="text-xs text-warning-500 dark:text-warning-500 mt-1">
                               Impact Score: {factor.impact_score}/10
                             </div>
@@ -1049,10 +1079,10 @@ const NewResultsSection = () => {
                           className="p-3 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-700/50"
                         >
                           <div className="font-medium text-success-800 dark:text-success-200 mb-1">
-                            {factor?.factor || 'Unknown Factor'}
+                            {factor?.factor || "Unknown Factor"}
                           </div>
                           <div className="text-sm text-success-600 dark:text-success-400">
-                            {factor?.description || 'No description available'}
+                            {factor?.description || "No description available"}
                           </div>
                         </div>
                       ))}
@@ -1061,49 +1091,58 @@ const NewResultsSection = () => {
                 )}
 
                 {/* Overall Risk Score */}
-                {risk_factors.overall_risk_score !== undefined && risk_factors.overall_risk_score !== null && (
-                  <div className="md:col-span-2">
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                          Overall Risk Score
-                        </span>
-                        <span
-                          className={`text-2xl font-bold ${
-                            risk_factors.overall_risk_score > 70
-                              ? "text-danger-600 dark:text-danger-400"
-                              : risk_factors.overall_risk_score > 40
-                              ? "text-warning-600 dark:text-warning-400"
-                              : "text-success-600 dark:text-success-400"
-                          }`}
-                        >
-                          {typeof risk_factors.overall_risk_score === 'number' ? risk_factors.overall_risk_score : 0}/100
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-                        <div
-                          className={`h-4 rounded-full bg-gradient-to-r ${
-                            risk_factors.overall_risk_score > 70
-                              ? "from-danger-500 to-danger-600"
-                              : risk_factors.overall_risk_score > 40
-                              ? "from-warning-500 to-warning-600"
-                              : "from-success-500 to-success-600"
-                          }`}
-                          style={{
-                            width: `${typeof risk_factors.overall_risk_score === 'number' ? risk_factors.overall_risk_score : 0}%`,
-                          }}
-                        />
+                {risk_factors.overall_risk_score !== undefined &&
+                  risk_factors.overall_risk_score !== null && (
+                    <div className="md:col-span-2">
+                      <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-lg font-semibold text-gray-900 dark:text-white">
+                            Overall Risk Score
+                          </span>
+                          <span
+                            className={`text-2xl font-bold ${
+                              risk_factors.overall_risk_score > 70
+                                ? "text-danger-600 dark:text-danger-400"
+                                : risk_factors.overall_risk_score > 40
+                                ? "text-warning-600 dark:text-warning-400"
+                                : "text-success-600 dark:text-success-400"
+                            }`}
+                          >
+                            {typeof risk_factors.overall_risk_score === "number"
+                              ? risk_factors.overall_risk_score
+                              : 0}
+                            /100
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+                          <div
+                            className={`h-4 rounded-full bg-gradient-to-r ${
+                              risk_factors.overall_risk_score > 70
+                                ? "from-danger-500 to-danger-600"
+                                : risk_factors.overall_risk_score > 40
+                                ? "from-warning-500 to-warning-600"
+                                : "from-success-500 to-success-600"
+                            }`}
+                            style={{
+                              width: `${
+                                typeof risk_factors.overall_risk_score ===
+                                "number"
+                                  ? risk_factors.overall_risk_score
+                                  : 0
+                              }%`,
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             </div>
           </div>
         )}
 
         {/* SHAP Feature Importance */}
-        {top_shap && top_shap.length > 0 && (
+        {top_shap && top_shap.length > 0 && top_shap.some(feature => feature.feature_name && feature.shap_value != null) && (
           <div
             className="mb-12 animate-fade-up"
             style={{ animationDelay: "1400ms" }}
@@ -1120,7 +1159,9 @@ const NewResultsSection = () => {
                   decision:
                 </p>
 
-                {top_shap.map((feature, idx) => (
+                {top_shap
+                  .filter(feature => feature.feature_name && feature.shap_value != null)
+                  .map((feature, idx) => (
                   <div
                     key={idx}
                     className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50"
@@ -1128,10 +1169,14 @@ const NewResultsSection = () => {
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex-1">
                         <h4 className="font-semibold text-gray-900 dark:text-white">
-                          {feature.feature_name || 'Unknown Feature'}
+                          {feature.feature_name || "Unknown Feature"}
                         </h4>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                          Value: {feature.feature_value !== undefined && feature.feature_value !== null ? feature.feature_value : 'N/A'}
+                          Value:{" "}
+                          {feature.feature_value !== undefined &&
+                          feature.feature_value !== null
+                            ? feature.feature_value
+                            : "N/A"}
                         </p>
                       </div>
                       <div className="text-right">
@@ -1143,7 +1188,9 @@ const NewResultsSection = () => {
                           }`}
                         >
                           {(feature.shap_value || 0) > 0 ? "+" : ""}
-                          {feature.shap_value !== undefined && feature.shap_value !== null ? feature.shap_value.toFixed(3) : "0.000"}
+                          {typeof feature.shap_value === "number"
+                            ? feature.shap_value.toFixed(3)
+                            : "0.000"}
                         </div>
                         <div className="text-xs text-gray-500 dark:text-gray-500">
                           {(feature.shap_value || 0) > 0
@@ -1178,6 +1225,11 @@ const NewResultsSection = () => {
 
         {/* Performance Metrics */}
         {performance_metrics && (
+          performance_metrics.analysis_time || 
+          performance_metrics.file_size || 
+          performance_metrics.features_extracted || 
+          performance_metrics.model_confidence !== undefined
+        ) && (
           <div
             className="mb-12 animate-fade-up"
             style={{ animationDelay: "1500ms" }}
@@ -1192,7 +1244,10 @@ const NewResultsSection = () => {
                 {performance_metrics.analysis_time && (
                   <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                     <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                      {typeof performance_metrics.analysis_time === 'number' ? performance_metrics.analysis_time.toFixed(2) : performance_metrics.analysis_time}s
+                      {typeof performance_metrics.analysis_time === "number"
+                        ? performance_metrics.analysis_time.toFixed(2)
+                        : performance_metrics.analysis_time}
+                      s
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                       Analysis Time
@@ -1203,7 +1258,10 @@ const NewResultsSection = () => {
                 {performance_metrics.file_size && (
                   <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {(typeof performance_metrics.file_size === 'number' ? (performance_metrics.file_size / (1024 * 1024)) : 0).toFixed(1)}
+                      {(typeof performance_metrics.file_size === "number"
+                        ? performance_metrics.file_size / (1024 * 1024)
+                        : 0
+                      ).toFixed(1)}
                       MB
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -1223,16 +1281,22 @@ const NewResultsSection = () => {
                   </div>
                 )}
 
-                {performance_metrics.model_confidence !== undefined && performance_metrics.model_confidence !== null && (
-                  <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
-                    <div className="text-2xl font-bold text-teal-600 dark:text-teal-400">
-                      {(typeof performance_metrics.model_confidence === 'number' ? (performance_metrics.model_confidence * 100) : 0).toFixed(1)}%
+                {performance_metrics.model_confidence !== undefined &&
+                  performance_metrics.model_confidence !== null && (
+                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                      <div className="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                        {(typeof performance_metrics.model_confidence ===
+                        "number"
+                          ? performance_metrics.model_confidence * 100
+                          : 0
+                        ).toFixed(1)}
+                        %
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        Model Confidence
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      Model Confidence
-                    </div>
-                  </div>
-                )}
+                  )}
               </div>
             </div>
           </div>
@@ -1280,9 +1344,13 @@ const NewResultsSection = () => {
 
                 <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
                   <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    {batch_summary.average_confidence !== undefined && batch_summary.average_confidence !== null 
-                      ? (typeof batch_summary.average_confidence === 'number' ? batch_summary.average_confidence.toFixed(1) : '0.0')
-                      : '0.0'}%
+                    {batch_summary.average_confidence !== undefined &&
+                    batch_summary.average_confidence !== null
+                      ? typeof batch_summary.average_confidence === "number"
+                        ? batch_summary.average_confidence.toFixed(1)
+                        : "0.0"
+                      : "0.0"}
+                    %
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
                     Avg Confidence

@@ -212,7 +212,7 @@ const useAppStore = create((set, get) => ({
           codeIntegrity: result.feature_vector?.cert_present ? 85 : 45,
           permissionAnalysis: Math.max(
             20,
-            100 - ((result.feature_vector?.num_permissions || 0) * 5)
+            100 - (result.feature_vector?.num_permissions || 0) * 5
           ),
           networkBehavior:
             (result.feature_vector?.num_suspicious_tld || 0) === 0 ? 90 : 60,
@@ -271,7 +271,9 @@ const useAppStore = create((set, get) => ({
 
           if (result.feature_vector?.impersonation_score > 50) {
             recs.push(
-              `High impersonation risk score (${result.feature_vector.impersonation_score || 0}/100) - This app may be impersonating another application`
+              `High impersonation risk score (${
+                result.feature_vector.impersonation_score || 0
+              }/100) - This app may be impersonating another application`
             );
           }
 
@@ -283,13 +285,17 @@ const useAppStore = create((set, get) => ({
 
           if (result.feature_vector?.count_suspicious > 0) {
             recs.push(
-              `${result.feature_vector.count_suspicious || 0} suspicious API calls detected`
+              `${
+                result.feature_vector.count_suspicious || 0
+              } suspicious API calls detected`
             );
           }
 
           if (result.feature_vector?.num_suspicious_tld > 0) {
             recs.push(
-              `${result.feature_vector.num_suspicious_tld || 0} suspicious network domains detected`
+              `${
+                result.feature_vector.num_suspicious_tld || 0
+              } suspicious network domains detected`
             );
           }
 
@@ -330,17 +336,23 @@ const useAppStore = create((set, get) => ({
               type: "high",
               icon: "HiExclamationTriangle",
               title: "High Impersonation Risk",
-              message: `This app has a ${result.feature_vector.impersonation_score || 0}% impersonation score, suggesting it may be mimicking a legitimate application.`,
+              message: `This app has a ${
+                result.feature_vector.impersonation_score || 0
+              }% impersonation score, suggesting it may be mimicking a legitimate application.`,
             });
           }
 
           if (result.feature_vector?.count_suspicious > 0) {
             warnings.push({
               type:
-                (result.feature_vector.count_suspicious || 0) > 3 ? "high" : "medium",
+                (result.feature_vector.count_suspicious || 0) > 3
+                  ? "high"
+                  : "medium",
               icon: "HiCode",
               title: "Suspicious API Usage",
-              message: `Found ${result.feature_vector.count_suspicious || 0} suspicious API calls that could be used for malicious purposes.`,
+              message: `Found ${
+                result.feature_vector.count_suspicious || 0
+              } suspicious API calls that could be used for malicious purposes.`,
             });
           }
 
