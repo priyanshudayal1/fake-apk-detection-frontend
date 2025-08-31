@@ -63,7 +63,13 @@ const BatchUploadSection = () => {
       // Check file limit before processing
       const totalFiles = batchFiles.length + files.length;
       if (totalFiles > 15) {
-        setBatchError(`Maximum 15 files allowed per batch. You're trying to add ${files.length} files but already have ${batchFiles.length} files. Please remove ${totalFiles - 15} files.`);
+        setBatchError(
+          `Maximum 15 files allowed per batch. You're trying to add ${
+            files.length
+          } files but already have ${batchFiles.length} files. Please remove ${
+            totalFiles - 15
+          } files.`
+        );
         return;
       }
       handleBatchFileSelection(files);
@@ -78,7 +84,13 @@ const BatchUploadSection = () => {
       // Check file limit before processing
       const totalFiles = batchFiles.length + files.length;
       if (totalFiles > 15) {
-        setBatchError(`Maximum 15 files allowed per batch. You're trying to add ${files.length} files but already have ${batchFiles.length} files. Please remove ${totalFiles - 15} files.`);
+        setBatchError(
+          `Maximum 15 files allowed per batch. You're trying to add ${
+            files.length
+          } files but already have ${batchFiles.length} files. Please remove ${
+            totalFiles - 15
+          } files.`
+        );
         return;
       }
       handleBatchFileSelection(files);
@@ -112,7 +124,13 @@ const BatchUploadSection = () => {
     // Check total file limit (existing + new files)
     const totalFiles = batchFiles.length + files.length;
     if (totalFiles > 15) {
-      setBatchError(`Maximum 15 files allowed per batch. You're trying to add ${files.length} files but already have ${batchFiles.length} files. Please remove ${totalFiles - 15} files.`);
+      setBatchError(
+        `Maximum 15 files allowed per batch. You're trying to add ${
+          files.length
+        } files but already have ${batchFiles.length} files. Please remove ${
+          totalFiles - 15
+        } files.`
+      );
       return;
     }
 

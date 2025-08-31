@@ -478,7 +478,7 @@ const useAppStore = create((set, get) => ({
     try {
       // Use the batch report endpoint for single files too
       const response = await APKAnalysisService.generateBatchReport([
-        state.uploadedFile.file || state.uploadedFile
+        state.uploadedFile.file || state.uploadedFile,
       ]);
 
       if (response.data?.word_report) {
@@ -518,7 +518,9 @@ const useAppStore = create((set, get) => ({
           throw new Error("Failed to process report data");
         }
       } else {
-        throw new Error("Invalid report response format - no word_report field");
+        throw new Error(
+          "Invalid report response format - no word_report field"
+        );
       }
     } catch (error) {
       console.error("Report generation failed:", error);
