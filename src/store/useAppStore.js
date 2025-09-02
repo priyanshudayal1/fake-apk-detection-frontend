@@ -4,7 +4,7 @@ import { scrollToSection } from "../utils/scrollUtils";
 
 const useAppStore = create((set, get) => ({
   // Theme state
-  isDarkMode: false,
+  isDarkMode: true,
   toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
 
   // Navigation state
