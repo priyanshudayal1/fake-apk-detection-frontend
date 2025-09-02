@@ -290,7 +290,7 @@ const NewResultsSection = () => {
 
         {/* Action Buttons */}
         <div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up mb-8"
           style={{ animationDelay: "1200ms" }}
         >
           <button
@@ -365,100 +365,6 @@ const NewResultsSection = () => {
             </div>
           </div>
         )}
-
-        {/* Feature Analysis Grid */}
-        <div
-          id="feature-analysis"
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"
-        >
-          {/* Permissions & Security */}
-          <div className="animate-fade-up" style={{ animationDelay: "400ms" }}>
-            <div className="h-full p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                <HiShieldCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
-                Permissions & Security
-              </h3>
-
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Permissions Count
-                  </span>
-                  <span
-                    className={`font-bold ${
-                      (featureVector?.num_permissions || 0) > 15
-                        ? "text-warning-600"
-                        : "text-success-600"
-                    }`}
-                  >
-                    {featureVector?.num_permissions || 0}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Suspicious APIs
-                  </span>
-                  <span
-                    className={`font-bold ${
-                      (featureVector?.count_suspicious || 0) > 0
-                        ? "text-danger-600"
-                        : "text-success-600"
-                    }`}
-                  >
-                    {featureVector?.count_suspicious || 0}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Certificate Present
-                  </span>
-                  <div className="flex items-center">
-                    {featureVector?.cert_present === 1 ? (
-                      <>
-                        <HiCheckCircle className="w-4 h-4 text-success-500 mr-1" />
-                        <span className="text-success-600 dark:text-success-400 font-medium">
-                          Yes
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <HiXCircle className="w-4 h-4 text-danger-500 mr-1" />
-                        <span className="text-danger-600 dark:text-danger-400 font-medium">
-                          No
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Official Package
-                  </span>
-                  <div className="flex items-center">
-                    {featureVector?.pkg_official === 1 ? (
-                      <>
-                        <HiCheckCircle className="w-4 h-4 text-success-500 mr-1" />
-                        <span className="text-success-600 dark:text-success-400 font-medium">
-                          Yes
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <HiXCircle className="w-4 h-4 text-warning-500 mr-1" />
-                        <span className="text-warning-600 dark:text-warning-400 font-medium">
-                          No
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Security Indicators */}
         {security_indicators && (
@@ -1093,8 +999,6 @@ const NewResultsSection = () => {
             </div>
           </div>
         </div>
-
-        
 
         {/* Floating Navigation & Scroll to Top */}
         <div className="fixed right-6 bottom-6 z-20 flex flex-col gap-3">
