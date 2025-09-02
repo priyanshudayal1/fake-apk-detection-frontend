@@ -288,6 +288,38 @@ const NewResultsSection = () => {
           </div>
         </div>
 
+        {/* Action Buttons */}
+        <div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up"
+          style={{ animationDelay: "1200ms" }}
+        >
+          <button
+            onClick={resetApp}
+            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+          >
+            <HiRefresh className="w-5 h-5 mr-2" />
+            Analyze Another APK
+          </button>
+
+          <button
+            onClick={handleDownloadReport}
+            disabled={isGeneratingReport}
+            className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isGeneratingReport ? (
+              <>
+                <div className="w-5 h-5 mr-2 animate-spin border-2 border-gray-400 border-t-gray-700 rounded-full" />
+                Generating Report...
+              </>
+            ) : (
+              <>
+                <HiDownload className="w-5 h-5 mr-2" />
+                Download Detailed Report
+              </>
+            )}
+          </button>
+        </div>
+
         {/* Warnings Section */}
         {warnings && warnings.length > 0 && (
           <div
@@ -426,413 +458,7 @@ const NewResultsSection = () => {
               </div>
             </div>
           </div>
-
-          {/* App Information */}
-          <div className="animate-fade-up" style={{ animationDelay: "600ms" }}>
-            <div className="h-full p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                <HiCog className="w-6 h-6 text-teal-600 dark:text-teal-400 mr-3" />
-                App Information
-              </h3>
-
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Min SDK Version
-                  </span>
-                  <span className="font-bold text-gray-700 dark:text-gray-300">
-                    {featureVector?.min_sdk || 0}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Target SDK Version
-                  </span>
-                  <span className="font-bold text-gray-700 dark:text-gray-300">
-                    {featureVector?.target_sdk || 0}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Activities Count
-                  </span>
-                  <span className="font-bold text-gray-700 dark:text-gray-300">
-                    {featureVector?.num_activities || 0}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Services Count
-                  </span>
-                  <span className="font-bold text-gray-700 dark:text-gray-300">
-                    {featureVector?.num_services || 0}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Receivers Count
-                  </span>
-                  <span className="font-bold text-gray-700 dark:text-gray-300">
-                    {featureVector?.num_receivers || 0}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    DEX Files Count
-                  </span>
-                  <span className="font-bold text-gray-700 dark:text-gray-300">
-                    {featureVector?.num_dex || 0}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Network Domains
-                  </span>
-                  <span
-                    className={`font-bold ${
-                      (featureVector?.num_domains || 0) > 10
-                        ? "text-warning-600"
-                        : "text-gray-700 dark:text-gray-300"
-                    }`}
-                  >
-                    {featureVector?.num_domains || 0}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-
-        {/* Enhanced Permissions Analysis */}
-        {permissions_analysis && (
-          <div
-            id="permissions-analysis"
-            className="mb-12 animate-fade-up"
-            style={{ animationDelay: "800ms" }}
-          >
-            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                <HiShieldCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
-                Detailed Permissions Analysis
-              </h3>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Permission Categories */}
-                <div className="space-y-4">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                    Permission Categories
-                  </h4>
-
-                  {permissions_analysis.high_risk?.length > 0 && (
-                    <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
-                      <h5 className="font-semibold text-danger-700 dark:text-danger-300 mb-2 flex items-center">
-                        <HiExclamation className="w-4 h-4 mr-2" />
-                        High Risk Permissions (
-                        {permissions_analysis.high_risk.length})
-                      </h5>
-                      <div className="space-y-1">
-                        {permissions_analysis.high_risk
-                          .slice(0, 5)
-                          .map((perm, idx) => (
-                            <div
-                              key={idx}
-                              className="text-sm text-danger-600 dark:text-danger-400"
-                            >
-                              • {perm}
-                            </div>
-                          ))}
-                        {permissions_analysis.high_risk?.length > 0 && (
-                          <div className="text-sm text-danger-500 dark:text-danger-500 italic">
-                            ... and {permissions_analysis.high_risk.length - 5}{" "}
-                            more
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {permissions_analysis.medium_risk?.length > 0 && (
-                    <div className="p-4 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50">
-                      <h5 className="font-semibold text-warning-700 dark:text-warning-300 mb-2 flex items-center">
-                        <HiExclamationTriangle className="w-4 h-4 mr-2" />
-                        Medium Risk Permissions (
-                        {permissions_analysis.medium_risk.length})
-                      </h5>
-                      <div className="space-y-1">
-                        {permissions_analysis.medium_risk
-                          .slice(0, 5)
-                          .map((perm, idx) => (
-                            <div
-                              key={idx}
-                              className="text-sm text-warning-600 dark:text-warning-400"
-                            >
-                              • {perm}
-                            </div>
-                          ))}
-                        {permissions_analysis.medium_risk?.length > 5 && (
-                          <div className="text-sm text-warning-500 dark:text-warning-500 italic">
-                            ... and{" "}
-                            {permissions_analysis.medium_risk.length - 5} more
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {permissions_analysis.normal?.length > 0 && (
-                    <div className="p-4 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-700/50">
-                      <h5 className="font-semibold text-success-700 dark:text-success-300 mb-2 flex items-center">
-                        <HiCheckCircle className="w-4 h-4 mr-2" />
-                        Normal Permissions ({permissions_analysis.normal.length}
-                        )
-                      </h5>
-                      <div className="text-sm text-success-600 dark:text-success-400">
-                        {permissions_analysis.normal.length} standard
-                        permissions detected
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Permission Statistics */}
-                <div className="space-y-4">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                    Permission Statistics
-                  </h4>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {permissions_analysis.total_permissions || 0}
-                      </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        Total Permissions
-                      </div>
-                    </div>
-
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
-                      <div
-                        className={`text-2xl font-bold ${
-                          (permissions_analysis.high_risk?.length || 0) > 0
-                            ? "text-danger-600 dark:text-danger-400"
-                            : "text-success-600 dark:text-success-400"
-                        }`}
-                      >
-                        {permissions_analysis.high_risk?.length || 0}
-                      </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        High Risk
-                      </div>
-                    </div>
-                  </div>
-
-                  {permissions_analysis.risk_score !== undefined &&
-                    permissions_analysis.risk_score !== null && (
-                      <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                            Permission Risk Score
-                          </span>
-                          <span
-                            className={`text-lg font-bold ${
-                              permissions_analysis.risk_score > 70
-                                ? "text-danger-600 dark:text-danger-400"
-                                : permissions_analysis.risk_score > 40
-                                ? "text-warning-600 dark:text-warning-400"
-                                : "text-success-600 dark:text-success-400"
-                            }`}
-                          >
-                            {typeof permissions_analysis.risk_score === "number"
-                              ? permissions_analysis.risk_score
-                              : 0}
-                            /100
-                          </span>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                          <div
-                            className={`h-3 rounded-full bg-gradient-to-r ${
-                              permissions_analysis.risk_score > 70
-                                ? "from-danger-500 to-danger-600"
-                                : permissions_analysis.risk_score > 40
-                                ? "from-warning-500 to-warning-600"
-                                : "from-success-500 to-success-600"
-                            }`}
-                            style={{
-                              width: `${
-                                typeof permissions_analysis.risk_score ===
-                                "number"
-                                  ? permissions_analysis.risk_score
-                                  : 0
-                              }%`,
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Suspicious APIs Analysis */}
-        {suspicious_apis_analysis && (
-          <div
-            id="apis-analysis"
-            className="mb-12 animate-fade-up"
-            style={{ animationDelay: "900ms" }}
-          >
-            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                <HiCode className="w-6 h-6 text-warning-600 dark:text-warning-400 mr-3" />
-                Suspicious API Analysis
-              </h3>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* API Categories */}
-                <div className="space-y-4">
-                  {suspicious_apis_analysis.critical?.length > 0 && (
-                    <div className="p-4 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/50">
-                      <h5 className="font-semibold text-danger-700 dark:text-danger-300 mb-2 flex items-center">
-                        <HiXCircle className="w-4 h-4 mr-2" />
-                        Critical APIs (
-                        {suspicious_apis_analysis.critical.length})
-                      </h5>
-                      <div className="space-y-1">
-                        {suspicious_apis_analysis.critical
-                          .slice(0, 5)
-                          .map((api, idx) => (
-                            <div
-                              key={idx}
-                              className="text-sm text-danger-600 dark:text-danger-400"
-                            >
-                              • {api}
-                            </div>
-                          ))}
-                        {suspicious_apis_analysis.critical?.length > 5 && (
-                          <div className="text-sm text-danger-500 dark:text-danger-500 italic">
-                            ... and{" "}
-                            {suspicious_apis_analysis.critical.length - 5} more
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {suspicious_apis_analysis.suspicious?.length > 0 && (
-                    <div className="p-4 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-700/50">
-                      <h5 className="font-semibold text-warning-700 dark:text-warning-300 mb-2 flex items-center">
-                        <HiExclamationTriangle className="w-4 h-4 mr-2" />
-                        Suspicious APIs (
-                        {suspicious_apis_analysis.suspicious.length})
-                      </h5>
-                      <div className="space-y-1">
-                        {suspicious_apis_analysis.suspicious
-                          .slice(0, 5)
-                          .map((api, idx) => (
-                            <div
-                              key={idx}
-                              className="text-sm text-warning-600 dark:text-warning-400"
-                            >
-                              • {api}
-                            </div>
-                          ))}
-                        {suspicious_apis_analysis.suspicious?.length > 5 && (
-                          <div className="text-sm text-warning-500 dark:text-warning-500 italic">
-                            ... and{" "}
-                            {suspicious_apis_analysis.suspicious.length - 5}{" "}
-                            more
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* API Statistics */}
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {suspicious_apis_analysis.total_apis || 0}
-                      </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        Total APIs
-                      </div>
-                    </div>
-
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
-                      <div
-                        className={`text-2xl font-bold ${
-                          (suspicious_apis_analysis.critical?.length || 0) > 0
-                            ? "text-danger-600 dark:text-danger-400"
-                            : "text-success-600 dark:text-success-400"
-                        }`}
-                      >
-                        {(suspicious_apis_analysis.critical?.length || 0) +
-                          (suspicious_apis_analysis.suspicious?.length || 0)}
-                      </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        Suspicious
-                      </div>
-                    </div>
-                  </div>
-
-                  {suspicious_apis_analysis.risk_score !== undefined &&
-                    suspicious_apis_analysis.risk_score !== null && (
-                      <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                            API Risk Score
-                          </span>
-                          <span
-                            className={`text-lg font-bold ${
-                              suspicious_apis_analysis.risk_score > 70
-                                ? "text-danger-600 dark:text-danger-400"
-                                : suspicious_apis_analysis.risk_score > 40
-                                ? "text-warning-600 dark:text-warning-400"
-                                : "text-success-600 dark:text-success-400"
-                            }`}
-                          >
-                            {typeof suspicious_apis_analysis.risk_score ===
-                            "number"
-                              ? suspicious_apis_analysis.risk_score
-                              : 0}
-                            /100
-                          </span>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                          <div
-                            className={`h-3 rounded-full bg-gradient-to-r ${
-                              suspicious_apis_analysis.risk_score > 70
-                                ? "from-danger-500 to-danger-600"
-                                : suspicious_apis_analysis.risk_score > 40
-                                ? "from-warning-500 to-warning-600"
-                                : "from-success-500 to-success-600"
-                            }`}
-                            style={{
-                              width: `${
-                                typeof suspicious_apis_analysis.risk_score ===
-                                "number"
-                                  ? suspicious_apis_analysis.risk_score
-                                  : 0
-                              }%`,
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Security Indicators */}
         {security_indicators && (
@@ -1468,37 +1094,7 @@ const NewResultsSection = () => {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up"
-          style={{ animationDelay: "1200ms" }}
-        >
-          <button
-            onClick={resetApp}
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
-          >
-            <HiRefresh className="w-5 h-5 mr-2" />
-            Analyze Another APK
-          </button>
-
-          <button
-            onClick={handleDownloadReport}
-            disabled={isGeneratingReport}
-            className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isGeneratingReport ? (
-              <>
-                <div className="w-5 h-5 mr-2 animate-spin border-2 border-gray-400 border-t-gray-700 rounded-full" />
-                Generating Report...
-              </>
-            ) : (
-              <>
-                <HiDownload className="w-5 h-5 mr-2" />
-                Download Detailed Report
-              </>
-            )}
-          </button>
-        </div>
+        
 
         {/* Floating Navigation & Scroll to Top */}
         <div className="fixed right-6 bottom-6 z-20 flex flex-col gap-3">
