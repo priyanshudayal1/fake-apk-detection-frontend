@@ -24,7 +24,7 @@ const VideoDemoSection = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-12 animate-fade-up">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-primary-200/50 dark:border-primary-600/50 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6 shadow-lg">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-primary-200/50 dark:border-primary-600/50 text-primary-400 text-sm font-medium mb-6 shadow-lg">
               <BsPlayCircle className="w-4 h-4 mr-2" />
               Live Demo
             </div>
@@ -36,7 +36,7 @@ const VideoDemoSection = () => {
               </span>
             </h2>
 
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Watch how our AI-powered fake APK detection system analyzes
               banking applications and identifies security threats in real-time
             </p>
@@ -51,7 +51,7 @@ const VideoDemoSection = () => {
           >
             <div className="relative">
               {/* Video Frame with Enhanced Styling */}
-              <div className="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 p-2 shadow-2xl border border-gray-200/50 dark:border-gray-700/50">
+              <div className="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 p-2 shadow-2xl border border-gray-700/50">
                 <div className="relative rounded-xl overflow-hidden bg-black">
                   <iframe
                     width="100%"
@@ -82,3 +82,4 @@ const VideoDemoSection = () => {
 };
 
 export default VideoDemoSection;
+

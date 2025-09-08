@@ -3,9 +3,8 @@ import { APKAnalysisService } from "../services/api";
 import { scrollToSection } from "../utils/scrollUtils";
 
 const useAppStore = create((set, get) => ({
-  // Theme state
+  // Theme state - Always dark mode
   isDarkMode: true,
-  toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
 
   // Navigation state
   isMobileMenuOpen: false,
@@ -486,6 +485,130 @@ const useAppStore = create((set, get) => ({
   setGeneratingBatchReport: (generating) =>
     set({ isGeneratingBatchReport: generating }),
   setBatchReportError: (error) => set({ batchReportError: error }),
+
+  // Threat Feed state
+  threatFeedData: null,
+  threatFeedError: null,
+  isLoadingThreatFeed: false,
+  setThreatFeedData: (data) => set({ threatFeedData: data }),
+  setThreatFeedError: (error) => set({ threatFeedError: error }),
+  setLoadingThreatFeed: (loading) => set({ isLoadingThreatFeed: loading }),
+
+  // Abuse reporting state
+  isReportingAbuse: false,
+  abuseReportError: null,
+  setReportingAbuse: (reporting) => set({ isReportingAbuse: reporting }),
+  setAbuseReportError: (error) => set({ abuseReportError: error }),
+
+  // Load threat feed data
+  loadThreatFeed: async () => {
+    set({ isLoadingThreatFeed: true, threatFeedError: null });
+
+    try {
+      const response = await APKAnalysisService.getThreatFeed();
+      set({
+        threatFeedData: response.data.feed,
+        isLoadingThreatFeed: false,
+      });
+    } catch (error) {
+      console.error("Failed to load threat feed:", error);
+
+      let errorMessage = "Failed to load threat feed";
+      if (error.response?.status >= 500) {
+        errorMessage =
+          "Server error loading threat feed. Please try again later.";
+      } else if (error.message) {
+        errorMessage = `Threat feed error: ${error.message}`;
+      }
+
+      set({
+        threatFeedError: errorMessage,
+        isLoadingThreatFeed: false,
+      });
+    }
+  },
+
+  // Submit threat intelligence
+  submitThreatIntelligence: async (hashes, packages, certFingerprints) => {
+    set({ isLoadingThreatFeed: true, threatFeedError: null });
+
+    try {
+      const response = await APKAnalysisService.submitThreatIntelligence(
+        hashes,
+        packages,
+        certFingerprints
+      );
+
+      // Reload threat feed data after successful submission
+      if (response.data.status === "success") {
+        await get().loadThreatFeed();
+        return true;
+      } else {
+        throw new Error(
+          response.data.detail || "Failed to submit threat intelligence"
+        );
+      }
+    } catch (error) {
+      console.error("Failed to submit threat intelligence:", error);
+
+      let errorMessage = "Failed to submit threat intelligence";
+      if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      set({
+        threatFeedError: errorMessage,
+        isLoadingThreatFeed: false,
+      });
+      return false;
+    }
+  },
+
+  // Report malicious APK
+  reportAbuse: async (file, reporterEmail, reporterName, additionalNotes) => {
+    set({ isReportingAbuse: true, abuseReportError: null });
+
+    try {
+      const response = await APKAnalysisService.reportAbuse(
+        file,
+        reporterEmail,
+        reporterName,
+        additionalNotes
+      );
+
+      if (response.data.status === "success") {
+        // Reload threat feed data after successful abuse report
+        await get().loadThreatFeed();
+
+        set({ isReportingAbuse: false });
+        return {
+          success: true,
+          evidenceBundle: response.data.evidence_bundle,
+        };
+      } else {
+        throw new Error(
+          response.data.detail || "Failed to submit abuse report"
+        );
+      }
+    } catch (error) {
+      console.error("Failed to submit abuse report:", error);
+
+      let errorMessage = "Failed to submit abuse report";
+      if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      set({
+        abuseReportError: errorMessage,
+        isReportingAbuse: false,
+      });
+      return { success: false, error: errorMessage };
+    }
+  },
 
   // Generate and Download Detailed Report - now uses batch endpoint for consistency
   generateHTMLReport: async () => {

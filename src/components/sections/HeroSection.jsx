@@ -20,12 +20,12 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-30 dark:opacity-10">
+      <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-grid-pattern"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary-100/20 to-teal-100/20 dark:from-transparent dark:via-gray-800/10 dark:to-gray-700/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-gray-800/10 to-gray-700/10"></div>
       </div>
 
       {/* Floating Elements */}
@@ -45,21 +45,21 @@ const HeroSection = () => {
         {/* Main Hero Content */}
         <div className="animate-fade-up">
           {/* Security Badge */}
-          <div className="mt-4 inline-flex items-center px-4 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-primary-200/50 dark:border-primary-600/50 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6 shadow-lg">
+          <div className="mt-4 inline-flex items-center px-4 py-2 rounded-full bg-gray-800/90 backdrop-blur-sm border border-primary-600/50 text-primary-400 text-sm font-medium mb-6 shadow-lg">
             <HiShieldCheck className="w-4 h-4 mr-2" />
             Real Time APK Analysis
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             Protect Yourself from
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-teal-600 to-accent-600 dark:from-primary-400 dark:via-teal-400 dark:to-accent-400">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-teal-400 to-accent-400">
               Fake Banking Apps
             </span>
           </h1>
 
           {/* Subheading */}
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
             An AI-powered tool that scans banking APKs in real time to detect
             malicious code, suspicious permissions, embedded trackers, and
             phishing risks — delivering rapid threat triage for security
@@ -77,7 +77,7 @@ const HeroSection = () => {
 
             <button
               onClick={() => scrollToSection("demo")}
-              className="inline-flex items-center px-8 py-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50 text-gray-700 dark:text-gray-200 font-semibold rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center px-8 py-4 bg-gray-800/90 backdrop-blur-sm border border-gray-600/50 text-gray-200 font-semibold rounded-xl hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               <HiChip className="w-5 h-5 mr-2" />
               See Our System in Action

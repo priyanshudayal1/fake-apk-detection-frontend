@@ -68,7 +68,7 @@ const FAQSection = () => {
       className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5 dark:opacity-2">
+      <div className="absolute inset-0 opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
       </div>
 
@@ -76,7 +76,7 @@ const FAQSection = () => {
         {/* Section Header */}
         <div className="text-center mb-16 animate-fade-up">
           <div className="inline-flex items-center px-6 py-3 rounded-full bg-primary-50 dark:bg-primary-900/20 border border-primary-200/50 dark:border-primary-700/50 mb-6">
-            <HiQuestionMarkCircle className="w-5 h-5 text-primary-600 dark:text-primary-400 mr-2" />
+            <HiQuestionMarkCircle className="w-5 h-5 text-primary-400 mr-2" />
             <span className="text-primary-700 dark:text-primary-300 font-medium">
               Frequently Asked Questions
             </span>
@@ -84,11 +84,11 @@ const FAQSection = () => {
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Everything You Need
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-teal-600 dark:from-primary-400 dark:to-teal-400">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-teal-400">
               to Know
             </span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
+          <p className="text-xl text-gray-300">
             Get answers to common questions about APK security analysis
           </p>
         </div>
@@ -101,7 +101,7 @@ const FAQSection = () => {
           {faqData.map((item, index) => (
             <div
               key={index}
-              className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+              className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-700/50 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
             >
               <button
                 onClick={() => toggleItem(index)}
@@ -112,7 +112,7 @@ const FAQSection = () => {
                 </h3>
                 <div className="flex-shrink-0">
                   {openItems.has(index) ? (
-                    <HiChevronUp className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                    <HiChevronUp className="w-6 h-6 text-primary-400" />
                   ) : (
                     <HiChevronDown className="w-6 h-6 text-gray-400 dark:text-gray-500" />
                   )}
@@ -121,8 +121,8 @@ const FAQSection = () => {
 
               {openItems.has(index) && (
                 <div className="px-6 md:px-8 pb-6 animate-fade-in">
-                  <div className="border-t border-gray-200/50 dark:border-gray-700/50 pt-6">
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  <div className="border-t border-gray-700/50 pt-6">
+                    <p className="text-gray-300 leading-relaxed">
                       {item.answer}
                     </p>
                   </div>
@@ -141,7 +141,7 @@ const FAQSection = () => {
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
               Still have questions?
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
+            <p className="text-gray-300 mb-6">
               Our security experts are here to help you understand APK threats
               and protection
             </p>
@@ -160,3 +160,4 @@ const FAQSection = () => {
 };
 
 export default FAQSection;
+

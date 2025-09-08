@@ -173,6 +173,73 @@ export class APKAnalysisService {
       },
     });
   }
+
+  /**
+   * Get threat feed status and statistics
+   * @returns {Promise} Threat feed data
+   */
+  static async getThreatFeed() {
+    return api.get("/threat-feed", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  /**
+   * Submit threat intelligence indicators
+   * @param {Array} hashes - Array of malicious file hashes
+   * @param {Array} packages - Array of malicious package names
+   * @param {Array} certFingerprints - Array of malicious certificate fingerprints
+   * @returns {Promise} Submission result
+   */
+  static async submitThreatIntelligence(
+    hashes = [],
+    packages = [],
+    certFingerprints = []
+  ) {
+    return api.post(
+      "/threat/submit",
+      {
+        hashes,
+        packages,
+        cert_fingerprints: certFingerprints,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
+
+  /**
+   * Report malicious APK with evidence bundle
+   * @param {File} file - The APK file to report
+   * @param {string} reporterEmail - Reporter's email address
+   * @param {string} reporterName - Reporter's name
+   * @param {string} additionalNotes - Additional notes about the report
+   * @returns {Promise} Report submission result with evidence bundle
+   */
+  static async reportAbuse(
+    file,
+    reporterEmail,
+    reporterName,
+    additionalNotes = ""
+  ) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("reporter_email", reporterEmail);
+    formData.append("reporter_name", reporterName);
+    formData.append("additional_notes", additionalNotes);
+
+    return api.post("/report-abuse", formData, {
+      timeout: 600000, // 10 minutes timeout
+      headers: {
+        "Content-Type": undefined, // Let browser set the Content-Type with boundary for FormData
+      },
+    });
+  }
 }
 
 export default api;

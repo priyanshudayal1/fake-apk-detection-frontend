@@ -55,8 +55,8 @@ const ResultsSection = () => {
           color: "success",
           bgColor: "from-success-500 to-success-600",
           textColor: "text-success-600",
-          borderColor: "border-success-200 dark:border-success-700/50",
-          bgLight: "bg-success-50 dark:bg-success-900/20",
+          borderColor: "border-success-700/50",
+          bgLight: "bg-success-900/20",
         };
       case "suspicious":
         return {
@@ -66,8 +66,8 @@ const ResultsSection = () => {
           color: "warning",
           bgColor: "from-warning-500 to-warning-600",
           textColor: "text-warning-600",
-          borderColor: "border-warning-200 dark:border-warning-700/50",
-          bgLight: "bg-warning-50 dark:bg-warning-900/20",
+          borderColor: "border-warning-700/50",
+          bgLight: "bg-warning-900/20",
         };
       case "dangerous":
         return {
@@ -77,8 +77,8 @@ const ResultsSection = () => {
           color: "danger",
           bgColor: "from-danger-500 to-danger-600",
           textColor: "text-danger-600",
-          borderColor: "border-danger-200 dark:border-danger-700/50",
-          bgLight: "bg-danger-50 dark:bg-danger-900/20",
+          borderColor: "border-danger-700/50",
+          bgLight: "bg-danger-900/20",
         };
       default:
         return {
@@ -88,8 +88,8 @@ const ResultsSection = () => {
           color: "primary",
           bgColor: "from-primary-500 to-primary-600",
           textColor: "text-primary-600",
-          borderColor: "border-primary-200 dark:border-primary-700/50",
-          bgLight: "bg-primary-50 dark:bg-primary-900/20",
+          borderColor: "border-primary-700/50",
+          bgLight: "bg-primary-900/20",
         };
     }
   };
@@ -97,10 +97,10 @@ const ResultsSection = () => {
   const verdictConfig = getVerdictConfig();
 
   const getScoreColor = (score) => {
-    if (score >= 80) return "text-success-600 dark:text-success-400";
-    if (score >= 60) return "text-warning-600 dark:text-warning-400";
-    if (score >= 40) return "text-warning-600 dark:text-warning-400";
-    return "text-danger-600 dark:text-danger-400";
+    if (score >= 80) return "text-success-400";
+    if (score >= 60) return "text-warning-400";
+    if (score >= 40) return "text-warning-400";
+    return "text-danger-400";
   };
 
   const getScoreBarColor = (score) => {
@@ -136,23 +136,23 @@ const ResultsSection = () => {
   return (
     <section
       id="results"
-      className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
+      className="py-16 md:py-24 bg-gray-800 relative overflow-hidden"
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5 dark:opacity-2">
+      <div className="absolute inset-0 opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-up">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Security Analysis
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-teal-600 dark:from-primary-400 dark:to-teal-400">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-teal-400">
               Complete
             </span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
+          <p className="text-xl text-gray-300">
             Analysis results for:{" "}
             <span className="font-medium">{uploadedFile?.name}</span>
           </p>
@@ -182,14 +182,14 @@ const ResultsSection = () => {
                 {verdictConfig.title}
               </h3>
 
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+              <p className="text-xl text-gray-400 mb-8">
                 {verdictConfig.subtitle}
               </p>
 
               {/* Risk Score Gauge */}
               <div className="max-w-md mx-auto mb-8">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <span className="text-sm font-medium text-gray-400">
                     Risk Score
                   </span>
                   <span
@@ -200,7 +200,7 @@ const ResultsSection = () => {
                     {100 - riskScore}/100
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden shadow-inner">
+                <div className="w-full bg-gray-700 rounded-full h-4 overflow-hidden shadow-inner">
                   <div
                     className={`h-full bg-gradient-to-r ${getScoreBarColor(
                       100 - riskScore
@@ -208,13 +208,13 @@ const ResultsSection = () => {
                     style={{ width: `${100 - riskScore}%` }}
                   />
                 </div>
-                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <div className="flex justify-between text-xs text-gray-400 mt-1">
                   <span>High Risk</span>
                   <span>Low Risk</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-center space-x-8 text-sm text-gray-600 dark:text-gray-400">
+              <div className="flex items-center justify-center space-x-8 text-sm text-gray-400">
                 <div className="flex items-center">
                   <HiShieldCheck className="w-4 h-4 mr-2" />
                   Confidence: {confidence}%
@@ -232,9 +232,9 @@ const ResultsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Security Breakdown */}
           <div className="animate-fade-up" style={{ animationDelay: "400ms" }}>
-            <div className="h-full p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                <HiShieldCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
+            <div className="h-full p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+                <HiShieldCheck className="w-6 h-6 text-primary-400 mr-3" />
                 Security Breakdown
               </h3>
 
@@ -242,7 +242,7 @@ const ResultsSection = () => {
                 {securityTests.map((test, index) => (
                   <div key={index}>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium text-gray-900 dark:text-white">
+                      <span className="font-medium text-white">
                         {test.name}
                       </span>
                       <span
@@ -252,7 +252,7 @@ const ResultsSection = () => {
                         {test.unit}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                    <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div
                         className={`h-full bg-gradient-to-r ${getScoreBarColor(
                           test.score
@@ -267,23 +267,23 @@ const ResultsSection = () => {
                 ))}
 
                 {/* Digital Signature */}
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="pt-4 border-t border-gray-700">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <span className="font-medium text-white">
                       Digital Signature
                     </span>
                     <div className="flex items-center">
                       {securityBreakdown.digitalSignature === "valid" ? (
                         <>
                           <HiCheckCircle className="w-5 h-5 text-success-500 mr-2" />
-                          <span className="text-success-600 dark:text-success-400 font-medium">
+                          <span className="text-success-400 font-medium">
                             Valid
                           </span>
                         </>
                       ) : (
                         <>
                           <HiExclamation className="w-5 h-5 text-warning-500 mr-2" />
-                          <span className="text-warning-600 dark:text-warning-400 font-medium">
+                          <span className="text-warning-400 font-medium">
                             Warning
                           </span>
                         </>
@@ -297,29 +297,29 @@ const ResultsSection = () => {
 
           {/* Threat Detection */}
           <div className="animate-fade-up" style={{ animationDelay: "600ms" }}>
-            <div className="h-full p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                <HiXCircle className="w-6 h-6 text-danger-600 dark:text-danger-400 mr-3" />
+            <div className="h-full p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+                <HiXCircle className="w-6 h-6 text-danger-400 mr-3" />
                 Threat Detection
               </h3>
 
               <div className="space-y-6">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-800/50">
+                  <span className="font-medium text-white">
                     Malware Signatures
                   </span>
                   <div className="flex items-center">
                     {threatDetection.malwareSignatures === 0 ? (
                       <>
                         <HiCheckCircle className="w-5 h-5 text-success-500 mr-2" />
-                        <span className="text-success-600 dark:text-success-400 font-bold">
+                        <span className="text-success-400 font-bold">
                           0 Found
                         </span>
                       </>
                     ) : (
                       <>
                         <HiExclamation className="w-5 h-5 text-danger-500 mr-2" />
-                        <span className="text-danger-600 dark:text-danger-400 font-bold">
+                        <span className="text-danger-400 font-bold">
                           {threatDetection.malwareSignatures} Found
                         </span>
                       </>
@@ -327,22 +327,22 @@ const ResultsSection = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-800/50">
+                  <span className="font-medium text-white">
                     Suspicious Permissions
                   </span>
                   <div className="flex items-center">
                     {threatDetection.suspiciousPermissions <= 2 ? (
                       <>
                         <HiCheckCircle className="w-5 h-5 text-success-500 mr-2" />
-                        <span className="text-success-600 dark:text-success-400 font-bold">
+                        <span className="text-success-400 font-bold">
                           {threatDetection.suspiciousPermissions} Found
                         </span>
                       </>
                     ) : (
                       <>
                         <HiExclamation className="w-5 h-5 text-warning-500 mr-2" />
-                        <span className="text-warning-600 dark:text-warning-400 font-bold">
+                        <span className="text-warning-400 font-bold">
                           {threatDetection.suspiciousPermissions} Found
                         </span>
                       </>
@@ -350,25 +350,23 @@ const ResultsSection = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    Known Threats
-                  </span>
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-800/50">
+                  <span className="font-medium text-white">Known Threats</span>
                   <div className="flex items-center">
                     <HiCheckCircle className="w-5 h-5 text-success-500 mr-2" />
-                    <span className="text-success-600 dark:text-success-400 font-bold capitalize">
+                    <span className="text-success-400 font-bold capitalize">
                       {threatDetection.knownThreats}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <span className="font-medium text-gray-900 dark:text-white">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gray-800/50">
+                  <span className="font-medium text-white">
                     Behavioral Analysis
                   </span>
                   <div className="flex items-center">
                     <HiCheckCircle className="w-5 h-5 text-success-500 mr-2" />
-                    <span className="text-success-600 dark:text-success-400 font-bold capitalize">
+                    <span className="text-success-400 font-bold capitalize">
                       {threatDetection.behavioralAnalysis}
                     </span>
                   </div>
@@ -383,9 +381,9 @@ const ResultsSection = () => {
           className="mb-12 animate-fade-up"
           style={{ animationDelay: "800ms" }}
         >
-          <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-              <HiShieldCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
+          <div className="p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+            <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+              <HiShieldCheck className="w-6 h-6 text-primary-400 mr-3" />
               Security Recommendations
             </h3>
 
@@ -393,10 +391,10 @@ const ResultsSection = () => {
               {recommendations.map((recommendation, index) => (
                 <div
                   key={index}
-                  className="flex items-start space-x-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                  className="flex items-start space-x-3 p-4 rounded-lg bg-gray-800/50"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 bg-primary-100 dark:bg-primary-900/40 rounded-full flex items-center justify-center mt-0.5">
-                    <span className="text-primary-600 dark:text-primary-400 text-sm font-bold">
+                  <div className="flex-shrink-0 w-6 h-6 bg-primary-900/40 rounded-full flex items-center justify-center mt-0.5">
+                    <span className="text-primary-400 text-sm font-bold">
                       {index + 1}
                     </span>
                   </div>
@@ -425,7 +423,7 @@ const ResultsSection = () => {
           <button
             onClick={handleDownloadReport}
             disabled={isGeneratingReport}
-            className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGeneratingReport ? (
               <>

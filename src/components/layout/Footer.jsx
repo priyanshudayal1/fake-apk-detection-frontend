@@ -4,7 +4,7 @@ import { BsGithub, BsTwitter, BsLinkedin } from "react-icons/bs";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 dark:bg-black text-white relative overflow-hidden">
+    <footer className="bg-gray-900 text-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -31,8 +31,8 @@ const Footer = () => {
               <p className="text-gray-300 mb-2 mt-8 leading-relaxed max-w-md">
                 An AI-powered tool that scans banking APKs in real time to
                 detect malicious code, suspicious permissions, embedded
-                trackers, and phishing risks — delivering rapid threat
-                triage for security
+                trackers, and phishing risks — delivering rapid threat triage
+                for security
               </p>
             </div>
           </div>

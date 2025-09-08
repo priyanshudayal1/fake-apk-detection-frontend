@@ -1,10 +1,9 @@
 import React from "react";
-import {HiShieldCheck } from "react-icons/hi";
+import { HiShieldCheck } from "react-icons/hi";
 
 const Header = () => {
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200/20 dark:border-gray-700/30">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-700/30">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex items-center space-x-3">
@@ -12,13 +11,11 @@ const Header = () => {
               <HiShieldCheck className="w-6 h-6 text-white" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-xl md:text-2xl font-bold text-white">
                 SecureAPK
-                <span className="text-primary-600 dark:text-primary-400 ml-1">
-                  Detector
-                </span>
+                <span className="text-primary-400 ml-1">Detector</span>
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400 hidden md:block">
+              <p className="text-xs text-gray-400 hidden md:block">
                 Digital Rakshak
               </p>
             </div>

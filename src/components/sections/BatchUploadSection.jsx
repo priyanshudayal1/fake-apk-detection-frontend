@@ -266,7 +266,7 @@ const BatchUploadSection = () => {
       className="py-8 md:py-16 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5 dark:opacity-2">
+      <div className="absolute inset-0 opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
       </div>
 
@@ -275,11 +275,11 @@ const BatchUploadSection = () => {
         <div className="text-center mb-12 animate-fade-up">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Upload APK for
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-teal-600 dark:from-primary-400 dark:to-teal-400">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-teal-400">
               Security Analysis
             </span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
+          <p className="text-xl text-gray-300">
             Analyze single APK files or batch process multiple files
           </p>
         </div>
@@ -289,13 +289,13 @@ const BatchUploadSection = () => {
           className="flex justify-center mb-8 animate-fade-up"
           style={{ animationDelay: "100ms" }}
         >
-          <div className="bg-white dark:bg-gray-900 p-1 rounded-xl border border-gray-200 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-900 p-1 rounded-xl border border-gray-700">
             <button
               onClick={() => switchMode("single")}
               className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                 uploadMode === "single"
                   ? "bg-primary-500 text-white shadow-lg"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                  : "text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
               }`}
             >
               Single File
@@ -305,7 +305,7 @@ const BatchUploadSection = () => {
               className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                 uploadMode === "batch"
                   ? "bg-primary-500 text-white shadow-lg"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                  : "text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
               }`}
             >
               <HiQueueList className="w-4 h-4 inline mr-2" />
@@ -367,7 +367,7 @@ const BatchUploadSection = () => {
                         ? "Processing..."
                         : "Drop your APK file here"}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                    <p className="text-gray-400 mb-6">
                       {isUploading
                         ? "Validating file..."
                         : "or click to browse your device"}
@@ -411,7 +411,7 @@ const BatchUploadSection = () => {
             ) : (
               /* File Preview */
               <div className="animate-fade-up">
-                <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+                <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                       File Ready for Analysis
@@ -429,7 +429,7 @@ const BatchUploadSection = () => {
                   <div className="flex items-center space-x-4 mb-6">
                     <div className="flex-shrink-0">
                       <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/40 rounded-lg flex items-center justify-center">
-                        <HiDocumentText className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                        <HiDocumentText className="w-6 h-6 text-primary-400" />
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
@@ -490,13 +490,13 @@ const BatchUploadSection = () => {
             >
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 bg-gradient-to-r from-primary-100 to-accent-100 dark:from-primary-900/40 dark:to-accent-900/40">
-                  <HiQueueList className="w-10 h-10 text-primary-600 dark:text-primary-400" />
+                  <HiQueueList className="w-10 h-10 text-primary-400" />
                 </div>
 
                 <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
                   Drop multiple APK files here
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                <p className="text-gray-400 mb-6">
                   Select multiple files for batch analysis (up to 15 files)
                 </p>
 
@@ -528,8 +528,8 @@ const BatchUploadSection = () => {
 
             {/* Batch Files List */}
             {batchFiles.length > 0 && (
-              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg overflow-hidden">
-                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg overflow-hidden">
+                <div className="p-6 border-b border-gray-700">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                       Batch Analysis Queue ({batchFiles.length}/15 files)
@@ -538,7 +538,7 @@ const BatchUploadSection = () => {
                       <button
                         onClick={clearBatchFiles}
                         disabled={isBatchAnalyzing}
-                        className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 disabled:opacity-50"
+                        className="px-4 py-2 text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 disabled:opacity-50"
                       >
                         <HiTrash className="w-4 h-4 mr-2 inline" />
                         Clear All
@@ -600,7 +600,7 @@ const BatchUploadSection = () => {
                                     : fileItem.status === "error"
                                     ? "text-danger-600 dark:text-danger-400"
                                     : fileItem.status === "analyzing"
-                                    ? "text-primary-600 dark:text-primary-400"
+                                    ? "text-primary-400"
                                     : "text-gray-500 dark:text-gray-400"
                                 }`}
                               />
@@ -626,7 +626,7 @@ const BatchUploadSection = () => {
                                 ? "bg-danger-100 dark:bg-danger-900/40 text-danger-700 dark:text-danger-300"
                                 : fileItem.status === "analyzing"
                                 ? "bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300"
-                                : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
+                                : "bg-gray-100 dark:bg-gray-700 text-gray-400"
                             }`}
                           >
                             {fileItem.status === "completed" && "✓ Completed"}
@@ -676,7 +676,7 @@ const BatchUploadSection = () => {
 
             {/* Batch Results Summary */}
             {batchResults && (
-              <div className="mt-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg p-6">
+              <div className="mt-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                     Batch Analysis Results
@@ -709,7 +709,7 @@ const BatchUploadSection = () => {
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">
                       {batchResults.length}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-gray-400">
                       Total Files
                     </div>
                   </div>
@@ -742,7 +742,7 @@ const BatchUploadSection = () => {
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">
                       {batchResults.filter((r) => r.error).length}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-gray-400">
                       Errors
                     </div>
                   </div>
@@ -778,7 +778,7 @@ const BatchUploadSection = () => {
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Download Sample APKs
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="text-gray-300">
               Test our detection system with pre-verified real and fake banking
               apps
             </p>
@@ -795,13 +795,13 @@ const BatchUploadSection = () => {
               </div>
 
               <div className="p-6 space-y-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-400">
                   These are verified, legitimate banking applications that our
                   system should identify as safe:
                 </p>
 
                 <div className="grid grid-cols-1 gap-3">
-                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                  <div className="relative border border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
                     <div>
                       <h5 className="font-medium text-gray-900 dark:text-white">
                         Jana Bank App
@@ -820,7 +820,7 @@ const BatchUploadSection = () => {
                     </a>
                   </div>
 
-                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                  <div className="relative border border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
                     <div>
                       <h5 className="font-medium text-gray-900 dark:text-white">
                         IMPS NE App
@@ -839,7 +839,7 @@ const BatchUploadSection = () => {
                     </a>
                   </div>
 
-                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                  <div className="relative border border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
                     <div>
                       <h5 className="font-medium text-gray-900 dark:text-white">
                         IOB Banking App
@@ -871,13 +871,13 @@ const BatchUploadSection = () => {
               </div>
 
               <div className="p-6 space-y-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-400">
                   These are known malicious applications that our system should
                   identify as threats:
                 </p>
 
                 <div className="grid grid-cols-1 gap-3">
-                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                  <div className="relative border border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
                     <div>
                       <h5 className="font-medium text-gray-900 dark:text-white">
                         AES-Decrypt Malware
@@ -896,7 +896,7 @@ const BatchUploadSection = () => {
                     </a>
                   </div>
 
-                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                  <div className="relative border border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
                     <div>
                       <h5 className="font-medium text-gray-900 dark:text-white">
                         Native Exploit
@@ -915,7 +915,7 @@ const BatchUploadSection = () => {
                     </a>
                   </div>
 
-                  <div className="relative border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                  <div className="relative border border-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
                     <div>
                       <h5 className="font-medium text-gray-900 dark:text-white">
                         Dynamic Challenge Trojan
@@ -954,3 +954,4 @@ const BatchUploadSection = () => {
 };
 
 export default BatchUploadSection;
+

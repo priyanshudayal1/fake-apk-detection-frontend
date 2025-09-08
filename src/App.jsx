@@ -10,6 +10,7 @@ import Footer from "./components/layout/Footer";
 // Section Components
 import HeroSection from "./components/sections/HeroSection";
 import StatisticsSection from "./components/sections/StatisticsSection";
+import ThreatFeedSection from "./components/sections/ThreatFeedSection";
 import BatchUploadSection from "./components/sections/BatchUploadSection";
 import AnalysisSection from "./components/sections/AnalysisSection";
 import NewResultsSection from "./components/sections/NewResultsSection";
@@ -19,7 +20,6 @@ import VideoDemoSection from "./components/sections/VideoDemoSection";
 
 const App = () => {
   const {
-    isDarkMode,
     analysisResults,
     isAnalyzing,
     reportError,
@@ -28,14 +28,10 @@ const App = () => {
     setBatchReportError,
   } = useAppStore();
 
-  // Apply dark mode to document
+  // Force dark mode always
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
+    document.documentElement.classList.add("dark");
+  }, []);
 
   // Show report error notifications
   useEffect(() => {
@@ -62,16 +58,16 @@ const App = () => {
   }, [batchReportError, setBatchReportError]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-900 text-gray-100">
       {/* Toast Notifications */}
       <Toaster
         position="top-right"
         toastOptions={{
           duration: 4000,
           style: {
-            background: isDarkMode ? "#1e293b" : "#ffffff",
-            color: isDarkMode ? "#f8fafc" : "#1e293b",
-            border: `1px solid ${isDarkMode ? "#334155" : "#e2e8f0"}`,
+            background: "#1e293b",
+            color: "#f8fafc",
+            border: "1px solid #334155",
             borderRadius: "12px",
             padding: "16px",
             fontSize: "14px",
@@ -80,13 +76,13 @@ const App = () => {
           success: {
             iconTheme: {
               primary: "#16a34a",
-              secondary: isDarkMode ? "#1e293b" : "#ffffff",
+              secondary: "#1e293b",
             },
           },
           error: {
             iconTheme: {
               primary: "#dc2626",
-              secondary: isDarkMode ? "#1e293b" : "#ffffff",
+              secondary: "#1e293b",
             },
           },
         }}
@@ -100,7 +96,12 @@ const App = () => {
         {/* Always show Hero and Stats sections */}
         <HeroSection />
         {/* Conditional Sections based on analysis state */}
-        {!isAnalyzing && !analysisResults && <BatchUploadSection />}
+        {!isAnalyzing && !analysisResults && (
+          <>
+            <ThreatFeedSection />
+            <BatchUploadSection />
+          </>
+        )}
         {isAnalyzing && <AnalysisSection />}
         {analysisResults && <NewResultsSection />}
         <VideoDemoSection />

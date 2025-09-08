@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   HiCheckCircle,
   HiXCircle,
@@ -13,6 +13,7 @@ import {
   HiCreditCard,
   HiArrowUp,
   HiChartBar,
+  HiShieldExclamation,
 } from "react-icons/hi";
 import { HiExclamationTriangle } from "react-icons/hi2";
 import {
@@ -23,6 +24,7 @@ import {
 import { marked } from "marked";
 import useAppStore from "../../store/useAppStore";
 import { scrollToSection, scrollToTop } from "../../utils/scrollUtils";
+import AbuseReportModal from "./AbuseReportModal";
 
 const NewResultsSection = () => {
   const {
@@ -33,11 +35,21 @@ const NewResultsSection = () => {
     isGeneratingReport,
   } = useAppStore();
 
+  const [isAbuseReportModalOpen, setIsAbuseReportModalOpen] = useState(false);
+
   const handleDownloadReport = async () => {
     const success = await generateHTMLReport();
     if (success) {
       console.log("HTML report downloaded successfully");
     }
+  };
+
+  const handleReportAbuse = () => {
+    setIsAbuseReportModalOpen(true);
+  };
+
+  const handleCloseAbuseReport = () => {
+    setIsAbuseReportModalOpen(false);
   };
 
   if (!analysisResults) {
@@ -190,10 +202,10 @@ const NewResultsSection = () => {
         };
       default:
         return {
-          bg: "bg-gray-50 dark:bg-gray-800/50",
-          border: "border-gray-200 dark:border-gray-700/50",
+          bg: "bg-gray-800/50",
+          border: "border-gray-700/50",
           text: "text-gray-700 dark:text-gray-300",
-          icon: "text-gray-600 dark:text-gray-400",
+          icon: "text-gray-400",
         };
     }
   };
@@ -204,27 +216,76 @@ const NewResultsSection = () => {
   return (
     <section
       id="results"
-      className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
+      className="py-16 md:py-24 bg-gray-900 relative overflow-hidden"
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5 dark:opacity-2">
+      <div className="absolute inset-0 opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-up">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Security Analysis
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-teal-600 dark:from-primary-400 dark:to-teal-400">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-teal-400">
               Complete
             </span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
+          <p className="text-xl text-gray-300">
             Analysis results for:{" "}
             <span className="font-medium">{uploadedFile?.name}</span>
           </p>
         </div>
+
+        {/* Threat Feed Match Indicator */}
+        {analysisResults.threat_feed_match &&
+          analysisResults.threat_feed_match.match && (
+            <div
+              id="threat-match"
+              className="mb-8 animate-fade-up bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-700/30 rounded-2xl shadow-xl overflow-hidden"
+              style={{ animationDelay: "150ms" }}
+            >
+              <div className="p-6">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-danger-500 rounded-full flex items-center justify-center">
+                      <HiShieldExclamation className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="ml-4 flex-1">
+                    <h3 className="text-xl font-bold text-danger-800 dark:text-danger-300 mb-2">
+                      🚨 KNOWN MALICIOUS APK DETECTED!
+                    </h3>
+                    <p className="text-danger-700 dark:text-danger-400 mb-4">
+                      This APK matches a known bad indicator in our threat
+                      intelligence feed.
+                    </p>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-danger-200 dark:border-danger-700/30">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <span className="font-semibold text-gray-700 dark:text-gray-300">
+                            Match Type:
+                          </span>
+                          <span className="ml-2 text-danger-600 dark:text-danger-400 font-medium">
+                            {analysisResults.threat_feed_match.type}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="font-semibold text-gray-700 dark:text-gray-300">
+                            Indicator:
+                          </span>
+                          <code className="ml-2 text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-danger-600 dark:text-danger-400">
+                            {analysisResults.threat_feed_match.value}
+                          </code>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
         {/* Main Verdict Card */}
         <div
@@ -246,14 +307,14 @@ const NewResultsSection = () => {
                 {verdictConfig.title}
               </h3>
 
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+              <p className="text-xl text-gray-400 mb-8">
                 {verdictConfig.subtitle}
               </p>
 
               {/* Risk Score */}
               <div className="max-w-md mx-auto mb-8">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <span className="text-sm font-medium text-gray-400">
                     Risk Level: {risk || "Unknown"}
                   </span>
                   <span
@@ -274,7 +335,7 @@ const NewResultsSection = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-center space-x-8 text-sm text-gray-600 dark:text-gray-400">
+              <div className="flex items-center justify-center space-x-8 text-sm text-gray-400">
                 <div className="flex items-center">
                   <HiShieldCheck className="w-4 h-4 mr-2" />
                   Prediction: {prediction || "Unknown"}
@@ -304,7 +365,7 @@ const NewResultsSection = () => {
           <button
             onClick={handleDownloadReport}
             disabled={isGeneratingReport}
-            className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGeneratingReport ? (
               <>
@@ -318,6 +379,20 @@ const NewResultsSection = () => {
               </>
             )}
           </button>
+
+          {/* Report Abuse Button - Show for high-risk APKs */}
+          {(prediction === "fake" ||
+            (probability && probability > 0.7) ||
+            (analysisResults.threat_feed_match &&
+              analysisResults.threat_feed_match.match)) && (
+            <button
+              onClick={handleReportAbuse}
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-danger-600 to-danger-700 hover:from-danger-700 hover:to-danger-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+            >
+              <HiShieldExclamation className="w-5 h-5 mr-2" />
+              🚨 Report This APK
+            </button>
+          )}
         </div>
 
         {/* Warnings Section */}
@@ -328,7 +403,7 @@ const NewResultsSection = () => {
             style={{ animationDelay: "300ms" }}
           >
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
                 <HiExclamationTriangle className="w-6 h-6 text-warning-600 dark:text-warning-400 mr-3" />
                 Security Warnings
               </h3>
@@ -372,9 +447,9 @@ const NewResultsSection = () => {
             className="mb-12 animate-fade-up"
             style={{ animationDelay: "1000ms" }}
           >
-            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                <BsShieldFillCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
+            <div className="p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+                <BsShieldFillCheck className="w-6 h-6 text-primary-400 mr-3" />
                 Security Indicators
               </h3>
 
@@ -400,9 +475,9 @@ const NewResultsSection = () => {
                     return (
                       <div
                         key={idx}
-                        className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                        className="p-4 rounded-lg bg-gray-800/50"
                       >
-                        <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                        <div className="text-sm font-medium text-gray-400 mb-1">
                           {key
                             .replace(/_/g, " ")
                             .replace(/\b\w/g, (l) => l.toUpperCase())}
@@ -426,15 +501,15 @@ const NewResultsSection = () => {
             className="mb-12 animate-fade-up"
             style={{ animationDelay: "1100ms" }}
           >
-            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <div className="p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
                 <HiExclamation className="w-6 h-6 text-warning-600 dark:text-warning-400 mr-3" />
                 Banking & Impersonation Analysis
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <div className="p-4 rounded-lg bg-gray-800/50">
+                  <div className="text-sm font-medium text-gray-400 mb-1">
                     Impersonation Score
                   </div>
                   <div
@@ -448,8 +523,8 @@ const NewResultsSection = () => {
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <div className="p-4 rounded-lg bg-gray-800/50">
+                  <div className="text-sm font-medium text-gray-400 mb-1">
                     Banking Related
                   </div>
                   <div
@@ -467,8 +542,8 @@ const NewResultsSection = () => {
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <div className="p-4 rounded-lg bg-gray-800/50">
+                  <div className="text-sm font-medium text-gray-400 mb-1">
                     Package Length
                   </div>
                   <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
@@ -487,8 +562,8 @@ const NewResultsSection = () => {
             className="mb-12 animate-fade-up"
             style={{ animationDelay: "1200ms" }}
           >
-            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <div className="p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
                 <HiCog className="w-6 h-6 text-teal-600 dark:text-teal-400 mr-3" />
                 AI Security Analysis Explanation
               </h3>
@@ -530,8 +605,8 @@ const NewResultsSection = () => {
               className="mb-12 animate-fade-up"
               style={{ animationDelay: "1300ms" }}
             >
-              <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+              <div className="p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+                <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
                   <HiExclamationTriangle className="w-6 h-6 text-warning-600 dark:text-warning-400 mr-3" />
                   Risk Factors Assessment
                 </h3>
@@ -631,9 +706,9 @@ const NewResultsSection = () => {
                   {risk_factors.overall_risk_score !== undefined &&
                     risk_factors.overall_risk_score !== null && (
                       <div className="md:col-span-2">
-                        <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                        <div className="p-4 rounded-lg bg-gray-800/50">
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-lg font-semibold text-gray-900 dark:text-white">
+                            <span className="text-lg font-semibold text-white">
                               Overall Risk Score
                             </span>
                             <span
@@ -689,14 +764,14 @@ const NewResultsSection = () => {
               className="mb-12 animate-fade-up"
               style={{ animationDelay: "1400ms" }}
             >
-              <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+              <div className="p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+                <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
                   <HiChartBar className="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3" />
                   AI Model Feature Analysis
                 </h3>
 
                 <div className="space-y-4">
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  <p className="text-gray-400 mb-6">
                     These features had the most influence on the AI model's
                     decision:
                   </p>
@@ -709,14 +784,14 @@ const NewResultsSection = () => {
                     .map((feature, idx) => (
                       <div
                         key={idx}
-                        className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                        className="p-4 rounded-lg bg-gray-800/50"
                       >
                         <div className="flex justify-between items-start mb-2">
                           <div className="flex-1">
-                            <h4 className="font-semibold text-gray-900 dark:text-white">
+                            <h4 className="font-semibold text-white">
                               {feature.feature_name || "Unknown Feature"}
                             </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-400">
                               Value:{" "}
                               {feature.feature_value !== undefined &&
                               feature.feature_value !== null
@@ -778,29 +853,29 @@ const NewResultsSection = () => {
               className="mb-12 animate-fade-up"
               style={{ animationDelay: "1500ms" }}
             >
-              <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+              <div className="p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+                <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
                   <HiClock className="w-6 h-6 text-green-600 dark:text-green-400 mr-3" />
                   Analysis Performance
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {performance_metrics.analysis_time && (
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                    <div className="p-4 rounded-lg bg-gray-800/50 text-center">
                       <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                         {typeof performance_metrics.analysis_time === "number"
                           ? performance_metrics.analysis_time.toFixed(2)
                           : performance_metrics.analysis_time}
                         s
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-gray-400">
                         Analysis Time
                       </div>
                     </div>
                   )}
 
                   {performance_metrics.file_size && (
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                    <div className="p-4 rounded-lg bg-gray-800/50 text-center">
                       <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                         {(typeof performance_metrics.file_size === "number"
                           ? performance_metrics.file_size / (1024 * 1024)
@@ -808,18 +883,18 @@ const NewResultsSection = () => {
                         ).toFixed(1)}
                         MB
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-gray-400">
                         File Size
                       </div>
                     </div>
                   )}
 
                   {performance_metrics.features_extracted && (
-                    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                    <div className="p-4 rounded-lg bg-gray-800/50 text-center">
                       <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                         {performance_metrics.features_extracted}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-gray-400">
                         Features Extracted
                       </div>
                     </div>
@@ -827,7 +902,7 @@ const NewResultsSection = () => {
 
                   {performance_metrics.model_confidence !== undefined &&
                     performance_metrics.model_confidence !== null && (
-                      <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                      <div className="p-4 rounded-lg bg-gray-800/50 text-center">
                         <div className="text-2xl font-bold text-teal-600 dark:text-teal-400">
                           {(typeof performance_metrics.model_confidence ===
                           "number"
@@ -836,7 +911,7 @@ const NewResultsSection = () => {
                           ).toFixed(1)}
                           %
                         </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                        <div className="text-sm text-gray-400">
                           Model Confidence
                         </div>
                       </div>
@@ -852,41 +927,41 @@ const NewResultsSection = () => {
             className="mb-12 animate-fade-up"
             style={{ animationDelay: "1600ms" }}
           >
-            <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <div className="p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
                 <HiCog className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mr-3" />
                 Batch Analysis Summary
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                <div className="p-4 rounded-lg bg-gray-800/50 text-center">
+                  <div className="text-2xl font-bold text-white">
                     {batch_summary?.total_files || 0}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-gray-400">
                     Total Files
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                <div className="p-4 rounded-lg bg-gray-800/50 text-center">
                   <div className="text-2xl font-bold text-danger-600 dark:text-danger-400">
                     {batch_summary?.malicious_count || 0}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-gray-400">
                     Malicious
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                <div className="p-4 rounded-lg bg-gray-800/50 text-center">
                   <div className="text-2xl font-bold text-success-600 dark:text-success-400">
                     {batch_summary?.safe_count || 0}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-gray-400">
                     Safe
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-center">
+                <div className="p-4 rounded-lg bg-gray-800/50 text-center">
                   <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                     {batch_summary.average_confidence !== undefined &&
                     batch_summary.average_confidence !== null
@@ -896,7 +971,7 @@ const NewResultsSection = () => {
                       : "0.0"}
                     %
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-gray-400">
                     Avg Confidence
                   </div>
                 </div>
@@ -939,9 +1014,9 @@ const NewResultsSection = () => {
           className="mb-12 animate-fade-up"
           style={{ animationDelay: "1700ms" }}
         >
-          <div className="p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-              <HiShieldCheck className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-3" />
+          <div className="p-6 md:p-8 bg-gray-900 rounded-2xl border border-gray-700/50 shadow-lg">
+            <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+              <HiShieldCheck className="w-6 h-6 text-primary-400 mr-3" />
               Security Recommendations
             </h3>
 
@@ -984,10 +1059,10 @@ const NewResultsSection = () => {
                 recommendations.map((recommendation, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                    className="flex items-start space-x-3 p-4 rounded-lg bg-gray-800/50"
                   >
                     <div className="flex-shrink-0 w-6 h-6 bg-primary-100 dark:bg-primary-900/40 rounded-full flex items-center justify-center mt-0.5">
-                      <span className="text-primary-600 dark:text-primary-400 text-sm font-bold">
+                      <span className="text-primary-400 text-sm font-bold">
                         {index + 1}
                       </span>
                     </div>
@@ -1003,9 +1078,9 @@ const NewResultsSection = () => {
         {/* Floating Navigation & Scroll to Top */}
         <div className="fixed right-6 bottom-6 z-20 flex flex-col gap-3">
           {/* Quick Navigation */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-700 overflow-hidden">
             <div className="p-2">
-              <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-2 px-2">
+              <p className="text-xs text-gray-400 font-medium mb-2 px-2">
                 Quick Navigation
               </p>
               <div className="space-y-1">
@@ -1095,8 +1170,16 @@ const NewResultsSection = () => {
           </button>
         </div>
       </div>
+
+      {/* Abuse Report Modal */}
+      <AbuseReportModal
+        isOpen={isAbuseReportModalOpen}
+        onClose={handleCloseAbuseReport}
+        preFilledFile={uploadedFile?.file || uploadedFile}
+      />
     </section>
   );
 };
 
 export default NewResultsSection;
+

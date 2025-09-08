@@ -87,7 +87,7 @@ const AnalysisSection = () => {
           : status === "failed"
           ? "text-danger-600 dark:text-danger-400"
           : status === "running"
-          ? "text-primary-600 dark:text-primary-400 animate-pulse"
+          ? "text-primary-400 animate-pulse"
           : "text-gray-500 dark:text-gray-400"
       }`,
     };
@@ -121,7 +121,7 @@ const AnalysisSection = () => {
       case "running":
         return "border-primary-200 dark:border-primary-700/50 bg-primary-50 dark:bg-primary-900/20 animate-pulse";
       default:
-        return "border-gray-200 dark:border-gray-700/50 bg-white dark:bg-gray-800";
+        return "border-gray-700/50 bg-white dark:bg-gray-800";
     }
   };
 
@@ -135,7 +135,7 @@ const AnalysisSection = () => {
       className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
     >
       {/* Background Effects */}
-      <div className="absolute inset-0 opacity-5 dark:opacity-2">
+      <div className="absolute inset-0 opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
       </div>
 
@@ -156,7 +156,7 @@ const AnalysisSection = () => {
         {/* Header */}
         <div className="text-center mb-12 animate-fade-up">
           <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-primary-100 to-accent-100 dark:from-primary-900/30 dark:to-accent-900/30 border border-primary-200/50 dark:border-primary-700/50 mb-6">
-            <BsShieldFillCheck className="w-5 h-5 text-primary-600 dark:text-primary-400 mr-2" />
+            <BsShieldFillCheck className="w-5 h-5 text-primary-400 mr-2" />
             <span className="text-primary-700 dark:text-primary-300 font-medium">
               Security Analysis in Progress
             </span>
@@ -164,12 +164,12 @@ const AnalysisSection = () => {
 
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Analyzing:{" "}
-            <span className="text-primary-600 dark:text-primary-400">
+            <span className="text-primary-400">
               {uploadedFile?.name}
             </span>
           </h2>
 
-          <div className="flex items-center justify-center space-x-8 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center justify-center space-x-8 text-sm text-gray-400">
             <div className="flex items-center">
               <HiClock className="w-4 h-4 mr-2" />
               Time Elapsed: {Math.floor(timeElapsed / 60)}:
@@ -193,7 +193,7 @@ const AnalysisSection = () => {
             <div className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
               {Math.round(analysisProgress)}%
             </div>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-400">
               Analysis Complete
             </p>
           </div>
@@ -234,7 +234,7 @@ const AnalysisSection = () => {
                     <h3 className="font-semibold text-gray-900 dark:text-white">
                       {test.name}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 capitalize flex items-center">
+                    <p className="text-sm text-gray-400 capitalize flex items-center">
                       {test.status === "running" ? (
                         <>
                           <span className="inline-flex items-center">
@@ -256,7 +256,7 @@ const AnalysisSection = () => {
                 </div>
                 <div className="flex items-center space-x-2">
                   {test.status === "running" && (
-                    <div className="text-sm text-primary-600 dark:text-primary-400 font-medium">
+                    <div className="text-sm text-primary-400 font-medium">
                       {Math.round(test.progress)}%
                     </div>
                   )}
@@ -293,7 +293,7 @@ const AnalysisSection = () => {
                     <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
                     <span className="font-medium">Active Scan</span>
                   </div>
-                  <p className="text-xs text-primary-600 dark:text-primary-400 mt-1">
+                  <p className="text-xs text-primary-400 mt-1">
                     {test.id === 1 &&
                       "Extracting and analyzing APK structure..."}
                     {test.id === 2 && "Deep scanning for malicious patterns..."}
@@ -345,7 +345,7 @@ const AnalysisSection = () => {
           className="mt-12 text-center animate-fade-up"
           style={{ animationDelay: "600ms" }}
         >
-          <div className="inline-flex items-center px-8 py-4 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+          <div className="inline-flex items-center px-8 py-4 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-700/50 shadow-lg">
             <div className="w-3 h-3 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full animate-pulse mr-3"></div>
             <span className="text-gray-700 dark:text-gray-300 font-medium">
               {currentTest
@@ -366,7 +366,7 @@ const AnalysisSection = () => {
           <h3 className="text-xl font-semibold text-center text-gray-900 dark:text-white mb-2">
             Your Privacy is Protected
           </h3>
-          <p className="text-center text-gray-600 dark:text-gray-400">
+          <p className="text-center text-gray-400">
             This analysis is performed locally and securely. No sensitive data
             is stored or transmitted to external servers.
           </p>
@@ -398,3 +398,4 @@ const AnalysisSection = () => {
 };
 
 export default AnalysisSection;
+

@@ -43,7 +43,7 @@ const AboutSection = () => {
       className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5 dark:opacity-2">
+      <div className="absolute inset-0 opacity-2">
         <div className="absolute inset-0 bg-grid-pattern"></div>
       </div>
 
@@ -66,7 +66,7 @@ const AboutSection = () => {
             <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               How It Works
             </h3>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
+            <p className="text-xl text-gray-300">
               Four simple steps to comprehensive security analysis
             </p>
           </div>
@@ -91,7 +91,7 @@ const AboutSection = () => {
                 <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {item.title}
                 </h4>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-gray-400 leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -104,3 +104,4 @@ const AboutSection = () => {
 };
 
 export default AboutSection;
+
