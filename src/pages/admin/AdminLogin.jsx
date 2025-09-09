@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAdminStore } from "../../store/useAdminStore";
 
@@ -10,8 +10,15 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { setIsAdmin } = useAdminStore();
+  const { isAdmin, setIsAdmin, setAdminUser, setAdminToken } = useAdminStore();
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (isAdmin) {
+      navigate("/admin/dashboard");
+    }
+  }, [isAdmin, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +32,8 @@ const AdminLogin = () => {
         credentials.password === "admin123"
       ) {
         setIsAdmin(true);
+        setAdminUser({ username: credentials.username });
+        setAdminToken("demo-admin-token"); // In production, this would be a real JWT token
         navigate("/admin/dashboard");
       } else {
         setError("Invalid username or password");
