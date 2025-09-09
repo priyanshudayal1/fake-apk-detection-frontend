@@ -63,27 +63,27 @@ const AdminDashboard = () => {
 
   if (loading && reports.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading reports...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
+          <p className="mt-4 text-gray-300">Loading reports...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="mt-2 text-gray-600">Monitor and manage abuse reports</p>
+          <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
+          <p className="mt-2 text-gray-300">Monitor and manage abuse reports</p>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
+          <div className="mb-6 bg-red-900/50 border border-red-600/50 rounded-md p-4 backdrop-blur-sm">
             <div className="flex">
               <div className="flex-shrink-0">
                 <svg
@@ -99,10 +99,10 @@ const AdminDashboard = () => {
                 </svg>
               </div>
               <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
+                <p className="text-sm text-red-300">{error}</p>
                 <button
                   onClick={clearError}
-                  className="mt-1 text-sm text-red-600 underline hover:text-red-500"
+                  className="mt-1 text-sm text-red-400 underline hover:text-red-300"
                 >
                   Dismiss
                 </button>
@@ -113,50 +113,48 @@ const AdminDashboard = () => {
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Total Reports</h3>
-            <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+          <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-lg shadow-xl p-6">
+            <h3 className="text-sm font-medium text-gray-400">Total Reports</h3>
+            <p className="text-2xl font-bold text-white">{stats.total}</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">
+          <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-lg shadow-xl p-6">
+            <h3 className="text-sm font-medium text-gray-400">
               Single Reports
             </h3>
-            <p className="text-2xl font-bold text-blue-600">{stats.single}</p>
+            <p className="text-2xl font-bold text-blue-400">{stats.single}</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Batch Reports</h3>
-            <p className="text-2xl font-bold text-purple-600">{stats.batch}</p>
+          <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-lg shadow-xl p-6">
+            <h3 className="text-sm font-medium text-gray-400">Batch Reports</h3>
+            <p className="text-2xl font-bold text-purple-400">{stats.batch}</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">High Risk</h3>
-            <p className="text-2xl font-bold text-red-600">{stats.high_risk}</p>
+          <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-lg shadow-xl p-6">
+            <h3 className="text-sm font-medium text-gray-400">High Risk</h3>
+            <p className="text-2xl font-bold text-red-400">{stats.high_risk}</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Medium Risk</h3>
-            <p className="text-2xl font-bold text-orange-600">
+          <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-lg shadow-xl p-6">
+            <h3 className="text-sm font-medium text-gray-400">Medium Risk</h3>
+            <p className="text-2xl font-bold text-orange-400">
               {stats.medium_risk}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Low Risk</h3>
-            <p className="text-2xl font-bold text-yellow-600">
+          <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-lg shadow-xl p-6">
+            <h3 className="text-sm font-medium text-gray-400">Low Risk</h3>
+            <p className="text-2xl font-bold text-yellow-400">
               {stats.low_risk}
             </p>
           </div>
         </div>
 
         {/* Reports Table */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">
-              Recent Reports
-            </h2>
+        <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-700/50 shadow-xl rounded-lg">
+          <div className="px-6 py-4 border-b border-gray-700/50">
+            <h2 className="text-lg font-medium text-white">Recent Reports</h2>
           </div>
 
           {reports.length === 0 ? (
             <div className="text-center py-12">
               <svg
-                className="mx-auto h-12 w-12 text-gray-400"
+                className="mx-auto h-12 w-12 text-gray-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -168,48 +166,48 @@ const AdminDashboard = () => {
                   d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                 />
               </svg>
-              <h3 className="mt-2 text-sm font-medium text-gray-900">
+              <h3 className="mt-2 text-sm font-medium text-white">
                 No reports found
               </h3>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-gray-400">
                 No abuse reports have been submitted yet.
               </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-gray-700/50">
+                <thead className="bg-gray-700/50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Report ID
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Type
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       APK File
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Risk Level
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Reporter
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Timestamp
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-gray-800/50 divide-y divide-gray-700/50">
                   {reports.map((report) => (
                     <tr
                       key={report.file_metadata?.filename || Math.random()}
-                      className="hover:bg-gray-50"
+                      className="hover:bg-gray-700/50 transition-colors duration-200"
                     >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">
                         {report.report_metadata?.report_id || "N/A"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -221,7 +219,7 @@ const AdminDashboard = () => {
                           {report.report_type || "Unknown"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">
                         {report.apk_analysis?.filename || "N/A"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -233,18 +231,18 @@ const AdminDashboard = () => {
                           {report.apk_analysis?.risk_level || "Unknown"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">
                         <div>
-                          <div className="font-medium">
+                          <div className="font-medium text-white">
                             {report.report_metadata?.reporter?.name ||
                               "Anonymous"}
                           </div>
-                          <div className="text-gray-500">
+                          <div className="text-gray-400">
                             {report.report_metadata?.reporter?.email || "N/A"}
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                         {formatTimestamp(report.report_metadata?.timestamp)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -252,7 +250,7 @@ const AdminDashboard = () => {
                           onClick={() =>
                             handleViewReport(report.report_metadata?.report_id)
                           }
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-blue-400 hover:text-blue-300 transition-colors duration-200"
                         >
                           View
                         </button>
@@ -260,7 +258,7 @@ const AdminDashboard = () => {
                           onClick={() =>
                             setReportToDelete(report.report_metadata?.report_id)
                           }
-                          className="text-red-600 hover:text-red-900"
+                          className="text-red-400 hover:text-red-300 transition-colors duration-200"
                         >
                           Delete
                         </button>
@@ -274,8 +272,8 @@ const AdminDashboard = () => {
 
           {/* Pagination */}
           {pagination.pages > 1 && (
-            <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-              <div className="text-sm text-gray-700">
+            <div className="px-6 py-4 border-t border-gray-700/50 flex items-center justify-between">
+              <div className="text-sm text-gray-300">
                 Showing page {pagination.page} of {pagination.pages} (
                 {pagination.total} total reports)
               </div>
@@ -283,14 +281,14 @@ const AdminDashboard = () => {
                 <button
                   onClick={() => handlePageChange(pagination.page - 1)}
                   disabled={pagination.page === 1 || loading}
-                  className="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1 border border-gray-600 rounded-md text-sm text-gray-200 hover:bg-gray-700/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => handlePageChange(pagination.page + 1)}
                   disabled={pagination.page === pagination.pages || loading}
-                  className="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1 border border-gray-600 rounded-md text-sm text-gray-200 hover:bg-gray-700/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                 >
                   Next
                 </button>
@@ -302,16 +300,16 @@ const AdminDashboard = () => {
 
       {/* Report Detail Modal */}
       {showModal && selectedReport && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+        <div className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border border-gray-700/50 w-11/12 max-w-4xl shadow-2xl rounded-lg bg-gray-800/95 backdrop-blur-sm">
             <div className="mt-3">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-gray-900">
+                <h3 className="text-lg font-bold text-white">
                   Report Details: {selectedReport.report_metadata?.report_id}
                 </h3>
                 <button
                   onClick={closeModal}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-200 transition-colors duration-200"
                 >
                   <svg
                     className="h-6 w-6"
@@ -332,38 +330,58 @@ const AdminDashboard = () => {
               <div className="max-h-96 overflow-y-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* APK Analysis */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-900 mb-2">
+                  <div className="bg-gray-700/50 border border-gray-600/50 p-4 rounded-lg">
+                    <h4 className="font-medium text-white mb-2">
                       APK Analysis
                     </h4>
                     <div className="space-y-2 text-sm">
                       <div>
-                        <span className="font-medium">Filename:</span>{" "}
-                        {selectedReport.apk_analysis?.filename}
+                        <span className="font-medium text-gray-300">
+                          Filename:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {selectedReport.apk_analysis?.filename}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">Package:</span>{" "}
-                        {selectedReport.apk_analysis?.package || "N/A"}
+                        <span className="font-medium text-gray-300">
+                          Package:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {selectedReport.apk_analysis?.package || "N/A"}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">SHA256:</span>{" "}
-                        <span className="font-mono text-xs">
+                        <span className="font-medium text-gray-300">
+                          SHA256:
+                        </span>{" "}
+                        <span className="font-mono text-xs text-gray-200">
                           {selectedReport.apk_analysis?.sha256 || "N/A"}
                         </span>
                       </div>
                       <div>
-                        <span className="font-medium">Prediction:</span>{" "}
-                        {selectedReport.apk_analysis?.prediction}
+                        <span className="font-medium text-gray-300">
+                          Prediction:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {selectedReport.apk_analysis?.prediction}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">Probability:</span>{" "}
-                        {(
-                          selectedReport.apk_analysis?.probability * 100
-                        ).toFixed(2)}
-                        %
+                        <span className="font-medium text-gray-300">
+                          Probability:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {(
+                            selectedReport.apk_analysis?.probability * 100
+                          ).toFixed(2)}
+                          %
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">Risk Level:</span>
+                        <span className="font-medium text-gray-300">
+                          Risk Level:
+                        </span>
                         <span
                           className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRiskLevelColor(
                             selectedReport.apk_analysis?.risk_level
@@ -376,80 +394,114 @@ const AdminDashboard = () => {
                   </div>
 
                   {/* Reporter Info */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-900 mb-2">
+                  <div className="bg-gray-700/50 border border-gray-600/50 p-4 rounded-lg">
+                    <h4 className="font-medium text-white mb-2">
                       Reporter Information
                     </h4>
                     <div className="space-y-2 text-sm">
                       <div>
-                        <span className="font-medium">Name:</span>{" "}
-                        {selectedReport.report_metadata?.reporter?.name}
+                        <span className="font-medium text-gray-300">Name:</span>{" "}
+                        <span className="text-gray-200">
+                          {selectedReport.report_metadata?.reporter?.name}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">Email:</span>{" "}
-                        {selectedReport.report_metadata?.reporter?.email}
+                        <span className="font-medium text-gray-300">
+                          Email:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {selectedReport.report_metadata?.reporter?.email}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">Timestamp:</span>{" "}
-                        {formatTimestamp(
-                          selectedReport.report_metadata?.timestamp
-                        )}
+                        <span className="font-medium text-gray-300">
+                          Timestamp:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {formatTimestamp(
+                            selectedReport.report_metadata?.timestamp
+                          )}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">Notes:</span>{" "}
-                        {selectedReport.report_metadata?.additional_notes ||
-                          "None"}
+                        <span className="font-medium text-gray-300">
+                          Notes:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {selectedReport.report_metadata?.additional_notes ||
+                            "None"}
+                        </span>
                       </div>
                     </div>
                   </div>
 
                   {/* Technical Indicators */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-900 mb-2">
+                  <div className="bg-gray-700/50 border border-gray-600/50 p-4 rounded-lg">
+                    <h4 className="font-medium text-white mb-2">
                       Technical Indicators
                     </h4>
                     <div className="space-y-2 text-sm">
                       <div>
-                        <span className="font-medium">Permissions:</span>{" "}
-                        {selectedReport.technical_indicators?.permissions
-                          ?.length || 0}
+                        <span className="font-medium text-gray-300">
+                          Permissions:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {selectedReport.technical_indicators?.permissions
+                            ?.length || 0}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">Suspicious APIs:</span>{" "}
-                        {
-                          Object.keys(
+                        <span className="font-medium text-gray-300">
+                          Suspicious APIs:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {
+                            Object.keys(
+                              selectedReport.technical_indicators
+                                ?.suspicious_apis || {}
+                            ).length
+                          }
+                        </span>
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-300">
+                          Certificate:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {
                             selectedReport.technical_indicators
-                              ?.suspicious_apis || {}
-                          ).length
-                        }
-                      </div>
-                      <div>
-                        <span className="font-medium">Certificate:</span>{" "}
-                        {
-                          selectedReport.technical_indicators?.certificate_info
-                            ?.status
-                        }
+                              ?.certificate_info?.status
+                          }
+                        </span>
                       </div>
                     </div>
                   </div>
 
                   {/* STIX Template */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-900 mb-2">
+                  <div className="bg-gray-700/50 border border-gray-600/50 p-4 rounded-lg">
+                    <h4 className="font-medium text-white mb-2">
                       STIX Template
                     </h4>
                     <div className="space-y-2 text-sm">
                       <div>
-                        <span className="font-medium">Type:</span>{" "}
-                        {selectedReport.stix_template?.type}
+                        <span className="font-medium text-gray-300">Type:</span>{" "}
+                        <span className="text-gray-200">
+                          {selectedReport.stix_template?.type}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">Labels:</span>{" "}
-                        {selectedReport.stix_template?.labels?.join(", ")}
+                        <span className="font-medium text-gray-300">
+                          Labels:
+                        </span>{" "}
+                        <span className="text-gray-200">
+                          {selectedReport.stix_template?.labels?.join(", ")}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-medium">Pattern:</span>{" "}
-                        <span className="font-mono text-xs">
+                        <span className="font-medium text-gray-300">
+                          Pattern:
+                        </span>{" "}
+                        <span className="font-mono text-xs text-gray-200">
                           {selectedReport.stix_template?.pattern}
                         </span>
                       </div>
@@ -461,7 +513,7 @@ const AdminDashboard = () => {
               <div className="flex justify-end space-x-3 mt-6">
                 <button
                   onClick={closeModal}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-md transition-colors duration-200"
                 >
                   Close
                 </button>
@@ -473,12 +525,12 @@ const AdminDashboard = () => {
 
       {/* Delete Confirmation Modal */}
       {reportToDelete && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border border-gray-700/50 w-96 shadow-2xl rounded-lg bg-gray-800/95 backdrop-blur-sm">
             <div className="mt-3 text-center">
-              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-900/50 border border-red-600/50">
                 <svg
-                  className="h-6 w-6 text-red-600"
+                  className="h-6 w-6 text-red-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -491,11 +543,11 @@ const AdminDashboard = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mt-2">
+              <h3 className="text-lg font-medium text-white mt-2">
                 Delete Report
               </h3>
               <div className="mt-2 px-7 py-3">
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-300">
                   Are you sure you want to delete this report? This action
                   cannot be undone.
                 </p>
@@ -503,13 +555,13 @@ const AdminDashboard = () => {
               <div className="flex justify-center space-x-3 mt-4">
                 <button
                   onClick={() => setReportToDelete(null)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-md transition-colors duration-200"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => handleDeleteReport(reportToDelete)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors duration-200"
                   disabled={loading}
                 >
                   {loading ? "Deleting..." : "Delete"}
