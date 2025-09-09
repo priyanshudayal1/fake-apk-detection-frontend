@@ -127,6 +127,7 @@ export const useAdminStore = create(
           const date = new Date(timestamp * 1000); // Convert from Unix timestamp
           return date.toLocaleString();
         } catch (error) {
+          console.error("Error formatting timestamp:", error);
           return "Invalid Date";
         }
       },
