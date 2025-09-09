@@ -256,12 +256,12 @@ export class APKAnalysisService {
     additionalNotes = ""
   ) {
     const formData = new FormData();
-    
+
     // Add all files
-    files.forEach(file => {
+    files.forEach((file) => {
       formData.append("files", file);
     });
-    
+
     formData.append("reporter_email", reporterEmail);
     formData.append("reporter_name", reporterName);
     formData.append("additional_notes", additionalNotes);
@@ -296,8 +296,50 @@ export class APKAnalysisService {
    * @returns {Promise} News data with optional AI enhancement
    */
   static async getNews(enhanced = false) {
-    const params = enhanced ? { enhanced: 'true' } : {};
+    const params = enhanced ? { enhanced: "true" } : {};
     return api.get("/news", { params });
+  }
+
+  // Admin API methods
+  /**
+   * Get all admin reports with pagination
+   * @param {number} page - Page number
+   * @param {number} perPage - Items per page
+   * @returns {Promise} Reports data with pagination
+   */
+  static async getAdminReports(page = 1, perPage = 20) {
+    return api.get("/admin/reports", {
+      params: { page, per_page: perPage },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  /**
+   * Get a specific report by ID
+   * @param {string} reportId - The report ID
+   * @returns {Promise} Single report data
+   */
+  static async getSingleReport(reportId) {
+    return api.get(`/admin/reports/${reportId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  /**
+   * Delete a specific report by ID
+   * @param {string} reportId - The report ID
+   * @returns {Promise} Deletion result
+   */
+  static async deleteReport(reportId) {
+    return api.delete(`/admin/reports/${reportId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 }
 

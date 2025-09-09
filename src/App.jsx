@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import { HiExclamation, HiDocument } from "react-icons/hi";
 import useAppStore from "./store/useAppStore";
@@ -19,15 +20,55 @@ import FAQSection from "./components/sections/FAQSection";
 import AboutSection from "./components/sections/AboutSection";
 import VideoDemoSection from "./components/sections/VideoDemoSection";
 
+// Admin Components
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import { useAdminStore } from "./store/useAdminStore";
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { isAdmin } = useAdminStore();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!isAdmin) {
+      navigate("/admin/login");
+    }
+  }, [isAdmin, navigate]);
+
+  if (!isAdmin) {
+    return null;
+  }
+
+  return children;
+};
+
+const HomePage = () => {
+  const { analysisResults, isAnalyzing } = useAppStore();
+
+  return (
+    <main className="pt-16 md:pt-5">
+      {/* Always show Hero and Stats sections */}
+      <HeroSection />
+      {/* Conditional Sections based on analysis state */}
+      {!isAnalyzing && !analysisResults && (
+        <>
+          <BatchUploadSection />
+          <ThreatFeedSection />
+          <NewsSection />
+        </>
+      )}
+      {isAnalyzing && <AnalysisSection />}
+      {analysisResults && <NewResultsSection />}
+      <VideoDemoSection />
+      <AboutSection />
+    </main>
+  );
+};
+
 const App = () => {
-  const {
-    analysisResults,
-    isAnalyzing,
-    reportError,
-    setReportError,
-    batchReportError,
-    setBatchReportError,
-  } = useAppStore();
+  const { reportError, setReportError, batchReportError, setBatchReportError } =
+    useAppStore();
 
   // Force dark mode always
   useEffect(() => {
@@ -89,29 +130,27 @@ const App = () => {
         }}
       />
 
-      {/* Header */}
-      <Header />
-
-      {/* Main Content */}
-      <main className="pt-16 md:pt-5">
-        {/* Always show Hero and Stats sections */}
-        <HeroSection />
-        {/* Conditional Sections based on analysis state */}
-        {!isAnalyzing && !analysisResults && (
-          <>
-            <BatchUploadSection />
-            <ThreatFeedSection />
-            <NewsSection />
-          </>
-        )}
-        {isAnalyzing && <AnalysisSection />}
-        {analysisResults && <NewResultsSection />}
-        <VideoDemoSection />
-        <AboutSection />
-      </main>
-
-      {/* Footer */}
-      <Footer />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Header />
+              <HomePage />
+              <Footer />
+            </>
+          }
+        />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </div>
   );
 };
