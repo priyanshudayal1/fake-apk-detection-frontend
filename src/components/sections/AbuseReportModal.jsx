@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   HiX,
-  HiExclamationTriangle,
   HiCheckCircle,
   HiMail,
   HiUser,
@@ -9,6 +8,7 @@ import {
   HiUpload,
   HiShieldExclamation,
 } from "react-icons/hi";
+import { HiExclamationTriangle } from "react-icons/hi2";
 import { BsFileEarmarkZip, BsShieldFillExclamation } from "react-icons/bs";
 import useAppStore from "../../store/useAppStore";
 import { validateAPKFile } from "../../utils/fileUtils";
@@ -298,7 +298,7 @@ const AbuseReportModal = ({ isOpen, onClose, preFilledFile = null }) => {
                       handleInputChange("reporterEmail", e.target.value)
                     }
                     placeholder="reporter@example.com"
-                    className="abuse-report-form-input w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                    className="abuse-report-form-input w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                   {formErrors.reporterEmail && (
                     <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">
@@ -320,7 +320,7 @@ const AbuseReportModal = ({ isOpen, onClose, preFilledFile = null }) => {
                       handleInputChange("reporterName", e.target.value)
                     }
                     placeholder="Your full name"
-                    className="abuse-report-form-input w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                    className="abuse-report-form-input w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                   {formErrors.reporterName && (
                     <p className="mt-1 text-sm text-danger-600 dark:text-danger-400">
@@ -342,7 +342,7 @@ const AbuseReportModal = ({ isOpen, onClose, preFilledFile = null }) => {
                     }
                     placeholder="Describe how you encountered this malicious APK, any observed behavior, or additional context..."
                     rows={3}
-                    className="abuse-report-form-input w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none"
+                    className="abuse-report-form-input w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
 

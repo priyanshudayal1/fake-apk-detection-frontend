@@ -1,13 +1,6 @@
 import React, { useEffect } from "react";
-import {
-  HiShieldCheck,
-  HiExclamationTriangle,
-  HiClock,
-  HiRefresh,
-  HiDatabase,
-  HiFingerPrint,
-  HiGlobe,
-} from "react-icons/hi";
+import { HiShieldCheck, HiClock, HiRefresh, HiDatabase, HiFingerPrint, HiGlobe } from "react-icons/hi";
+import { HiExclamationTriangle } from "react-icons/hi2";
 import { BsShieldFillCheck, BsShieldFillExclamation } from "react-icons/bs";
 import useAppStore from "../../store/useAppStore";
 
@@ -43,7 +36,7 @@ const ThreatFeedSection = () => {
   return (
     <section
       id="threat-feed"
-      className="py-12 md:py-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden"
+      className="py-8 md:py-12 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
@@ -59,14 +52,14 @@ const ThreatFeedSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-8 animate-fade-up">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3">
             <BsShieldFillCheck className="inline-block w-8 h-8 mr-3 text-primary-400" />
             Threat Intelligence
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-teal-400">
               Dashboard
             </span>
           </h2>
-          <p className="text-lg text-gray-300">
+          <p className="text-lg text-gray-600 dark:text-gray-300">
             Real-time threat intelligence feed protecting your devices from
             known malicious applications
           </p>
@@ -74,7 +67,7 @@ const ThreatFeedSection = () => {
 
         {/* Threat Feed Dashboard */}
         <div
-          className="animate-fade-up bg-gray-900 rounded-2xl shadow-xl border border-gray-700 overflow-hidden"
+          className="animate-fade-up bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
           style={{ animationDelay: "200ms" }}
         >
           {/* Header */}

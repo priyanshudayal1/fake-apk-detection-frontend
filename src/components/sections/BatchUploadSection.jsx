@@ -10,6 +10,7 @@ import { BsFileEarmarkZip, BsShieldFillCheck } from "react-icons/bs";
 import { HiQueueList, HiTrash } from "react-icons/hi2";
 import useAppStore from "../../store/useAppStore";
 import { validateAPKFile, createFilePreview } from "../../utils/fileUtils";
+import BatchAbuseReportModal from "./BatchAbuseReportModal";
 
 const BatchUploadSection = () => {
   const fileInputRef = useRef(null);
@@ -19,6 +20,7 @@ const BatchUploadSection = () => {
   const [batchResults, setBatchResults] = useState(null);
   const [isBatchAnalyzing, setIsBatchAnalyzing] = useState(false);
   const [batchError, setBatchError] = useState(null);
+  const [showBatchAbuseModal, setShowBatchAbuseModal] = useState(false);
 
   const {
     uploadedFile,
@@ -682,26 +684,39 @@ const BatchUploadSection = () => {
                     Batch Analysis Results
                   </h3>
 
-                  {/* Download Report Button */}
-                  <button
-                    onClick={handleDownloadBatchReport}
-                    disabled={
-                      isGeneratingBatchReport || batchFiles.length === 0
-                    }
-                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:cursor-not-allowed"
-                  >
-                    {isGeneratingBatchReport ? (
-                      <>
-                        <div className="w-4 h-4 mr-2 animate-spin border-2 border-white border-t-transparent rounded-full" />
-                        Generating...
-                      </>
-                    ) : (
-                      <>
-                        <HiDownload className="w-4 h-4 mr-2" />
-                        Download Report
-                      </>
+                  <div className="flex items-center space-x-3">
+                    {/* Download Report Button */}
+                    <button
+                      onClick={handleDownloadBatchReport}
+                      disabled={
+                        isGeneratingBatchReport || batchFiles.length === 0
+                      }
+                      className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-teal-600 hover:from-primary-700 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:cursor-not-allowed"
+                    >
+                      {isGeneratingBatchReport ? (
+                        <>
+                          <div className="w-4 h-4 mr-2 animate-spin border-2 border-white border-t-transparent rounded-full" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <HiDownload className="w-4 h-4 mr-2" />
+                          Download Report
+                        </>
+                      )}
+                    </button>
+
+                    {/* Report Malicious APKs Button */}
+                    {batchResults && batchResults.some(r => r.prediction === "fake") && (
+                      <button
+                        onClick={() => setShowBatchAbuseModal(true)}
+                        className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-danger-600 to-red-600 hover:from-danger-700 hover:to-red-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                      >
+                        <HiExclamation className="w-4 h-4 mr-2" />
+                        Report Malicious APKs ({batchResults.filter(r => r.prediction === "fake").length})
+                      </button>
                     )}
-                  </button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -947,6 +962,16 @@ const BatchUploadSection = () => {
           multiple={uploadMode === "batch"}
           onChange={handleFileInputChange}
           className="hidden"
+        />
+
+        {/* Batch Abuse Report Modal */}
+        <BatchAbuseReportModal
+          isOpen={showBatchAbuseModal}
+          onClose={() => setShowBatchAbuseModal(false)}
+          maliciousFiles={batchFiles
+            .filter(f => f.result && f.result.prediction === "fake")
+            .map(f => f.file)}
+          batchResults={batchResults}
         />
       </div>
     </section>

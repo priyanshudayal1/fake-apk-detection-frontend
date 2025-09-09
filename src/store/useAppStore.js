@@ -610,6 +610,52 @@ const useAppStore = create((set, get) => ({
     }
   },
 
+  // Report multiple malicious APKs
+  reportBatchAbuse: async (files, reporterEmail, reporterName, additionalNotes) => {
+    set({ isReportingAbuse: true, abuseReportError: null });
+
+    try {
+      const response = await APKAnalysisService.reportBatchAbuse(
+        files,
+        reporterEmail,
+        reporterName,
+        additionalNotes
+      );
+
+      if (response.data.status === "success") {
+        // Reload threat feed data after successful batch abuse report
+        await get().loadThreatFeed();
+
+        set({ isReportingAbuse: false });
+        return {
+          success: true,
+          evidenceBundle: response.data.evidence_bundles,
+          maliciousCount: response.data.malicious_count,
+          totalAnalyzed: response.data.total_analyzed,
+        };
+      } else {
+        throw new Error(
+          response.data.detail || "Failed to submit batch abuse report"
+        );
+      }
+    } catch (error) {
+      console.error("Failed to submit batch abuse report:", error);
+
+      let errorMessage = "Failed to submit batch abuse report";
+      if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      set({
+        abuseReportError: errorMessage,
+        isReportingAbuse: false,
+      });
+      return { success: false, error: errorMessage };
+    }
+  },
+
   // Generate and Download Detailed Report - now uses batch endpoint for consistency
   generateHTMLReport: async () => {
     const state = get();

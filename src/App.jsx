@@ -12,6 +12,7 @@ import HeroSection from "./components/sections/HeroSection";
 import StatisticsSection from "./components/sections/StatisticsSection";
 import ThreatFeedSection from "./components/sections/ThreatFeedSection";
 import BatchUploadSection from "./components/sections/BatchUploadSection";
+import NewsSection from "./components/sections/NewsSection";
 import AnalysisSection from "./components/sections/AnalysisSection";
 import NewResultsSection from "./components/sections/NewResultsSection";
 import FAQSection from "./components/sections/FAQSection";
@@ -98,8 +99,9 @@ const App = () => {
         {/* Conditional Sections based on analysis state */}
         {!isAnalyzing && !analysisResults && (
           <>
-            <ThreatFeedSection />
             <BatchUploadSection />
+            <ThreatFeedSection />
+            <NewsSection />
           </>
         )}
         {isAnalyzing && <AnalysisSection />}
