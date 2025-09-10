@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import { HiExclamation, HiDocument } from "react-icons/hi";
 import useAppStore from "./store/useAppStore";
@@ -23,52 +23,17 @@ import VideoDemoSection from "./components/sections/VideoDemoSection";
 // Admin Components
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import { useAdminStore } from "./store/useAdminStore";
 
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const { isAdmin } = useAdminStore();
-  const navigate = useNavigate();
-
-  React.useEffect(() => {
-    if (!isAdmin) {
-      navigate("/admin/login");
-    }
-  }, [isAdmin, navigate]);
-
-  if (!isAdmin) {
-    return null;
-  }
-
-  return children;
-};
-
-const HomePage = () => {
-  const { analysisResults, isAnalyzing } = useAppStore();
-
-  return (
-    <main className="pt-16 md:pt-5">
-      {/* Always show Hero and Stats sections */}
-      <HeroSection />
-      {/* Conditional Sections based on analysis state */}
-      {!isAnalyzing && !analysisResults && (
-        <>
-          <BatchUploadSection />
-          <ThreatFeedSection />
-          <NewsSection />
-        </>
-      )}
-      {isAnalyzing && <AnalysisSection />}
-      {analysisResults && <NewResultsSection />}
-      <VideoDemoSection />
-      <AboutSection />
-    </main>
-  );
-};
-
-const App = () => {
-  const { reportError, setReportError, batchReportError, setBatchReportError } =
-    useAppStore();
+// Main App Component (Homepage)
+const MainApp = () => {
+  const {
+    analysisResults,
+    isAnalyzing,
+    reportError,
+    setReportError,
+    batchReportError,
+    setBatchReportError,
+  } = useAppStore();
 
   // Force dark mode always
   useEffect(() => {
@@ -130,28 +95,43 @@ const App = () => {
         }}
       />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Header />
-              <HomePage />
-              <Footer />
-            </>
-          }
-        />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route
-          path="/admin/dashboard"
-          element={
-            <ProtectedRoute>
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      {/* Header */}
+      <Header />
+
+      {/* Main Content */}
+      <main className="pt-16 md:pt-5">
+        {/* Always show Hero and Stats sections */}
+        <HeroSection />
+        {/* Conditional Sections based on analysis state */}
+        {!isAnalyzing && !analysisResults && (
+          <>
+            <BatchUploadSection />
+            <ThreatFeedSection />
+            <NewsSection />
+          </>
+        )}
+        {isAnalyzing && <AnalysisSection />}
+        {analysisResults && <NewResultsSection />}
+        <VideoDemoSection />
+        <AboutSection />
+      </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
+  );
+};
+
+// Main App with Routing
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<MainApp />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 };
 

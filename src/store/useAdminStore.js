@@ -137,7 +137,7 @@ export const useAdminStore = create(
         switch (riskLevel) {
           case "Red":
             return "text-red-600 bg-red-100";
-          case "Orange":
+          case "Amber":
             return "text-orange-600 bg-orange-100";
           case "Yellow":
             return "text-yellow-600 bg-yellow-100";

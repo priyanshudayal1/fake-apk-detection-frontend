@@ -256,12 +256,12 @@ export class APKAnalysisService {
     additionalNotes = ""
   ) {
     const formData = new FormData();
-
+    
     // Add all files
-    files.forEach((file) => {
+    files.forEach(file => {
       formData.append("files", file);
     });
-
+    
     formData.append("reporter_email", reporterEmail);
     formData.append("reporter_name", reporterName);
     formData.append("additional_notes", additionalNotes);
@@ -296,49 +296,73 @@ export class APKAnalysisService {
    * @returns {Promise} News data with optional AI enhancement
    */
   static async getNews(enhanced = false) {
-    const params = enhanced ? { enhanced: "true" } : {};
+    const params = enhanced ? { enhanced: 'true' } : {};
     return api.get("/news", { params });
   }
 
-  // Admin API methods
+  // ==================== ADMIN API ENDPOINTS ====================
+
   /**
-   * Get all admin reports with pagination
-   * @param {number} page - Page number
-   * @param {number} perPage - Items per page
-   * @returns {Promise} Reports data with pagination
+   * Get all abuse reports for admin dashboard
+   * @param {number} page - Page number for pagination
+   * @param {number} perPage - Number of reports per page
+   * @returns {Promise} Paginated reports with statistics
    */
   static async getAdminReports(page = 1, perPage = 20) {
     return api.get("/admin/reports", {
-      params: { page, per_page: perPage },
-      headers: {
-        "Content-Type": "application/json",
-      },
+      params: { page, per_page: perPage }
     });
   }
 
   /**
    * Get a specific report by ID
-   * @param {string} reportId - The report ID
-   * @returns {Promise} Single report data
+   * @param {string} reportId - The report ID to fetch
+   * @returns {Promise} Detailed report information
    */
   static async getSingleReport(reportId) {
-    return api.get(`/admin/reports/${reportId}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return api.get(`/admin/reports/${reportId}`);
   }
 
   /**
-   * Delete a specific report by ID
-   * @param {string} reportId - The report ID
-   * @returns {Promise} Deletion result
+   * Delete a specific report
+   * @param {string} reportId - The report ID to delete
+   * @returns {Promise} Deletion confirmation
    */
   static async deleteReport(reportId) {
-    return api.delete(`/admin/reports/${reportId}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
+    return api.delete(`/admin/reports/${reportId}`);
+  }
+
+  // ==================== VIRUSTOTAL INTEGRATION ====================
+
+  /**
+   * Scan APK with VirusTotal
+   * @param {string} sha256 - SHA256 hash of the APK
+   * @returns {Promise} VirusTotal scan results
+   */
+  static async scanWithVirusTotal(sha256) {
+    return api.post("/virustotal/scan", { sha256 });
+  }
+
+  /**
+   * Get VirusTotal report for a hash
+   * @param {string} sha256 - SHA256 hash of the APK
+   * @returns {Promise} VirusTotal report data
+   */
+  static async getVirusTotalReport(sha256) {
+    return api.get(`/virustotal/report/${sha256}`);
+  }
+
+  /**
+   * Upload file to VirusTotal for scanning
+   * @param {File} file - APK file to upload
+   * @returns {Promise} Upload and scan initiation result
+   */
+  static async uploadToVirusTotal(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post("/virustotal/upload", formData, {
+      headers: { "Content-Type": undefined },
+      timeout: 300000 // 5 minutes for upload
     });
   }
 }
