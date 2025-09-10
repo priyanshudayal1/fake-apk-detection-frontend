@@ -6,9 +6,9 @@ const VideoDemoSection = () => {
   return (
     <section id="demo" className="relative overflow-hidden">
       {/* Header Section - matching HeroSection gradient style */}
-      <div className="bg-gradient-to-br from-gray-50 via-blue-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-16 md:py-20 relative">
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20 relative">
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-30 dark:opacity-10">
+        <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-grid-pattern"></div>
         </div>
 
@@ -24,14 +24,14 @@ const VideoDemoSection = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-12 animate-fade-up">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-primary-200/50 dark:border-primary-600/50 text-primary-400 text-sm font-medium mb-6 shadow-lg">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gray-800/90 backdrop-blur-sm border border-primary-600/50 text-primary-400 text-sm font-medium mb-6 shadow-lg">
               <BsPlayCircle className="w-4 h-4 mr-2" />
               Live Demo
             </div>
 
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
               See Our System in
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-teal-600 to-accent-600 dark:from-primary-400 dark:via-teal-400 dark:to-accent-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-teal-400 to-accent-400">
                 Action
               </span>
             </h2>
@@ -51,12 +51,12 @@ const VideoDemoSection = () => {
           >
             <div className="relative">
               {/* Video Frame with Enhanced Styling */}
-              <div className="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 p-2 shadow-2xl border border-gray-700/50">
+              <div className="relative rounded-2xl overflow-hidden bg-gray-800 p-2 shadow-2xl border border-gray-700/50">
                 <div className="relative rounded-xl overflow-hidden bg-black">
                   <iframe
                     width="100%"
                     height="500"
-                    src="https://www.youtube.com/embed/qRZirgZuICc"
+                    src="https://www.youtube.com/embed/aGxgEu0ftBg"
                     title="Fake APK Detection System Demo"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
